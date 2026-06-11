@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Gallery — The Imitator Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <script>
+    (function () {
+      const t = localStorage.getItem("pst-theme") || "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="assets/media/logo.png" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="gallery.html" class="active"><i class="fas fa-film"></i>Gallery</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <!-- Grid view -->
+      <div id="gallery-view" class="page-container">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Task Gallery</h1>
+            <p class="page-subtitle" id="gallery-subtitle">
+              Browse task groups, each with four imitation difficulty levels.
+            </p>
+          </div>
+        </div>
+
+        <div class="gallery-toolbar">
+          <input type="text" id="gallery-search" class="form-input gallery-search"
+                 placeholder="🔍  Filter tasks…">
+          <div class="gallery-count" id="gallery-count"></div>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+
+      <!-- Task detail view (hidden until a card is clicked) -->
+      <div id="task-view" style="display:none;"></div>
+
+    </div>
+  </main>
+
+</div>
+<script src="assets/js/manifest-data.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/gallery.js"></script>
+</body>
+</html>

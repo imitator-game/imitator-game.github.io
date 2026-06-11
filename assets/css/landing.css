@@ -1,0 +1,280 @@
+/* ============================================================
+   landing.css — Index / paper landing page styles.
+   Section band system, hover float effects, gallery feature,
+   human-ref video, author block, font overrides.
+   ============================================================ */
+
+/* ── Font overrides ─────────────────────────────────────────── */
+body {
+  font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+.hero-title, .paper-section-title, .arena-title, .page-title,
+h1, h2, h3 {
+  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* ── Show nav on landing page ────────────────────────────────── */
+/* style.css hides it for anonymous visitors; we override here   */
+body.landing-page .pst-header-nav { display: flex !important; }
+
+/* ── FA icon sizing ─────────────────────────────────────────── */
+.pst-btn i, .pst-btn .ai     { font-size: .95em; vertical-align: -.05em; }
+.pst-header-nav a i          { font-size: .85em; margin-right: .25rem; opacity: .8; }
+.paper-section-eyebrow i     { margin-right: .3rem; opacity: .7; font-size: .85em; }
+
+/* ── Author / venue block ────────────────────────────────────── */
+.hero-authors {
+  margin: 1.1rem 0 1.5rem;
+  display: flex; flex-direction: column; align-items: center; gap: .45rem;
+}
+.hero-author-names {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.1rem; color: var(--text-muted); font-weight: 400; letter-spacing: .01em;
+}
+.hero-author-names a {
+  color: var(--primary); text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color .2s;
+}
+.hero-author-names a:hover { border-bottom-color: var(--primary); }
+.hero-affil    { font-size: .9rem; color: var(--text-muted); font-family: 'Noto Sans', sans-serif; }
+.hero-venue-row {
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; justify-content: center;
+}
+.venue-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .3rem .8rem; border-radius: 999px;
+  background: var(--primary-bg); color: var(--primary);
+  font-size: .82rem; font-weight: 600;
+  font-family: 'Google Sans', sans-serif; letter-spacing: .02em;
+}
+.venue-badge i { font-size: .8rem; }
+.anon-note     { font-size: .8rem; color: var(--text-muted); font-style: italic; }
+
+/* ── Section band system ─────────────────────────────────────── */
+/* Strips the default pst-main vertical padding; each band owns its spacing */
+.landing-main { padding: 0 !important; }
+
+.lp-band { width: 100%; }
+
+.lp-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.lp-inner-wide   { max-width: 1400px; }
+.lp-inner-narrow { max-width: 900px; }
+
+/* Remove the paper-section's own margin/max-width when inside a band */
+.lp-band .paper-section,
+.lp-band .paper-section-abstract {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+}
+.lp-band .paper-section-wide {
+  width: 100%; max-width: none; padding-inline: 0;
+}
+
+/* Band backgrounds */
+.lp-band-white { background: var(--on-bg); }
+.lp-band-gray  { background: var(--surface); }
+.lp-band-hero  { background: var(--bg); }
+.lp-band-accent {
+  background: linear-gradient(135deg, var(--primary) 0%, #5e5ce6 100%);
+}
+
+/* Accent band text overrides */
+.lp-band-accent .paper-section-eyebrow { color: rgba(255,255,255,.78); }
+.lp-band-accent .paper-section-title   { color: #fff; }
+.lp-band-accent .paper-section-body    { color: rgba(255,255,255,.9); }
+.lp-band-accent .pst-btn {
+  background: rgba(255,255,255,.18); color: #fff;
+}
+.lp-band-accent .pst-btn:hover {
+  background: rgba(255,255,255,.28); color: #fff; text-decoration: none;
+}
+.lp-band-accent .pst-btn-primary {
+  background: #fff; color: var(--primary);
+}
+.lp-band-accent .pst-btn-primary:hover {
+  background: rgba(255,255,255,.9); color: var(--primary);
+}
+
+/* ── Hover float effects ─────────────────────────────────────── */
+.key-finding-card {
+  transition: transform .22s cubic-bezier(.4,0,.2,1),
+              box-shadow .22s cubic-bezier(.4,0,.2,1);
+  cursor: default;
+}
+.key-finding-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 12px 32px rgba(0,113,227,.1), 0 2px 8px rgba(0,0,0,.05);
+}
+
+.dataset-fact {
+  transition: transform .22s ease, box-shadow .22s ease;
+  cursor: default;
+}
+.dataset-fact:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(0,113,227,.1);
+}
+
+.results-cell {
+  transition: box-shadow .22s ease;
+}
+.results-cell:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,.1);
+}
+
+.paper-figure {
+  transition: transform .22s ease;
+}
+.paper-figure:hover {
+  transform: translateY(-4px);
+}
+.paper-figure:hover img {
+  box-shadow: 0 12px 40px rgba(0,0,0,.13);
+}
+
+/* ── Gallery Feature section ─────────────────────────────────── */
+.lp-gallery-intro {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+.lp-gallery-text .paper-section-eyebrow { margin-bottom: .6rem; }
+.lp-gallery-text h2 {
+  font-size: 2rem; font-weight: 700; letter-spacing: -.025em;
+  margin: 0 0 .85rem;
+}
+.lp-gallery-text p {
+  font-size: 1.0625rem; line-height: 1.6;
+  color: var(--text-muted); margin-bottom: 1.5rem;
+}
+.lp-gallery-cta { display: flex; gap: .85rem; flex-wrap: wrap; }
+
+.lp-gallery-preview {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
+}
+.lp-gallery-card {
+  background: var(--on-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.1rem .9rem;
+  display: flex; flex-direction: column; gap: .45rem;
+  text-decoration: none; color: var(--text);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.lp-gallery-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  text-decoration: none; color: var(--text);
+}
+.lp-gallery-card-dots { display: flex; gap: .3rem; }
+.lp-gallery-card-dot {
+  font-size: .68rem; font-weight: 600;
+  padding: .1rem .38rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+}
+.lp-gallery-card-dot.l0 { color: var(--l0); }
+.lp-gallery-card-dot.l1 { color: var(--l1); }
+.lp-gallery-card-dot.l2 { color: var(--l2); }
+.lp-gallery-card-dot.l3 { color: var(--l3); }
+.lp-gallery-card-title { font-size: .9rem; font-weight: 600; line-height: 1.3; }
+.lp-gallery-card-meta  { font-size: .78rem; color: var(--text-muted); }
+
+@media (max-width: 900px) {
+  .lp-gallery-intro { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+@media (max-width: 500px) {
+  .lp-gallery-preview { grid-template-columns: 1fr; }
+}
+
+/* ── Human Reference Video section ──────────────────────────── */
+.lp-human-ref {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.lp-human-video-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0d1117;
+  aspect-ratio: 16 / 9;
+  box-shadow: var(--shadow-lg);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.lp-human-video-wrap:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 52px rgba(0,0,0,.18);
+}
+.lp-human-video-wrap video {
+  width: 100%; height: 100%; display: block; object-fit: cover;
+}
+/* Placeholder shown when no video file exists yet */
+.lp-human-video-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .6rem;
+  background: linear-gradient(135deg, rgba(20,30,50,.95), rgba(10,15,25,.98));
+  color: rgba(255,255,255,.65); text-align: center; padding: 1rem;
+  font-size: .9rem;
+}
+.lp-human-video-placeholder code {
+  font-size: .78rem; color: rgba(255,255,255,.38);
+  background: rgba(255,255,255,.06);
+  padding: .15rem .45rem; border-radius: 4px;
+}
+.lp-human-video-wrap.lp-video-missing video { display: none; }
+.lp-human-video-wrap.lp-video-missing .lp-human-video-placeholder { display: flex !important; }
+
+.lp-human-video-label {
+  position: absolute; top: .8rem; left: .85rem;
+  background: rgba(0,0,0,.62); color: #fff;
+  font-size: .69rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: .22rem .62rem; border-radius: var(--radius-pill);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lp-human-ref-text .paper-section-eyebrow { margin-bottom: .55rem; }
+.lp-human-ref-text h3 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.65rem; font-weight: 700; letter-spacing: -.02em;
+  margin: 0 0 .85rem; line-height: 1.2;
+}
+.lp-human-ref-text p {
+  font-size: 1rem; line-height: 1.65;
+  color: var(--text-muted); margin-bottom: 1.2rem;
+}
+.lp-human-ref-text .lp-arena-cta { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+@media (max-width: 860px) {
+  .lp-human-ref { grid-template-columns: 1fr; }
+  .lp-human-video-wrap { order: -1; }
+}
+
+/* ── Footer (clean, no icon links) ──────────────────────────── */
+.lp-footer {
+  background: var(--on-bg);
+  border-top: 1px solid var(--border);
+}
+.lp-footer-inner {
+  max-width: 1100px; margin: 0 auto; padding: 1.1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font-size: .85rem; color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .lp-inner { padding: 3.5rem 1.25rem; }
+  .lp-footer-inner { flex-direction: column; gap: .35rem; text-align: center; }
+}

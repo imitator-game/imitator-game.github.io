@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Imitator Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <style>
+    .nav-arena-icon {
+      width: .85em; height: .85em;
+      vertical-align: -.1em;
+      margin-right: .25rem;
+      fill: currentColor;
+      opacity: .8;
+    }
+
+    /* ── Rollout showcase ─────────────────────────── */
+    .rollout-group-toggle {
+      display: flex; gap: .5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .rollout-group-btn {
+      padding: .4rem 1rem; border-radius: 999px;
+      border: 1.5px solid var(--border); background: transparent;
+      font-size: .85rem; font-weight: 600; cursor: pointer;
+      color: var(--text-muted); transition: all .18s ease;
+      font-family: 'Google Sans', sans-serif;
+    }
+    .rollout-group-btn.active {
+      background: var(--primary); border-color: var(--primary); color: #fff;
+    }
+    .rollout-carousel {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .rollout-viewport { overflow: hidden; }
+    .rollout-track {
+      display: flex;
+      transition: transform 400ms cubic-bezier(.4,0,.2,1);
+    }
+    .rollout-slide {
+      min-width: 100%;
+      padding: 1.5rem 1.5rem 1rem;
+    }
+    .rollout-slide-header {
+      display: flex; align-items: center; gap: .65rem; flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .rollout-group-tag {
+      font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+      text-transform: uppercase; padding: .18rem .5rem; border-radius: 4px;
+    }
+    .rollout-group-tag.training { background: #dcfce7; color: #166534; }
+    .rollout-group-tag.test     { background: #fef3c7; color: #92400e; }
+    .rollout-task-name {
+      font-size: 1rem; font-weight: 600;
+      font-family: 'Google Sans', sans-serif;
+    }
+    .rollout-task-domain {
+      font-size: .8rem; color: var(--text-muted);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: .1rem .4rem;
+    }
+    .rollout-videos {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr;
+      gap: .6rem;
+    }
+    .rollout-video-col { display: flex; flex-direction: column; gap: .35rem; }
+    .rollout-ref-col .rollout-video-box { border: 2px solid rgba(0,0,0,.18); }
+    .rollout-video-label {
+      font-size: .72rem; font-weight: 700; text-align: center;
+      padding: .2rem .4rem; border-radius: 4px;
+      font-family: 'Google Sans', sans-serif;
+    }
+    .rollout-label-ref {
+      background: rgba(0,0,0,.06); color: var(--text);
+    }
+    .rollout-video-box {
+      position: relative;
+      background: #0d1117;
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+    }
+    .rollout-video-box video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .rollout-video-placeholder {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, rgba(20,30,50,.92), rgba(10,15,25,.97));
+      color: rgba(255,255,255,.45); text-align: center; padding: .5rem;
+    }
+    .rollout-video-placeholder code {
+      font-size: .65rem; word-break: break-all;
+    }
+    .rollout-video-box:not(.rollout-video-missing) video { display: block; }
+    .rollout-video-box:not(.rollout-video-missing) .rollout-video-placeholder { display: none; }
+    .rollout-video-box.rollout-video-missing video { display: none; }
+    .rollout-video-box.rollout-video-missing .rollout-video-placeholder { display: flex; }
+
+    .rollout-nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--on-bg);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text); transition: background .15s, box-shadow .15s;
+    }
+    .rollout-nav-btn:hover { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(0,113,227,.3); }
+    .rollout-prev { left: .5rem; }
+    .rollout-next { right: .5rem; }
+    .rollout-footer {
+      display: flex; align-items: center; justify-content: center;
+      gap: .75rem; padding: .75rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .rollout-dots { display: flex; gap: .3rem; }
+    .rollout-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border); border: none; padding: 0; cursor: pointer;
+      transition: background .2s;
+    }
+    .rollout-dot.active { background: var(--primary); }
+    .rollout-counter {
+      font-size: .8rem; color: var(--text-muted); font-variant-numeric: tabular-nums;
+      min-width: 3.5rem; text-align: center;
+    }
+    @media (max-width: 900px) {
+      .rollout-videos { grid-template-columns: 1fr 1fr; gap: .4rem; }
+      .rollout-ref-col { grid-column: 1/-1; }
+    }
+    @media (max-width: 500px) {
+      .rollout-videos { grid-template-columns: 1fr; }
+      .rollout-ref-col { grid-column: auto; }
+    }
+    /* ── Levels video speed badge ─────────────────────────── */
+    .levels-video-speed-badge {
+      position: absolute;
+      top: .75rem;
+      left: .8rem;
+      background: rgba(0, 0, 0, 0.45);
+      -webkit-backdrop-filter: blur(10px) saturate(160%);
+      backdrop-filter: blur(10px) saturate(160%);
+      color: #fff;
+      font-size: .69rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .22rem .62rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      pointer-events: none;
+      z-index: 5;
+      line-height: 1.4;
+    }
+  </style>
+  <script>
+    (function () {
+      const t = localStorage.getItem("pst-theme") || "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body class="landing-page">
+<div class="pst-page">
+
+  <!-- ══════════════════════════════════════════════
+       HEADER — sticky, translucent, with nav
+  ══════════════════════════════════════════════ -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="index.html" class="pst-header-brand">
+        <span class="brand-logo"><img src="assets/media/logo.png" alt="The Imitator Game logo" style="width:26px;height:26px;object-fit:contain;border-radius:6px;display:block;"></span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="#home"><i class="fas fa-home"></i>Home</a>
+        <a href="#abstract"><i class="fas fa-align-left"></i>Abstract</a>
+        <a href="#levels"><i class="fas fa-layer-group"></i>Levels</a>
+        <a href="#ig10k"><i class="fas fa-database"></i>IG-10K</a>
+        <a href="#experiment"><i class="fas fa-flask"></i>Experiment</a>
+        <a href="#results"><i class="fas fa-chart-bar"></i>Results</a>
+        <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main landing-main" id="home">
+
+    <!-- ══════════════════════════════════════════
+         BAND 1 · HERO
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-hero" id="hero">
+      <div class="lp-inner" style="text-align:center;">
+        <h1 class="hero-title">
+          <img src="assets/media/logo.png" alt="The Imitator Game logo" style="width:56px;height:56px;object-fit:contain;vertical-align:middle;margin-right:.4em;border-radius:10px;">The Imitator Game
+        </h1>
+        <p class="hero-tagline">Benchmarking Robot Imitative Ability Beyond Action Prediction</p>
+
+        <!-- Uncomment after de-anonymisation:
+        <div class="hero-authors">
+          <p class="hero-author-names">Anonymous Author(s)</p>
+          <p class="hero-affil">Anonymous Institution(s)</p>
+          <div class="hero-venue-row">
+            <span class="venue-badge"><i class="fas fa-graduation-cap"></i>CoRL 2026</span>
+            <span class="anon-note">Anonymous submission · Under review</span>
+          </div>
+        </div>
+        -->
+
+        <p class="hero-abstract">
+          Can robots imitate what a human <em>intends</em> — not just what they do?
+          We introduce a four-level benchmark, a 20,000+ episode paired dataset, and an open
+          human evaluation platform to find out.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
+            <i class="ai ai-arxiv"></i>&ensp;Paper
+          </a>
+          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
+            <i class="fab fa-github"></i>&ensp;Code
+          </a>
+          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
+            <i class="fas fa-database"></i>&ensp;IG-10K Dataset
+          </a>
+          <a href="arena.html" class="pst-btn pst-btn-lg">
+            <i class="fas fa-film"></i>&ensp;Gallery
+          </a>
+          <a href="arena.html" class="pst-btn pst-btn-primary pst-btn-lg">
+            <i class="fas fa-gamepad"></i>&ensp;Open the Arena →
+          </a>
+        </div>
+      </div>
+    </div><!-- /hero band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 3 · OVERVIEW VIDEO
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-gray">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="text-align:center; margin-bottom:.75rem; font-size:1.25rem;">
+          <i class="fas fa-play-circle"></i>Overview
+        </div>
+        <div class="promo-video">
+          <div class="promo-video-frame">
+            <video class="promo-video-el" controls preload="metadata"
+                   poster="assets/media/demo_cover.jpg"
+                   src="assets/media/demo_video.mp4"
+                   onerror="this.closest('.promo-video-frame').classList.add('promo-video-missing')">
+            </video>
+            <div class="promo-video-placeholder">
+              <div class="promo-video-placeholder-title">Overview video</div>
+              <div class="promo-video-placeholder-sub">
+                Drop an mp4 at <code>assets/media/demo_video.mp4</code> to enable.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BAND 4 · ABSTRACT
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-white" id="abstract">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="max-width: 880px; margin: 0 auto; font-size:1.0rem;"><i class="fas fa-align-left"></i>Abstract</div>
+        <p class="paper-section-body" style="text-align:justify; font-size:1.1rem; line-height:1.7; max-width: 880px; margin: 0 auto; ">
+          Humans imitate at the level of intent: given a demonstration, we infer
+          its goal and carry it out with whatever tools, objects, and layouts are
+          at hand. Current robot policies instead learn observation-to-action
+          mappings from visual inputs and language instructions, without explicitly
+          inferring the demonstrated task. Learning from human video thus remains
+          largely trajectory-level: models can replay motions in near-identical
+          scenes, but still struggle to imitate what the demonstrator <em>intends</em>
+          rather than merely what they do. We introduce <strong>The Imitator Game</strong>,
+          a four-level benchmark (L0–L3) that progressively widens the gap between the
+          human demonstration and the robot's own scene, isolating where trajectory
+          replay ceases to suffice and task understanding becomes necessary. We pair
+          it with <strong>IG-10K</strong>, the largest environment-aligned paired
+          human–robot dataset to date and the only one instantiated across all four
+          levels in both real and simulated settings (20,000+ paired episodes, 50+
+          tasks, 6 domains), and <strong>Imitator Arena</strong>, an open platform
+          for blind A/B human evaluation. Across nine state-of-the-art models,
+          performance is stable from L0 to L2 but collapses at L3, identifying
+          <em>functional substitution</em> — achieving the same intent through a
+          different object affordance — as the decisive barrier to intent-level
+          imitation.
+        </p>
+
+        <figure class="paper-figure" style="margin-top:2.5rem; margin-bottom:0;">
+          <img src="assets/paper/teaser.png"
+               alt="Imitator Game teaser: demonstrator scene paired with imitator scene and Arena evaluation panel"
+               loading="eager">
+          <figcaption>
+            <strong>The Imitator Game.</strong>
+            <em>(Left)</em> A human demonstrates a manipulation task in the Demonstrator Scene (green),
+            and a robot watches the video and reproduces the underlying intent in the Imitator Scene (orange).
+            <em>(Right)</em> The Imitator Arena: human evaluators make blind A/B comparisons of two
+            anonymised model rollouts against the demonstrator video.
+          </figcaption>
+        </figure>
+      </div>
+    </div><!-- /abstract band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 6 · FOUR LEVELS
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-gray" id="levels">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-layer-group"></i>Four levels</div>
+        <h2 class="paper-section-title">Increasing abstraction of imitation</h2>
+        <p class="paper-section-body">
+          Each task is instantiated at four levels of progressive mismatch between the
+          human demonstration and the robot's scene — from exact replay (<strong>L0</strong>)
+          to intent-level affordance substitution (<strong>L3</strong>).
+        </p>
+
+        <!-- Tab switcher -->
+        <div class="levels-tabs" id="levelsTabs">
+          <div class="levels-tab-buttons" role="tablist" aria-label="Imitation levels">
+            <button class="levels-tab-btn" role="tab" aria-selected="true"
+                    aria-controls="levels-panel-ref" data-level="ref">
+              <span class="level-badge" style="background:var(--text-muted);color:#fff;font-size:.72rem;padding:.15rem .45rem;">REF</span>
+              <span class="levels-tab-label">Human Ref</span>
+            </button>
+            <button class="levels-tab-btn" role="tab" aria-selected="false"
+                    aria-controls="levels-panel-0" data-level="0">
+              <span class="level-badge l0">L0</span>
+              <span class="levels-tab-label">Trajectory </span>
+            </button>
+            <button class="levels-tab-btn" role="tab" aria-selected="false"
+                    aria-controls="levels-panel-1" data-level="1">
+              <span class="level-badge l1">L1</span>
+              <span class="levels-tab-label">Object End-State</span>
+            </button>
+            <button class="levels-tab-btn" role="tab" aria-selected="false"
+                    aria-controls="levels-panel-2" data-level="2">
+              <span class="level-badge l2">L2</span>
+              <span class="levels-tab-label">Semantic Task</span>
+            </button>
+            <button class="levels-tab-btn" role="tab" aria-selected="false"
+                    aria-controls="levels-panel-3" data-level="3">
+              <span class="level-badge l3">L3</span>
+              <span class="levels-tab-label">Affordance-Adapted</span>
+            </button>
+          </div>
+
+          <!-- Human Ref -->
+          <div class="levels-tab-panel active" id="levels-panel-ref" role="tabpanel" data-level="ref">
+            <div class="levels-panel-layout">
+              <div class="levels-panel-text">
+                <h3 class="levels-panel-title">
+                  <span class="level-badge" style="background:var(--text-muted);color:#fff;">REF</span> Human Reference
+                </h3>
+                <p class="levels-panel-desc">
+                  Every comparison starts from a <strong>human demonstrator video</strong> recorded in the
+                  Demonstrator Scene. 
+                  This reference video is shown to the robot imitator — and to human Arena evaluators — as
+                  the sole specification of what should be reproduced. There is no separate task description,
+                  goal predicate, or symbolic instruction.
+                </p>
+                <div class="levels-panel-example">
+                  <span class="levels-panel-example-label">Example</span>
+                  A human steeps a tea bag in hot water using the teapot and cup on the table.
+                  The robot must watch this clip and reproduce the <em>intent</em>.
+                </div>
+              </div>
+              <div class="levels-panel-video-wrap">
+                <span class="levels-video-speed-badge">3× Speed</span>
+                <video class="levels-panel-video" controls autoplay preload="metadata" loop muted
+                       src="assets/media/levels/human_ref.mp4"
+                       onerror="this.closest('.levels-panel-video-wrap').classList.add('levels-video-missing')">
+                </video>
+                <div class="levels-video-placeholder">
+                  <span>Human reference video</span>
+                  <code>assets/media/levels/human_ref.mp4</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- L0 -->
+          <div class="levels-tab-panel" id="levels-panel-0" role="tabpanel" data-level="0">
+            <div class="levels-panel-layout">
+              <div class="levels-panel-text">
+                <h3 class="levels-panel-title">
+                  <span class="level-badge l0">L0</span> Trajectory Imitation
+                </h3>
+                <p class="levels-panel-desc">
+                  The imitator scene is <strong>identical</strong> to the demonstrator scene — same objects,
+                  same layout. The policy is expected to reproduce the demonstrated trajectory.
+                </p>
+                <div class="levels-panel-example">
+                  <span class="levels-panel-example-label">Example</span>
+                  Same tea bag, teapot and cup in the same positions; the imitator pours along essentially the demonstrated motion.
+                </div>
+              </div>
+              <div class="levels-panel-video-wrap">
+                <span class="levels-video-speed-badge">6× Speed</span>
+                <video class="levels-panel-video" controls autoplay preload="metadata" loop muted
+                       src="assets/media/levels/l0.mp4"
+                       onerror="this.closest('.levels-panel-video-wrap').classList.add('levels-video-missing')">
+                </video>
+                <div class="levels-video-placeholder">
+                  <span>L0 demo video</span>
+                  <code>assets/media/levels/l0.mp4</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- L1 -->
+          <div class="levels-tab-panel" id="levels-panel-1" role="tabpanel" data-level="1">
+            <div class="levels-panel-layout">
+              <div class="levels-panel-text">
+                <h3 class="levels-panel-title">
+                  <span class="level-badge l1">L1</span> Object End-State Imitation
+                </h3>
+                <p class="levels-panel-desc">
+                  Same objects, but their <strong>spatial configuration has changed</strong>.
+                  A literal replay of the demonstrated trajectory would fail.
+                  The policy must achieve the same final object states via a different path.
+                </p>
+                <div class="levels-panel-example">
+                  <span class="levels-panel-example-label">Example</span>
+                  Same teapot and cup, but the tea bag has moved to the front; the imitator should adjust its movements to steep the tea bag into the cup.
+                </div>
+              </div>
+              <div class="levels-panel-video-wrap">
+                <span class="levels-video-speed-badge">6× Speed</span>
+                <video class="levels-panel-video" controls autoplay preload="metadata" loop muted
+                       src="assets/media/levels/l1.mp4"
+                       onerror="this.closest('.levels-panel-video-wrap').classList.add('levels-video-missing')">
+                </video>
+                <div class="levels-video-placeholder">
+                  <span>L1 demo video</span>
+                  <code>assets/media/levels/l1.mp4</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- L2 -->
+          <div class="levels-tab-panel" id="levels-panel-2" role="tabpanel" data-level="2">
+            <div class="levels-panel-layout">
+              <div class="levels-panel-text">
+                <h3 class="levels-panel-title">
+                  <span class="level-badge l2">L2</span> Semantic Task Imitation
+                </h3>
+                <p class="levels-panel-desc">
+                  At least one task-relevant object has changed in <strong>appearance or geometry</strong>,
+                  but its semantic category is preserved. The precise final states are no longer
+                  reproducible, but the semantic task remains achievable.
+                </p>
+                <div class="levels-panel-example">
+                  <span class="levels-panel-example-label">Example</span>
+                  Demonstrator uses a tea bag to steep tea; imitator's scene has a bowl of tea leaves instead. The imitator must infer the underlying task of "brew tea".
+                </div>
+              </div>
+              <div class="levels-panel-video-wrap">
+                <span class="levels-video-speed-badge">6× Speed</span>
+                <video class="levels-panel-video" controls autoplay preload="metadata" loop muted
+                       src="assets/media/levels/l2.mp4"
+                       onerror="this.closest('.levels-panel-video-wrap').classList.add('levels-video-missing')">
+                </video>
+                <div class="levels-video-placeholder">
+                  <span>L2 demo video</span>
+                  <code>assets/media/levels/l2.mp4</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- L3 -->
+          <div class="levels-tab-panel" id="levels-panel-3" role="tabpanel" data-level="3">
+            <div class="levels-panel-layout">
+              <div class="levels-panel-text">
+                <h3 class="levels-panel-title">
+                  <span class="level-badge l3">L3</span> Affordance-Adapted Imitation
+                </h3>
+                <p class="levels-panel-desc">
+                  The demonstrated object is replaced by one of <strong>different semantics and function</strong>.
+                  The policy must infer the underlying intent and re-purpose a different affordance
+                  to achieve the same goal.
+                </p>
+                <div class="levels-panel-example">
+                  <span class="levels-panel-example-label">Example</span>
+                  No tea is present — the imitator must serve the same intent by mixing matcha powder instead of steeping a tea bag.
+                </div>
+              </div>
+              <div class="levels-panel-video-wrap">
+                <span class="levels-video-speed-badge">6× Speed</span>
+                <video class="levels-panel-video" controls autoplay preload="metadata" loop muted
+                       src="assets/media/levels/l3.mp4"
+                       onerror="this.closest('.levels-panel-video-wrap').classList.add('levels-video-missing')">
+                </video>
+                <div class="levels-video-placeholder">
+                  <span>L3 demo video</span>
+                  <code>assets/media/levels/l3.mp4</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /levels-tabs -->
+
+        <figure class="paper-figure" style="margin-top:2.5rem; margin-bottom:0;">
+          <img src="assets/paper/levels.png" alt="Four imitation levels" loading="lazy">
+          <figcaption>
+            <strong>Four levels of imitation</strong> on a single tea-making demonstration.
+            <strong>L0</strong> same objects and layout (trajectory replay);
+            <strong>L1</strong> rearranged layout (adapt trajectory);
+            <strong>L2</strong> tea leaves instead of tea bag (semantic task);
+            <strong>L3</strong> matcha powder instead of tea (affordance substitution).
+          </figcaption>
+        </figure>
+      </div>
+    </div><!-- /levels band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 7 · IG-10K DATASET
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-white" id="ig10k">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-database"></i>IG-10K dataset</div>
+        <h2 class="paper-section-title">Paired human–robot dataset at scale</h2>
+        <p class="paper-section-body">
+          The largest environment-aligned human–robot paired manipulation dataset to date,
+          spanning real-world episodes, interactive simulation environments, and the full
+          task distribution across six domains — with dense offline annotations.
+        </p>
+
+        <div class="dataset-facts">
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">20K+</span>
+            <span class="dataset-fact-label">Paired episodes</span>
+          </div>
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">11.7K+</span>
+            <span class="dataset-fact-label">Real paired clips</span>
+          </div>
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">200</span>
+            <span class="dataset-fact-label">Simulation envs</span>
+          </div>
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">4</span>
+            <span class="dataset-fact-label">Imitation levels</span>
+          </div>
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">50+</span>
+            <span class="dataset-fact-label">Base tasks</span>
+          </div>
+          <div class="dataset-fact">
+            <span class="dataset-fact-num">340+</span>
+            <span class="dataset-fact-label">Objects</span>
+          </div>
+        </div>
+
+        <figure class="paper-figure" style="margin-top:2.5rem; margin-bottom:0;">
+          <img src="assets/paper/fig2_dataset.png"
+               alt="IG-10K dataset overview" loading="lazy">
+          <figcaption>
+            <strong>The IG-10K dataset.</strong>
+            <em>(a)</em> 20,000+ paired episodes spanning household, supermarket, restaurant,
+            logistics, hospital, and laboratory tasks.
+            <em>(b)</em> 340+ real and simulated objects instantiating the L0–L3 scene variations.
+            <em>(c)</em> Dense annotations per episode: semantic masks, 3D MANO hand poses,
+            depth images, and multi-abstraction language descriptions.
+          </figcaption>
+        </figure>
+      </div>
+    </div><!-- /ig10k band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 2 · GALLERY FEATURE (most prominent)
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-gray" id="gallery">
+      <div class="lp-inner">
+        <div class="lp-gallery-intro">
+
+          <!-- Left: text + CTAs -->
+          <div class="lp-gallery-text">
+            <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-film"></i>Task Gallery</div>
+            <h2>Browse 50+ imitation tasks</h2>
+            <p>
+              Each task is instantiated at four levels of progressive difficulty —
+              from trajectory replay (<strong>L0</strong>) to full affordance
+              substitution (<strong>L3</strong>). Explore human reference clips,
+              real-robot rollouts, and simulation videos side-by-side.
+            </p>
+            <div class="lp-gallery-cta">
+              <a href="arena.html" class="pst-btn pst-btn-lg">
+                <i class="fas fa-gamepad"></i>&ensp;Try the Arena
+              </a>
+              <a href="gallery.html" class="pst-btn pst-btn-primary pst-btn-lg">
+                <i class="fas fa-film"></i>&ensp;Browse the Gallery →
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: sample task preview cards from real Table 6 tasks -->
+          <div class="lp-gallery-preview">
+            <a href="gallery.html" class="lp-gallery-card">
+              <div class="lp-gallery-card-dots">
+                <span class="lp-gallery-card-dot l0">L0</span>
+                <span class="lp-gallery-card-dot l1">L1</span>
+                <span class="lp-gallery-card-dot l2">L2</span>
+                <span class="lp-gallery-card-dot l3">L3</span>
+              </div>
+              <div class="lp-gallery-card-title">Pour water with kettle</div>
+              <div class="lp-gallery-card-meta">Restaurant · 4 levels</div>
+            </a>
+            <a href="gallery.html" class="lp-gallery-card">
+              <div class="lp-gallery-card-dots">
+                <span class="lp-gallery-card-dot l0">L0</span>
+                <span class="lp-gallery-card-dot l1">L1</span>
+                <span class="lp-gallery-card-dot l2">L2</span>
+                <span class="lp-gallery-card-dot l3">L3</span>
+              </div>
+              <div class="lp-gallery-card-title">Fold towel into basket</div>
+              <div class="lp-gallery-card-meta">Household · 4 levels</div>
+            </a>
+            <a href="gallery.html" class="lp-gallery-card">
+              <div class="lp-gallery-card-dots">
+                <span class="lp-gallery-card-dot l0">L0</span>
+                <span class="lp-gallery-card-dot l1">L1</span>
+                <span class="lp-gallery-card-dot l2">L2</span>
+                <span class="lp-gallery-card-dot l3">L3</span>
+              </div>
+              <div class="lp-gallery-card-title">Hang cup on rack</div>
+              <div class="lp-gallery-card-meta">Household · 4 levels</div>
+            </a>
+            <a href="gallery.html" class="lp-gallery-card">
+              <div class="lp-gallery-card-dots">
+                <span class="lp-gallery-card-dot l0">L0</span>
+                <span class="lp-gallery-card-dot l1">L1</span>
+                <span class="lp-gallery-card-dot l2">L2</span>
+                <span class="lp-gallery-card-dot l3">L3</span>
+              </div>
+              <div class="lp-gallery-card-title">Stir soup in bowl</div>
+              <div class="lp-gallery-card-meta">Household · 4 levels</div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /gallery band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND · ROLLOUT SHOWCASE (Training + Test tasks)
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-white" id="experiment">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-flask"></i>Experiment</div>
+        <h2 class="paper-section-title">Imitator trajectories: Training &amp; Test tasks</h2>
+        <p class="paper-section-body">
+          For each evaluation task, a human reference video is followed by representative imitator trajectories
+          under increasing scene mismatch (L0 → L3). The five <strong>training tasks</strong> were included during
+          IG-10K pretraining; the five <strong>test tasks</strong> are
+          held-out and evaluate zero-shot transfer, from-scratch few-shot learning, and pretrain+finetune (P+FT)
+          adaptation. Seen-task evaluation perturbs object placements across hierarchy levels, so success requires
+          robust imitation rather than fixed-layout replay.
+        </p>
+        <figure class="paper-figure" style="margin-top:2.5rem; margin-bottom:0;">
+          <img src="assets/paper/exp.png"
+               alt="Experiment tasks overview" loading="lazy">
+          <figcaption>
+            <strong>The experiment.</strong>
+            Evaluation spans training tasks <em>(left)</em> and held-out test tasks <em>(right)</em>.
+            For each task, the first image shows the human reference video, followed by representative imitator
+            trajectories under increasing scene mismatch from L0 to L3. The real-world evaluation covers
+            seen-task imitation, unseen zero-shot transfer, few-shot adaptation, and Arena human judgments.
+          </figcaption>
+        </figure>
+
+      </div>
+    </div><!-- /rollout showcase band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 8 · RESULTS
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-gray" id="results">
+      <div class="lp-inner">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-chart-bar"></i>Results</div>
+        <h2 class="paper-section-title">Experimental findings</h2>
+        <p class="paper-section-body">
+          We evaluate 9 state-of-the-art models (15 trained variants) across simulation,
+          real-world deployment, and human Arena judgments — along three axes.
+        </p>
+
+        <!-- Key Findings cards -->
+        <div class="key-findings">
+          <div class="key-finding-card">
+            <div class="key-finding-q">Q1</div>
+            <div class="key-finding-content">
+              <h3>Video beats text conditioning</h3>
+              <p>Video-based methods lead on seen tasks. ACT/DINOv2 reaches
+                <strong>SR = 0.81</strong> in simulation; XSkill wins the real-world Arena
+                with <strong>SR = 0.63, WR = 0.89</strong>.</p>
+            </div>
+          </div>
+          <div class="key-finding-card">
+            <div class="key-finding-q">Q2</div>
+            <div class="key-finding-content">
+              <h3>Data scaling is promising</h3>
+              <p>Models falls below <strong>13% zero-shot SR</strong> on unseen tasks in simulation.
+                IG-10K pretraining unlocks few-shot gains — with benefits growing
+                with pretraining scale.</p>
+            </div>
+          </div>
+          <div class="key-finding-card">
+            <div class="key-finding-q">Q3</div>
+            <div class="key-finding-content">
+              <h3>L3 remains a decisive barrier</h3>
+              <p>Performance is stable from L0 to L2 (~0.40 avg SR), then
+                <strong>drops to 0.29 at L3</strong>. Functional substitution —
+                achieving intent via different affordance — is unsolved frontier.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel -->
+        <div class="results-carousel" id="resultsCarousel" style="margin-top:2rem;">
+          <button class="results-carousel-arrow results-carousel-prev" aria-label="Previous result" id="carouselPrev">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M12.5 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="results-carousel-arrow results-carousel-next" aria-label="Next result" id="carouselNext">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M7.5 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="results-carousel-viewport">
+            <div class="results-carousel-track" id="carouselTrack">
+
+              <figure class="results-cell results-carousel-slide">
+                <div class="results-cell-header">
+                  <span class="results-cell-title">Q1: Which imitation interface is strongest in simulation?</span>
+                </div>
+                <img src="assets/paper/fig_sim_main_update.png" alt="Simulation main results" loading="lazy">
+                <figcaption>
+                  <strong>Simulation main results.</strong> (a) Each variant on the (seen-SR, P+FT-SR) plane;
+                  the two video families cluster upper-right while the VLA family stretches along the diagonal.
+                  (b) Distribution of seen-task SR within each paradigm: the VLA family has the widest spread.
+                </figcaption>
+              </figure>
+
+              <figure class="results-cell results-carousel-slide">
+                <div class="results-cell-header">
+                  <span class="results-cell-title">Q1: Which imitation interface is strongest in real-world deployment?</span>
+                </div>
+                <img src="assets/paper/fig_real.png" alt="Real-world results" loading="lazy">
+                <figcaption>
+                  <strong>Real-world results.</strong> (a) Seen-task SR vs. number of pre-training tasks;
+                  all four models scale with data. (b) Unseen-task transfer regimes per model.
+                  (c) Unseen zero-shot vs. scale: π0.5 is pinned to the floor while video models improve monotonically.
+                </figcaption>
+              </figure>
+
+              <figure class="results-cell results-carousel-slide">
+                <div class="results-cell-header">
+                  <span class="results-cell-title">Q2: Does scale improve zero-shot transfer or few-shot adaptation?</span>
+                </div>
+                <img src="assets/paper/fig_pft.png" alt="P+FT scaling SR vs pretraining tasks" loading="lazy">
+                <figcaption>
+                  <strong>P+FT scaling in task success.</strong> Left: simulation (solid) and real-world (dashed)
+                  SR scaling; horizontal lines mark the SCRATCH means. Right: per-model ∆SR from 15 to 45
+                  pre-training tasks.
+                </figcaption>
+              </figure>
+
+              <figure class="results-cell results-carousel-slide">
+                <div class="results-cell-header">
+                  <span class="results-cell-title">Q3: Where does the hierarchy become hard?</span>
+                </div>
+                <img class="results-image-compact" src="assets/paper/level.png"
+                     alt="Per-level success rate L0–L3" loading="lazy">
+                <figcaption>
+                  <strong>Real-world P+FT success by hierarchy level.</strong> Performance is stable from L0 to L2
+                  and drops sharply at L3 — the clean coarse-to-fine decline that confirms functional substitution
+                  as the decisive bottleneck.
+                </figcaption>
+              </figure>
+
+            </div>
+          </div>
+
+          <div class="results-carousel-dots" id="carouselDots" role="tablist" aria-label="Result slides"></div>
+        </div>
+      </div>
+    </div><!-- /results band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 9 · ARENA CTA (accent gradient)
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-accent" id="try">
+      <div class="lp-inner" style="text-align:center;">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-rocket"></i>Try it</div>
+        <h2 class="paper-section-title">Judge the imitators yourself</h2>
+        <p class="paper-section-body" style="max-width:740px; margin-inline:auto;">
+          The Arena shows a human reference video and two anonymous model rollouts on the same scene.
+          Pick which one better imitates the demonstrated intent.
+          Your votes are recorded anonymously to help rank model performance.
+        </p>
+        <div class="hero-cta">
+          <a href="arena.html" class="pst-btn pst-btn-lg">
+            <i class="fas fa-film"></i>&ensp;Browse the Gallery
+          </a>
+          <a href="gallery.html" class="pst-btn pst-btn-primary pst-btn-lg">
+            <i class="fas fa-gamepad"></i>&ensp;Try the Arena →
+          </a>
+        </div>
+      </div>
+    </div><!-- /cta band -->
+
+    <!-- ══════════════════════════════════════════
+         BAND 10 · BIBTEX
+    ══════════════════════════════════════════ -->
+    <div class="lp-band lp-band-gray" id="bibtex">
+      <div class="lp-inner lp-inner-narrow">
+        <div class="paper-section-eyebrow" style="font-size:1.0rem;"><i class="fas fa-quote-right"></i>Citation</div>
+        <h2 class="paper-section-title">BibTeX</h2>
+        <div class="bibtex-block">
+          <button class="bibtex-copy-btn" id="bibtexCopyBtn" title="Copy BibTeX">Copy</button>
+          <pre class="bibtex-pre" id="bibtexContent">@unpublished{imitatorgame2026,
+  title     = {The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction},
+  author    = {Anonymous Author(s)},
+  note      = {Submitted to CoRL 2026, under review},
+  year      = {2026}
+}</pre>
+        </div>
+      </div>
+    </div><!-- /bibtex band -->
+
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER — clean, no icon links
+  ══════════════════════════════════════════ -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="assets/media/logo.png" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>Anonymous submission · CoRL 2026 · Under review</span>
+    </div>
+  </footer>
+
+</div>
+<script src="assets/js/site.js"></script>
+<script>
+/* ── Rollout carousel ─────────────────────────────────────── */
+(function () {
+  var slides = Array.from(document.querySelectorAll('.rollout-slide'));
+  if (!slides.length) return;
+
+  var track = document.getElementById('rolloutTrack');
+  var dotsEl = document.getElementById('rolloutDots');
+  var counter = document.getElementById('rolloutCounter');
+  var btnPrev = document.getElementById('rolloutPrev');
+  var btnNext = document.getElementById('rolloutNext');
+  var groupBtns = document.querySelectorAll('.rollout-group-btn');
+
+  var currentGroup = 'training';
+  var currentIdx = 0; // within filtered group
+
+  function filteredSlides() {
+    return slides.filter(function (s) { return s.dataset.group === currentGroup; });
+  }
+
+  function buildDots() {
+    dotsEl.innerHTML = '';
+    var fs = filteredSlides();
+    fs.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.className = 'rollout-dot' + (i === currentIdx ? ' active' : '');
+      d.addEventListener('click', function () { goTo(i); });
+      dotsEl.appendChild(d);
+    });
+  }
+
+  function goTo(idx) {
+    var fs = filteredSlides();
+    if (idx < 0) idx = fs.length - 1;
+    if (idx >= fs.length) idx = 0;
+    currentIdx = idx;
+
+    // find position of this slide in the full slides array
+    var absoluteIdx = slides.indexOf(fs[idx]);
+    track.style.transform = 'translateX(-' + (absoluteIdx * 100) + '%)';
+    dotsEl.querySelectorAll('.rollout-dot').forEach(function (d, i) {
+      d.classList.toggle('active', i === idx);
+    });
+    counter.textContent = (idx + 1) + ' / ' + fs.length;
+  }
+
+  function activateGroup(group) {
+    currentGroup = group;
+    currentIdx = 0;
+    groupBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.group === group); });
+    buildDots();
+    goTo(0);
+  }
+
+  groupBtns.forEach(function (b) {
+    b.addEventListener('click', function () { activateGroup(b.dataset.group); });
+  });
+
+  btnPrev.addEventListener('click', function () { goTo(currentIdx - 1); });
+  btnNext.addEventListener('click', function () { goTo(currentIdx + 1); });
+
+  buildDots();
+  goTo(0);
+})();
+</script>
+</body>
+</html>
