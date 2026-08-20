@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Collection — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-video"></i>Data</div>
+          <h1 class="doc-title">Data collection</h1>
+          <p class="doc-subtitle">
+            Generate demonstrations with scripted motion-planning solutions, batch-collect the full
+            benchmark across all 50 tasks and four levels, then convert the H5 trajectories into
+            LeRobot-format datasets that the baselines consume.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html" class="active"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="pipeline">Data pipeline</h2>
+          <p>
+            The training data path after simulation is:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>motion-planning H5
+  → h5_to_lerobot.py
+  → one LeRobot dataset per L{0,1,2,3}_{task}-v1
+  → experiment split config + task_mapping.json
+  → HumanSimPairedDataset
+  → baseline-specific adapter</code></pre>
+          </div>
+
+          <p>
+            Top-level dataset directories used by the baselines (relative to the repository root):
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>demos/demo_data       Human demonstration dataset(s), including MANO features
+demos/imitator_data   Robot (simulation) demonstrations in LeRobot format</code></pre>
+          </div>
+
+          <h2 id="motion-planning">Motion-planning trajectories</h2>
+          <p>
+            The runner <code>two_robot_run</code> selects a registered solver from <code>MP_SOLUTIONS</code>,
+            resets the requested level, executes both robot planners, evaluates the final state, and
+            writes successful episodes through <code>RecordEpisode</code>.
+          </p>
+
+          <p><strong>L0:</strong></p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
+  -e TwoRobotStirSpoon-v1 --l0 \
+  -n 1 --only-count-success \
+  --traj-name L0_TwoRobotStirSpoon-v1 \
+  --record-dir demos</code></pre>
+          </div>
+
+          <p><strong>L1 and L2</strong> use the same environment ID with their corresponding switch:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
+  -e TwoRobotStirSpoon-v1 --l1 \
+  -n 1 --only-count-success \
+  --traj-name L1_TwoRobotStirSpoon-v1 \
+  --record-dir demos
+
+python -m mani_skill.examples.motionplanning.dual.two_robot_run \
+  -e TwoRobotStirSpoon-v1 --l2 \
+  -n 1 --only-count-success \
+  --traj-name L2_TwoRobotStirSpoon-v1 \
+  --record-dir demos</code></pre>
+          </div>
+
+          <p>
+            <strong>L3</strong> uses its standalone environment and an explicit trajectory name. Do not
+            pass the legacy <code>--l3</code> switch to a standalone L3 environment; the L3 scene is
+            defined by the <code>...L3-v1</code> class itself:
+          </p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
+  -e TwoRobotStirSpoonL3-v1 \
+  -n 1 --only-count-success \
+  --traj-name L3_TwoRobotStirSpoon-v1 \
+  --record-dir demos</code></pre>
+          </div>
+
+          <p>
+            Add <code>--save-video</code> to store the runner's render video. Add <code>--vis</code>
+            only when an interactive viewer is required. The output pair is:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>demos/{env_id}/motionplanning/{trajectory_name}.h5
+demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
+          </div>
+
+          <p>
+            The HDF5 file contains actions, environment states, and the observations selected by
+            <code>obs_mode</code>. The JSON file records environment arguments, reset seeds, control
+            mode, episode results, and mirror metadata. <strong>Keep both files together</strong> —
+            replay requires the JSON file with the same basename.
+          </p>
+
+          <h2 id="batch">Batch collection</h2>
+          <p>
+            Use the scheduler <code>scripts/collect_data.py</code> for resumable collection. This
+            example collects ten successful trajectories for one task at all four levels on GPU 0:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python scripts/collect_data.py \
+  --demos-dir demos \
+  --target-episodes 10 \
+  --tasks TwoRobotStirSpoon \
+  --levels L0 L1 L2 L3 \
+  --gpu-ids 0 \
+  --max-procs-per-gpu 1</code></pre>
+          </div>
+
+          <p>
+            Omit <code>--tasks</code> and <code>--levels</code> to use all 50 tasks and all four levels.
+            The scheduler:
+          </p>
+
+          <ol>
+            <li>maps L0–L2 to <code>{task}-v1</code> and L3 to <code>{task}L3-v1</code>;</li>
+            <li>counts successful episodes already present in the companion JSON;</li>
+            <li>launches only the missing trajectories;</li>
+            <li>retries failed or stalled jobs; and</li>
+            <li>writes progress to <code>demos/generation_stats.json</code> and logs to the collection log directory.</li>
+          </ol>
+
+          <p>
+            Inspect the planned task-level jobs without launching simulation:
+          </p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python scripts/collect_data.py --demos-dir demos --dry-run</code></pre>
+          </div>
+
+          <h2 id="convert">H5 → LeRobot</h2>
+          <p>
+            First inspect all H5 files that the recursive conversion would process:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m examples.baselines.lerobot_dataset.h5_to_lerobot \
+  --input demos \
+  --output-dir demos/imitator_data \
+  --recursive \
+  --no-gpu \
+  --dry-run</code></pre>
+          </div>
+
+          <p>Then convert them:</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m examples.baselines.lerobot_dataset.h5_to_lerobot \
+  --input demos \
+  --output-dir demos/imitator_data \
+  --recursive \
+  --no-gpu \
+  --n-jobs 4 \
+  --mem-per-proc 4 \
+  --fps 30</code></pre>
+          </div>
+
+          <p>
+            <code>--n-jobs</code> controls parallel H5 conversions and <code>--mem-per-proc</code> is
+            the estimated memory budget in GiB for each worker. Completed datasets are skipped on
+            subsequent runs. Use <code>--force</code> only when an existing converted dataset must be
+            rebuilt.
+          </p>
+
+          <p>The trajectory name becomes the LeRobot repository ID and output directory:</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>demos/TwoRobotStirSpoon-v1/motionplanning/L2_TwoRobotStirSpoon-v1.h5
+  → demos/imitator_data/L2_TwoRobotStirSpoon-v1/</code></pre>
+          </div>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Keep the uppercase L-prefixed names</div>
+              <p>
+                Keep the uppercase <code>L0_</code> through <code>L3_</code> names generated by
+                <code>scripts/collect_data.py</code>. They are the IDs referenced by the released task
+                mapping and experiment configs.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="contract">Converter input contract</h2>
+          <p>
+            Trajectories intended for training must be collected with <code>obs_mode="rgbd"</code>. This
+            is the default of <code>two_robot_run</code> and <code>scripts/collect_data.py</code>; do
+            not add <code>-o none</code> to those collection commands. The converter reads the following
+            fields from each trajectory group:
+          </p>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-cloud-arrow-down"></i></div>
+            <div class="callout-body"><div class="callout-title">Download the released data</div><p>The complete IG-10K dataset and shared asset package are indexed on the <a href="../data.html">Data &amp; downloads</a> page. The current human data includes RGB/depth streams, MANO features, and optional offline segmentation-mask annotations; masks are not used by the released policy baselines.</p></div>
+          </div>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>H5 field</th><th>Required shape</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>actions</code></td><td><code>(N, 16)</code></td><td>Seven arm joints and one gripper command for each robot</td></tr>
+              <tr><td><code>obs/agent/panda_wristcam-0/qpos</code></td><td><code>(N+1, 9)</code></td><td>Left arm and two-finger gripper state</td></tr>
+              <tr><td><code>obs/agent/panda_wristcam-1/qpos</code></td><td><code>(N+1, 9)</code></td><td>Right arm and two-finger gripper state</td></tr>
+              <tr><td><code>obs/sensor_data/&lt;camera&gt;/rgb</code></td><td><code>(N+1, H, W, 3)</code></td><td>RGB observations for each recorded camera</td></tr>
+              <tr><td><code>obs/sensor_data/&lt;camera&gt;/depth</code></td><td><code>(N+1, H, W, 1)</code></td><td>Depth observations for each recorded camera</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            Each H5 trajectory becomes one LeRobot episode in the LeRobot v0.5 layout, including Parquet
+            data, encoded camera videos, per-dataset statistics, episode metadata, and split metadata.
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>LeRobot feature</th><th>Shape</th><th>Construction</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>observation.images.&lt;camera&gt;</code></td><td><code>(H, W, 3)</code></td><td>RGB frame from each camera present in the H5 file</td></tr>
+              <tr><td><code>observation.images.&lt;camera&gt;_depth</code></td><td><code>(H, W, 3)</code></td><td>Depth converted to the video-compatible RGB representation</td></tr>
+              <tr><td><code>observation.qpos_gripper_states</code></td><td><code>(18,)</code></td><td>Left 9-dimensional qpos followed by right 9-dimensional qpos</td></tr>
+              <tr><td><code>action.qpos_gripper_actions</code></td><td><code>(16,)</code></td><td>Left 8-dimensional action followed by right 8-dimensional action</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            There are <code>N+1</code> observations but only <code>N</code> simulator actions; the
+            converter repeats the final action once so every LeRobot frame has an aligned action. The
+            mounted H5 sensors <code>panda_wristcam_0_hand_camera</code> and
+            <code>panda_wristcam_1_hand_camera</code> are normalized to the LeRobot camera names
+            <code>wristcam0</code> and <code>wristcam1</code>.
+          </p>
+
+          <h2 id="paired">Paired datasets &amp; task mapping</h2>
+          <p>
+            Conversion creates the physical datasets; the JSON configuration files decide which of them
+            enter a particular experiment:
+          </p>
+
+          <ul>
+            <li>
+              <code>task_mapping.json</code> maps each human demonstration ID to the corresponding L0–L3
+              simulation repository IDs. For example, <code>human_H1</code> is paired with all four
+              <code>TwoRobotStirSpoon</code> levels.
+            </li>
+            <li>
+              <code>config/exp_configs</code> contains the released 15-, 30-, and 45-task training
+              splits and the seen/unseen evaluation splits.
+            </li>
+            <li>
+              <code>task_desc</code> contains the human, simulation, and robot language descriptions
+              used by language-conditioned modes.
+            </li>
+          </ul>
+
+          <p>A simulation config entry has the following form:</p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">json</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>{
+  <span class="hl-str">"repo_id"</span>: <span class="hl-str">"L2_TwoRobotStirSpoon-v1"</span>,
+  <span class="hl-str">"root"</span>: <span class="hl-str">"L2_TwoRobotStirSpoon-v1"</span>,
+  <span class="hl-str">"train"</span>: <span class="hl-str">"0:50"</span>,
+  <span class="hl-str">"test"</span>: <span class="hl-str">""</span>
+}</code></pre>
+          </div>
+
+          <p>
+            <code>root</code> is relative to the simulation data root passed to training. The episode
+            range must exist in the converted dataset: if fewer than 50 episodes were collected, update
+            the range instead of copying <code>0:50</code> unchanged.
+          </p>
+
+          <h2 id="teleop">Teleoperation</h2>
+          <p>
+            Interactive collection with a panda arm (click + drag a ghost arm, or use keyboard
+            shortcuts):
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.examples.teleoperation.interactive_panda \
+  -e TwoRobotPickCubeYCB-v1 -r panda --save-video</code></pre>
+          </div>
+
+          <p>
+            Controls: <code>g</code> toggle gripper, <code>n</code> execute the ghost pose,
+            <code>c</code> next episode, <code>q</code> quit, arrow keys move the ghost arm. VR
+            teleoperation entry points live under <code>mani_skill/examples/teleoperation/</code>
+            (for example <code>vr_realman.py</code>).
+          </p>
+
+          <h2 id="replay">Multi-view replay</h2>
+          <p>
+            To render an existing trajectory into one MP4 per camera:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python scripts/replay_dual_task_multiview.py \
+  --traj-path demos/TwoRobotStirSpoon-v1/motionplanning/L2_TwoRobotStirSpoon-v1.h5 \
+  --level L2 \
+  --output-dir demos/multiview \
+  --cameras cam1 cam2 cam3 zed2i</code></pre>
+          </div>
+
+          <p>
+            Replay restores each saved <code>env_states</code> frame instead of re-running motion
+            planning. Videos are written as
+            <code>{output_dir}/{camera}/{task}/{level}_{env_id}_{camera}_ep{episode_id}.mp4</code>.
+          </p>
+
+          <p>
+            To generate trajectories and all selected camera videos in one sequential job:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python scripts/run_dual_task_multiview_batch.py \
+  --tasks TwoRobotStirSpoon-v1 TwoRobotPlaceBookBookcase-v1 \
+  --levels L0 L1 L2 L3 \
+  --cameras cam1 cam2 cam3 zed2i \
+  --count 1 \
+  --out-root demos/dual_task_multiview</code></pre>
+          </div>
+
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Next steps</div>
+              <p>
+                With converted datasets ready, train one of the nine
+                <a href="baselines.html">baselines</a> — or build your own randomized task first with
+                the <a href="domain-randomization.html">domain randomization</a> tutorial.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="domain-randomization.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Domain randomization</span>
+            </a>
+            <a class="doc-pager-link next" href="baselines.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">Baselines</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>

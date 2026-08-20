@@ -7,9 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="icon" type="image/png" href="assets/media/logo.png">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="assets/css/landing.css?v=20260815-dark-palette-3">
   <style>
     .nav-arena-icon {
       width: .85em; height: .85em;
@@ -169,7 +169,7 @@
   </style>
   <script>
     (function () {
-      const t = localStorage.getItem("pst-theme") || "light";
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", t);
     })();
   </script>
@@ -183,18 +183,20 @@
   <header class="pst-header">
     <div class="pst-content-wrapper pst-header-inner">
       <a href="index.html" class="pst-header-brand">
-        <span class="brand-logo"><img src="assets/media/logo.png" alt="The Imitator Game logo" style="width:26px;height:26px;object-fit:contain;border-radius:6px;display:block;"></span>
+        <span class="brand-logo"><img src="assets/media/logo.svg" alt="The Imitator Game logo" style="width:26px;height:26px;object-fit:contain;border-radius:6px;display:block;"></span>
         The&thinsp;Imitator&thinsp;Game
       </a>
       <nav class="pst-header-nav">
         <a href="#home"><i class="fas fa-home"></i>Home</a>
-        <a href="#abstract"><i class="fas fa-align-left"></i>Abstract</a>
+        <!-- <a href="#abstract"><i class="fas fa-align-left"></i>Abstract</a>
         <a href="#levels"><i class="fas fa-layer-group"></i>Levels</a>
         <a href="#ig10k"><i class="fas fa-database"></i>IG-10K</a>
         <a href="#experiment"><i class="fas fa-flask"></i>Experiment</a>
-        <a href="#results"><i class="fas fa-chart-bar"></i>Results</a>
+        <a href="#results"><i class="fas fa-chart-bar"></i>Results</a> -->
         <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
       </nav>
       <div class="pst-header-end">
         <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
@@ -210,20 +212,18 @@
     <div class="lp-band lp-band-hero" id="hero">
       <div class="lp-inner" style="text-align:center;">
         <h1 class="hero-title">
-          <img src="assets/media/logo.png" alt="The Imitator Game logo" style="width:56px;height:56px;object-fit:contain;vertical-align:middle;margin-right:.4em;border-radius:10px;">The Imitator Game
+          <img src="assets/media/logo.svg" alt="The Imitator Game logo" style="width:56px;height:56px;object-fit:contain;vertical-align:middle;margin-right:.4em;border-radius:10px;">The Imitator Game
         </h1>
         <p class="hero-tagline">Benchmarking Robot Imitative Ability Beyond Action Prediction</p>
 
-        <!-- Uncomment after de-anonymisation:
-        <div class="hero-authors">
-          <p class="hero-author-names">Anonymous Author(s)</p>
-          <p class="hero-affil">Anonymous Institution(s)</p>
-          <div class="hero-venue-row">
-            <span class="venue-badge"><i class="fas fa-graduation-cap"></i>CoRL 2026</span>
-            <span class="anon-note">Anonymous submission · Under review</span>
-          </div>
-        </div>
-        -->
+         <div class="hero-authors">
+           <p class="hero-author-names"><a href="https://zhouxunzhe.github.io/" target="_blank">Xunzhe Zhou</a><sup>1,2,*,†</sup> · Yiyang Cai<sup>2,3,*</sup> · Fengyi Wang<sup>2,3,*</sup> · Ran Ju<sup>1,2,*</sup> · Hanxiang Ren<sup>2,4</sup> · Ruizhe Liu<sup>1</sup> </br>
+            Yu Zhang<sup>1</sup> · Qian Luo<sup>1,2</sup> · Feng Chen<sup>1</sup> · Pei Zhou<sup>1,2</sup> · <a href="https://people.eecs.berkeley.edu/~yima/" target="_blank">Yi Ma</a><sup>1,2</sup> · <a href="https://yanchaoyang.github.io/" target="_blank">Yanchao Yang</a><sup>1,2,‡</sup></p>
+           <p class="hero-affil"><sup>1</sup>The University of Hong Kong · <sup>2</sup>TranscEngram · <sup>3</sup>Fudan University · <sup>4</sup>Zhejiang University</p>
+           <div class="hero-venue-row">
+             <span class="anon-note">* Equal contribution · † Project lead · ‡ Corresponding author</span>
+           </div>
+         </div>
 
         <p class="hero-abstract">
           Can robots imitate what a human <em>intends</em> — not just what they do?
@@ -235,18 +235,21 @@
           <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
             <i class="ai ai-arxiv"></i>&ensp;Paper
           </a>
-          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
-            <i class="fab fa-github"></i>&ensp;Code
-          </a>
-          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
+           <a href="https://github.com/imitator-game/The-Imitator-Game" class="pst-btn pst-btn-lg" target="_blank" rel="noopener">
+             <i class="fab fa-github"></i>&ensp;Code
+           </a>
+          <a href="data.html" class="pst-btn pst-btn-lg">
             <i class="fas fa-database"></i>&ensp;IG-10K Dataset
           </a>
           <a href="gallery.html" class="pst-btn pst-btn-lg">
             <i class="fas fa-film"></i>&ensp;Gallery
           </a>
-          <a href="arena.html" class="pst-btn pst-btn-primary pst-btn-lg">
-            <i class="fas fa-gamepad"></i>&ensp;Open the Arena →
-          </a>
+           <a href="arena.html" class="pst-btn pst-btn-primary pst-btn-lg">
+             <i class="fas fa-gamepad"></i>&ensp;Open the Arena →
+           </a>
+           <!-- <a href="docs/contribute.html#community" class="pst-btn pst-btn-lg">
+             <i class="fas fa-people-group"></i>&ensp;Join the Community
+           </a> -->
         </div>
       </div>
     </div><!-- /hero band -->
@@ -845,8 +848,8 @@
           <button class="bibtex-copy-btn" id="bibtexCopyBtn" title="Copy BibTeX">Copy</button>
           <pre class="bibtex-pre" id="bibtexContent">@unpublished{imitatorgame2026,
   title     = {The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction},
-  author    = {Anonymous Author(s)},
-  note      = {Submitted to CoRL 2026, under review},
+  author    = {Zhou, Xunzhe and Cai, Yiyang and Wang, Fengyi and Ju, Ran and Ren, Hanxiang and Liu, Ruizhe and Zhang, Yu and Luo, Qian and Chen, Feng and Zhou, Pei and Ma, Yi and Yang, Yanchao},
+  url       = {https://github.com/imitator-game/The-Imitator-Game},
   year      = {2026}
 }</pre>
         </div>
@@ -860,8 +863,8 @@
   ══════════════════════════════════════════ -->
   <footer class="lp-footer">
     <div class="lp-footer-inner">
-      <span><img src="assets/media/logo.png" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
-      <span>Anonymous submission · CoRL 2026 · Under review</span>
+      <span><img src="assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span><a href="docs/contribute.html">Community</a> · <a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
     </div>
   </footer>
 

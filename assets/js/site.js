@@ -205,6 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
   var btn = document.getElementById('theme-toggle-btn');
   if (!btn) return;
+  var systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
   function syncLabel() {
     var dark = document.documentElement.getAttribute('data-theme') === 'dark';
     btn.textContent = dark ? '☀ Light' : '☾ Dark';
@@ -213,7 +214,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var current = document.documentElement.getAttribute('data-theme') || 'light';
     var next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('pst-theme', next);
+    syncLabel();
+  });
+  systemTheme.addEventListener('change', function (event) {
+    document.documentElement.setAttribute('data-theme', event.matches ? 'dark' : 'light');
     syncLabel();
   });
   syncLabel();

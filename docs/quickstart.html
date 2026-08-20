@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quickstart — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-bolt"></i>Get started</div>
+          <h1 class="doc-title">Quickstart</h1>
+          <p class="doc-subtitle">
+            Create a benchmark environment, select an imitation level, step through an episode, and run
+            an end-to-end baseline loop with the paired human–robot dataset contract.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html" class="active"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="env-overview">Environment overview</h2>
+          <p>
+            Every benchmark task is registered as a Gymnasium environment. The base environment
+            <code>TwoRobot{Task}-v1</code> hosts levels <strong>L0</strong>, <strong>L1</strong> and
+            <strong>L2</strong>; each L3 variant is a standalone environment registered as
+            <code>TwoRobot{Task}L3-v1</code>. Each environment contains two
+            <code>panda_wristcam</code> agents — the action space is a dictionary keyed by
+            <code>panda_wristcam-0</code> (left) and <code>panda_wristcam-1</code> (right).
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>L0 | TwoRobotStirSpoon-v1      L1 | TwoRobotStirSpoon-v1
+L2 | TwoRobotStirSpoon-v1      L3 | TwoRobotStirSpoonL3-v1</code></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Levels are a property of the pair, not the policy</div>
+              <p>
+                Names such as <code>L2_TwoRobotStirSpoon-v1</code> are dataset and trajectory aliases,
+                not Gymnasium environment IDs. The complete alias mapping is stored in
+                <code>examples/baselines/lerobot_dataset/task_mapping.json</code>. Read about the level
+                semantics on the <a href="levels.html">L0–L3 levels</a> page.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="create-step">Create &amp; step an environment</h2>
+          <p>
+            Call <code>configure_dual_task_level</code> <strong>before</strong> <code>gym.make</code>.
+            This resets all process-global level and mirror switches, then enables the requested level.
+            Call it again whenever a process changes levels.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">import</span> gymnasium <span class="hl-kw">as</span> gym
+<span class="hl-kw">import</span> mani_skill.envs  <span class="hl-com"># Registers all benchmark environments.</span>
+
+<span class="hl-kw">from</span> mani_skill.envs.tasks.tabletop.utils.dual_task_camera_utils <span class="hl-kw">import</span> (
+    configure_dual_task_level,
+)
+
+level = <span class="hl-str">"L2"</span>
+base_env_id = <span class="hl-str">"TwoRobotStirSpoon-v1"</span>
+env_id = base_env_id.replace(<span class="hl-str">"-v1"</span>, <span class="hl-str">"L3-v1"</span>) <span class="hl-kw">if</span> level == <span class="hl-str">"L3"</span> <span class="hl-kw">else</span> base_env_id
+
+configure_dual_task_level(level)
+env = gym.make(
+    env_id,
+    obs_mode=<span class="hl-str">"state"</span>,
+    control_mode=<span class="hl-str">"pd_joint_pos"</span>,
+    reward_mode=<span class="hl-str">"dense"</span>,
+    sim_backend=<span class="hl-str">"physx_cpu"</span>,
+)
+
+obs, info = env.reset(seed=<span class="hl-num">0</span>)
+action = env.action_space.sample()
+obs, reward, terminated, truncated, info = env.step(action)
+
+evaluation = env.unwrapped.evaluate()
+print(evaluation[<span class="hl-str">"success"</span>])
+env.close()</code></pre>
+          </div>
+
+          <p>
+            Sampling the environment action space returns the required two-arm structure; you can also
+            write actions directly into the per-agent sub-spaces if you need asymmetric control.
+          </p>
+
+          <h2 id="cameras">Camera configuration</h2>
+          <p>
+            All 50 base environments and all 50 L3 environments expose two independent constructor
+            arguments: <code>hi_res</code> (external scene cameras, default <code>True</code>) and
+            <code>wrist_sensor</code> (two robot-mounted wrist cameras, default <code>True</code>).
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th><code>hi_res</code></th><th>External scene cameras</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>True</code> (default)</td><td><code>cam1</code>, <code>cam2</code>, <code>cam3</code> at 640×480, plus <code>zed2i</code> at 1280×720</td></tr>
+              <tr><td><code>False</code></td><td>Only <code>zed2i</code> at 224×224</td></tr>
+            </tbody>
+          </table>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th><code>hi_res</code></th><th><code>wrist_sensor</code></th><th>Recorded RGB-D views</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>True</code></td><td><code>True</code></td><td>Four external scene cameras + two wrist cameras (six views; default)</td></tr>
+              <tr><td><code>True</code></td><td><code>False</code></td><td>Four external scene cameras</td></tr>
+              <tr><td><code>False</code></td><td><code>True</code></td><td>One 224×224 <code>zed2i</code> + two wrist cameras</td></tr>
+              <tr><td><code>False</code></td><td><code>False</code></td><td>One 224×224 <code>zed2i</code></td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            Pass the options directly to <code>gym.make</code>. For example, a lightweight
+            single-view configuration:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>env = gym.make(
+    <span class="hl-str">"TwoRobotStirSpoon-v1"</span>,
+    obs_mode=<span class="hl-str">"rgbd"</span>,
+    render_mode=<span class="hl-str">"sensors"</span>,
+    control_mode=<span class="hl-str">"pd_joint_pos"</span>,
+    hi_res=<span class="hl-kw">False</span>,
+    wrist_sensor=<span class="hl-kw">False</span>,
+)</code></pre>
+          </div>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Data collection uses the defaults</div>
+              <p>
+                <code>scripts/collect_data.py</code> and <code>two_robot_run</code> do not override the
+                constructor values, so their default RGB-D collection uses <code>hi_res=True</code> and
+                <code>wrist_sensor=True</code>. The four-view replay tools export only the external
+                <code>cam1</code>, <code>cam2</code>, <code>cam3</code> and <code>zed2i</code> views,
+                not the wrist cameras.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="evaluate">Evaluation &amp; reward</h2>
+          <p>
+            Every task implements <code>evaluate()</code>. Its <code>success</code> field is the final
+            rule-based simulator metric used for demonstration filtering and automated evaluation.
+            Task-specific fields expose intermediate predicates such as <code>reached</code>,
+            <code>grasped</code>, <code>transported</code>, <code>placed</code> or <code>returned</code>.
+          </p>
+
+          <p>
+            Dense rewards are built from ordered phases. <code>RewardTracker</code> keeps the peak
+            completion of each phase and produces bounded progress signals. Use
+            <code>reward_mode="dense"</code> for the phase reward, <code>"sparse"</code> for
+            success-based reward, or <code>"none"</code> when only states/actions are being recorded.
+          </p>
+
+          <h2 id="run-baseline">Run a baseline</h2>
+          <p>
+            Every baseline has its own README with training and evaluation commands. A representative
+            end-to-end run with <strong>ACT</strong> (frozen task-video configuration) looks like this:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">export</span> PYTHONPATH=$PWD:$PYTHONPATH
+python -m examples.baselines.act.train_act_imitator \
+  --human-root ./demos/demo_data \
+  --sim-root ./demos/imitator_data \
+  --human-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/human_train_config_45.json \
+  --sim-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/sim_train_config_45.json \
+  --task-mapping-file examples/baselines/lerobot_dataset/task_mapping.json \
+  --input-mode video_only \
+  --task-encoder-type frozen_backbone \
+  --control-mode pd_joint_pos \
+  --env-id TwoRobotPourCup-v1</code></pre>
+          </div>
+
+          <p>
+            Checkpoints go to <code>runs/&lt;run_name&gt;/checkpoints/</code>. Training requires
+            LeRobot-format data — follow the <a href="data-collection.html">data collection</a> guide
+            first if you don't have converted datasets yet. See the
+            <a href="baselines.html">baselines</a> page for all nine methods and their entry points.
+          </p>
+
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Next steps</div>
+              <p>
+                Learn how the four levels encode scene mismatch on the
+                <a href="levels.html">levels page</a>, then enable
+                <a href="domain-randomization.html">domain randomization</a> in your own tasks.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="getting-started.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Installation</span>
+            </a>
+            <a class="doc-pager-link next" href="levels.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">The four levels L0–L3</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>

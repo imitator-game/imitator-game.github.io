@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creating a New Task — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-cubes"></i>Tutorial</div>
+          <h1 class="doc-title">Creating a new task</h1>
+          <p class="doc-subtitle">
+            Build L0–L3 tabletop tasks from the environment template, load YCB / RoboTwin / PartNet /
+            sketchfab assets, and add a scripted motion-planning solution. Everything below follows the
+            design templates so contributed tasks work with the data pipeline unchanged.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html" class="active"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="templates">Design templates</h2>
+          <p>
+            The repository ships four design templates that gate every contribution:
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Template</th><th>Path</th><th>What it documents</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Model template</td><td><code>examples/baselines/_template/</code></td><td>Dataset contract, agent interface, how to add a new baseline</td></tr>
+              <tr><td>Task template (L0–L3)</td><td><code>mani_skill/envs/tasks/_template/</code></td><td>L0/L1/L2 vs L3 environments, object loading, level semantics</td></tr>
+              <tr><td>Robot template</td><td><code>mani_skill/agents/robots/_template/</code></td><td>Import a new robot from a URDF</td></tr>
+              <tr><td>Motion-planning solution</td><td><code>mani_skill/examples/motionplanning/dual/</code></td><td>Add a scripted solution for a task</td></tr>
+            </tbody>
+          </table>
+
+          <h2 id="task-contract">Task implementation contract</h2>
+          <p>
+            Each released task is a matched set of four components:
+          </p>
+
+          <ol>
+            <li>one base environment registered as <code>TwoRobot{Task}-v1</code>;</li>
+            <li>one standalone L3 environment registered as <code>TwoRobot{Task}L3-v1</code>;</li>
+            <li>one base and one L3 motion-planning solution registered in <code>MP_SOLUTIONS</code>; and</li>
+            <li>four aliases in the dataset task mapping.</li>
+          </ol>
+
+          <p>
+            The environment owns scene construction, episode initialization, success predicates, and
+            reward phases. Level utilities own only the controlled L1/L2 changes shared across tasks.
+            Motion-planning solutions access task geometry through the environment and produce the same
+            two-agent <code>pd_joint_pos</code> action interface used by recorded demonstrations.
+          </p>
+
+          <h2 id="create-env">Create the environment</h2>
+          <p>
+            Start from the template at
+            <code>mani_skill/envs/tasks/_template/template_task.py</code>:
+          </p>
+
+          <ol>
+            <li>
+              Copy it to
+              <code>mani_skill/envs/tasks/tabletop/dual_tasks/_NNN_your_task.py</code>.
+            </li>
+            <li>Change the <code>@register_env</code> id, class name, and docstring.</li>
+            <li>Import them in <code>mani_skill/envs/tasks/tabletop/__init__.py</code>.</li>
+            <li>Replace the assets in <code>_load_scene()</code> — use <code>object_loader.py</code>.</li>
+            <li>Update <code>_initialize_episode()</code>, <code>evaluate()</code>, and
+              <code>compute_dense_reward()</code>.</li>
+          </ol>
+
+          <p>
+            The L0/L1/L2 class is registered as <code>TwoRobotTemplateTask-v1</code>; the L3 class as
+            <code>TwoRobotTemplateTaskL3-v1</code>. Rename both before use.
+          </p>
+
+          <h2 id="object-loaders">Loading objects</h2>
+          <p>
+            Assets live under <code>~/.maniskill/data</code> (see the
+            <a href="getting-started.html">installation</a> page). The template provides loaders for all
+            four namespaces:
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Asset set</th><th>Loader</th><th>Download</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>YCB</td><td><code>load_ycb_object</code></td><td><code>python -m mani_skill.utils.download_asset ycb</code></td></tr>
+              <tr><td>RoboTwin</td><td><code>load_robotwin_object</code></td><td><code>python -m mani_skill.utils.download_robotwin</code></td></tr>
+              <tr><td>PartNet-Mobility</td><td><code>load_partnet_object</code></td><td><code>python -m mani_skill.utils.download_partnet</code></td></tr>
+              <tr><td>sketchfab GLB</td><td><code>load_sketchfab_object</code></td><td>manual (see <code>assets/sketchfab_README.md</code>)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">from</span> mani_skill.envs.tasks._template.object_loader <span class="hl-kw">import</span> (
+    load_ycb_object, load_robotwin_object, load_partnet_object,
+    load_sketchfab_object, z_offset_to_table,
+)
+
+<span class="hl-com"># YCB object (dynamic)</span>
+self.apple, _ = load_ycb_object(self.scene, <span class="hl-str">"013_apple"</span>, position=[<span class="hl-num">0</span>, <span class="hl-num">0.5</span>, <span class="hl-num">0</span>],
+                                scale=<span class="hl-num">0.7</span>, mass=<span class="hl-num">0.5</span>)
+
+<span class="hl-com"># RoboTwin container (static goal)</span>
+self.basket, _ = load_robotwin_object(self.scene, <span class="hl-str">"076_breadbasket"</span>,
+                                      position=[<span class="hl-num">0</span>, -<span class="hl-num">0.5</span>, <span class="hl-num">0</span>],
+                                      rotation=(np.pi / <span class="hl-num">2</span>, <span class="hl-num">0</span>, <span class="hl-num">0</span>),
+                                      is_static=<span class="hl-kw">True</span>)
+
+<span class="hl-com"># PartNet articulated object (microwave, cabinet, ...)</span>
+self.microwave, _ = load_partnet_object(self.scene, <span class="hl-str">"microwave"</span>, <span class="hl-str">"7119"</span>,
+                                        position=[<span class="hl-num">0.3</span>, <span class="hl-num">0.1</span>, <span class="hl-num">0</span>],
+                                        robot_base_position=[<span class="hl-num">0</span>, -<span class="hl-num">1</span>, <span class="hl-num">0</span>])
+
+<span class="hl-com"># External GLB asset</span>
+self.scale, _ = load_sketchfab_object(self.scene, <span class="hl-str">"balance_scale"</span>,
+                                      position=[<span class="hl-num">0.2</span>, <span class="hl-num">0.0</span>, <span class="hl-num">0.0</span>])</code></pre>
+          </div>
+
+          <h2 id="levels">How levels work</h2>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Level</th><th>What changes</th><th>Where it is implemented</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="level-badge l0">L0</span></td><td>base scene (nothing)</td><td>the environment class itself</td></tr>
+              <tr><td><span class="level-badge l1">L1</span></td><td>same objects, rearranged layout</td><td><code>apply_l1_offset_xy(...)</code> in <code>_initialize_episode</code></td></tr>
+              <tr><td><span class="level-badge l2">L2</span></td><td>same semantics, different instances</td><td><code>apply_l2_ycb_model_id(...)</code> in <code>__init__</code></td></tr>
+              <tr><td><span class="level-badge l3">L3</span></td><td>different semantics, reusable affordances</td><td>a separate <code>...L3-v1</code> class</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            The level is chosen <strong>before</strong> <code>gym.make</code> via
+            <code>configure_dual_task_level(level)</code>, or via the <code>--l0/--l1/--l2</code> flags
+            of <code>two_robot_run</code>. Do not add level logic to the policy. Full semantics are on
+            the <a href="levels.html">levels page</a>.
+          </p>
+
+          <h2 id="method-contract">Required method contract</h2>
+          <p>Every task environment must implement:</p>
+
+          <ul>
+            <li><code>_load_scene(options)</code> — build table + load all actors/articulations</li>
+            <li><code>_initialize_episode(env_idx, options)</code> — randomize per-episode state</li>
+            <li><code>_after_reconfigure(options)</code> — compute z-offsets for table contact</li>
+            <li><code>evaluate()</code> — return dict with a <code>success</code> tensor (rule-based)</li>
+            <li><code>_get_obs_extra(info)</code> — extra observation fields</li>
+            <li><code>compute_dense_reward(obs, action, info)</code> — reward</li>
+            <li><code>compute_normalized_dense_reward(obs, action, info)</code></li>
+          </ul>
+
+          <p>
+            Camera configuration (<code>_default_sensor_configs</code>, <code>hi_res</code>,
+            <code>wrist_sensor</code>) and the dual-agent setup are identical to the released tasks;
+            keep them as-is so the data pipeline (<code>two_robot_run</code>, <code>collect_data</code>,
+            <code>h5_to_lerobot</code>) works unchanged. Keep the same <code>__init__</code> signature
+            (<code>hi_res</code>, <code>wrist_sensor</code>, <code>robot_init_qpos_noise</code>), the
+            same camera sets, <code>RewardTracker</code> phases, and rule-based <code>evaluate()</code>
+            with a <code>success</code> field.
+          </p>
+
+          <h2 id="mp-solution">Add a motion-planning solution</h2>
+          <p>
+            Every released task is four components — base env, L3 env, base solution, and L3 solution.
+            Copy the reference solution and implement <code>solve()</code>:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>cp mani_skill/examples/motionplanning/dual/solutions/two_robot_pick_cube_ycb.py \
+   mani_skill/examples/motionplanning/dual/solutions/_NNN_your_task.py</code></pre>
+          </div>
+
+          <p>
+            The runner calls <code>solve(env, seed=None, debug=False, vis=False)</code> and expects the
+            tuple <code>(left_res, right_res)</code>:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">from</span> mani_skill.envs.tasks <span class="hl-kw">import</span> YourTaskEnv
+<span class="hl-kw">from</span> mani_skill.examples.motionplanning.panda.motionplanner <span class="hl-kw">import</span> (
+    PandaArmMotionPlanningSolver,
+)
+
+
+<span class="hl-kw">def</span> <span class="hl-fn">solve</span>(env: YourTaskEnv, seed=<span class="hl-kw">None</span>, debug=<span class="hl-kw">False</span>, vis=<span class="hl-kw">False</span>):
+    env.reset(seed=seed)
+
+    left_planner = PandaArmMotionPlanningSolver(
+        env, debug=debug, vis=vis,
+        base_pose=env.unwrapped.agent.agents[<span class="hl-num">0</span>].robot.pose,
+        visualize_target_grasp_pose=vis, print_env_info=<span class="hl-kw">False</span>,
+        multi_robot_id=<span class="hl-num">0</span>,                      <span class="hl-com"># left robot</span>
+    )
+    right_planner = PandaArmMotionPlanningSolver(
+        env, debug=debug, vis=vis,
+        base_pose=env.unwrapped.agent.agents[<span class="hl-num">1</span>].robot.pose,
+        visualize_target_grasp_pose=vis, print_env_info=<span class="hl-kw">False</span>,
+        multi_robot_id=<span class="hl-num">1</span>,                      <span class="hl-com"># right robot</span>
+    )
+    env = env.unwrapped
+
+    <span class="hl-com"># Always pass the other robot's gripper state to avoid collisions.</span>
+    left_planner.move_to_pose_with_screw(
+        my_pose, other_gripper_state=right_planner.gripper_state)
+    left_planner.close_gripper(other_gripper_state=right_planner.gripper_state)
+    ...
+    left_res = left_planner.open_gripper(other_gripper_state=right_planner.gripper_state)
+    <span class="hl-kw">return</span> left_res, left_res</code></pre>
+          </div>
+
+          <p>Key planner API (<code>PandaArmMotionPlanningSolver</code>):</p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Method</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>move_to_pose_with_screw(pose, other_gripper_state=...)</code></td><td>plan + execute a screw-motion path to <code>pose</code></td></tr>
+              <tr><td><code>close_gripper(...)</code> / <code>open_gripper(...)</code></td><td>gripper commands (returns the step result tuple)</td></tr>
+              <tr><td><code>follow_path(result)</code></td><td>execute a returned plan</td></tr>
+              <tr><td><code>gripper_state</code></td><td>current gripper state (share it with the other planner)</td></tr>
+              <tr><td><code>move_to_pose_with_screw(..., dry_run=True)</code></td><td>plan without executing</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            Useful helpers: <code>get_actor_obb(actor)</code>,
+            <code>compute_grasp_info_by_obb(...)</code> from <code>../panda/utils.py</code> to build
+            grasp poses from an object's oriented bounding box.
+          </p>
+
+          <h3>Register the solution</h3>
+          <p>
+            In <code>solutions/__init__.py</code>:
+          </p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">from</span> ._NNN_your_task <span class="hl-kw">import</span> solve <span class="hl-kw">as</span> solveYourTask</code></pre>
+          </div>
+          <p>
+            In <code>two_robot_run.py</code>, add to <code>MP_SOLUTIONS</code>:
+          </p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>MP_SOLUTIONS = {
+    ...,
+    <span class="hl-str">"TwoRobotYourTask-v1"</span>: solveYourTask,
+}</code></pre>
+          </div>
+          <p>
+            If the task is L0/L1/L2, its L3 variant goes into <code>solutions_l3/</code> and is
+            registered with the <code>...L3-v1</code> key.
+          </p>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Solution tips</div>
+              <p>
+                Use <code>is_l2_enabled()</code> from
+                <code>envs/tasks/tabletop/utils/L0_L3_utils.py</code> inside the solution to adapt
+                waypoints when needed. <code>env.reset(seed=seed)</code> at the start keeps episodes
+                reproducible; the runner increments <code>seed</code> per trajectory. Always pass
+                <code>other_gripper_state</code> — the two planners share one scene and would otherwise
+                collide.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="robot">Add a robot</h2>
+          <p>
+            New robots (URDF agents) are contributed via the robot template under
+            <code>mani_skill/agents/robots/_template/</code>, which documents how to register a URDF
+            agent and its supported controllers. Robots such as the single-arm Panda, dual-arm Panda
+            pairs, xArm6+Allegro, Fetch, so100, and widowxai are already supported by
+            <code>TableSceneBuilder.initialize()</code>.
+          </p>
+
+          <h2 id="verify">Verify</h2>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
+  -e TwoRobotTemplateTask-v1 -n 1 --only-count-success --record-dir demos</code></pre>
+          </div>
+
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Next steps</div>
+              <p>
+                Ready to share your task? Follow the
+                <a href="contribute.html">contribution workflow</a> to open a PR and request pairing
+                for your accepted task.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="baselines.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Baselines</span>
+            </a>
+            <a class="doc-pager-link next" href="contribute.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">Contribute</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>

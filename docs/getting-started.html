@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Installation — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-rocket"></i>Get started</div>
+          <h1 class="doc-title">Installation</h1>
+          <p class="doc-subtitle">
+            Install the package with <code>uv</code>, set up Vulkan for rendering, and download the
+            scene assets the benchmark environments depend on.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html" class="active"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="requirements">Requirements</h2>
+          <p>
+            The benchmark builds on <a href="https://www.maniskill.ai/" target="_blank" rel="noopener">ManiSkill</a>
+            and <a href="https://sapien.ucsd.edu/" target="_blank" rel="noopener">SAPIEN</a>. You need a
+            Python 3.11 environment, a <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv</a>
+            installation, and a Vulkan-capable GPU driver for rendering. All commands below run from the
+            repository root.
+          </p>
+
+          <h2 id="install">Install the package</h2>
+          <p>
+            Installation only requires a few <code>pip</code> installs plus a Vulkan setup for rendering.
+            The repository uses <code>uv</code> to manage the environment:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-com"># install the package</span>
+uv sync --active
+
+<span class="hl-com"># activate the uv environment</span>
+source .venv/bin/activate
+
+<span class="hl-com"># patch a known lerobot bug</span>
+curl -sSL https://raw.githubusercontent.com/huggingface/lerobot/0e81a275fcdbf03d74f78aa69eaa28c172a9f256/src/lerobot/datasets/lerobot_dataset.py -o .venv/lib/python3.11/site-packages/lerobot/datasets/lerobot_dataset.py</code></pre>
+          </div>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Use the vendored ManiSkill</div>
+              <p>
+                Always use the <code>mani_skill</code> package inside this repository, not an
+                independently installed copy. The benchmark extends it with 50 dual-arm tabletop tasks,
+                the four scene-mismatch levels, motion-planning solutions, and the shared level utilities.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="vulkan">Vulkan rendering</h2>
+          <p>
+            Rendering is done with Vulkan. Follow the
+            <a href="https://maniskill.readthedocs.io/en/latest/user_guide/getting_started/installation.html#vulkan" target="_blank" rel="noopener">ManiSkill installation instructions</a>
+            to set up the Vulkan driver and the SAPIEN renderer on your platform.
+          </p>
+
+          <h2 id="assets">Downloading assets</h2>
+          <p>
+            Scene objects and datasets are downloaded into <code>~/.maniskill/data</code>. The standard
+            YCB assets are fetched with the built-in downloader:
+          </p>
+
+          <h3>IG-10K Assets (one-shot)</h3>
+          <p>
+            The recommended path is to download the shared asset package into <code>~/.maniskill/data</code>. It includes the assets used by the benchmark; the individual ManiSkill download commands below remain useful when you only need one namespace.
+          </p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>mkdir -p ~/.maniskill/data
+hf download imitator-game/IG-10K-Assets --repo-type dataset --local-dir ~/.maniskill/data
+# ModelScope alternative:
+# modelscope download --dataset Zhouxunzhe/IG-10K-Assets --local_dir ~/.maniskill/data
+
+for f in ~/.maniskill/data/*.tar.zst; do
+  tar --use-compress-program=unzstd -xf "$f" -C ~/.maniskill/data
+done
+rm ~/.maniskill/data/*.tar.zst</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-com"># download assets for a specific environment id</span>
+python -m mani_skill.utils.download_asset <span class="hl-var">${ENV_ID}</span>
+
+<span class="hl-com"># standard YCB assets</span>
+python -m mani_skill.utils.download_asset ycb</code></pre>
+          </div>
+
+          <h3>RoboTwin objects &amp; background textures</h3>
+          <p>
+            RoboTwin objects and the background textures used by
+            <code>random_background=True</code> (see the
+            <a href="domain-randomization.html">domain randomization</a> guide) come from the RoboTwin
+            asset set:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>mkdir -p ~/.maniskill/data/robotwin
+python -m mani_skill.utils.download_robotwin
+cd ~/.maniskill/data/robotwin
+unzip objects.zip && rm -rf objects.zip
+unzip background_texture.zip && rm -rf background_texture.zip</code></pre>
+          </div>
+
+          <h3>PartNet-Mobility</h3>
+          <p>
+            PartNet-object assets (microwave, cabinet, and other articulated objects) follow the
+            download scripts' instructions:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-com"># PartNet-mobility dataset</span>
+python -m mani_skill.utils.download_partnet
+mkdir -p ~/.maniskill/data/partnet_mobility/dataset
+mv ~/Downloads/downloads/* ~/.maniskill/data/partnet_mobility/dataset/
+cd ~/.maniskill/data/partnet_mobility/dataset &amp;&amp; find . -name "*.zip" -execdir unzip -o {} \;</code></pre>
+          </div>
+
+          <h3>Scene datasets (RoboCasa / AI2THOR)</h3>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m mani_skill.utils.download_asset RoboCasa
+python -m mani_skill.utils.download_asset AI2THOR</code></pre>
+          </div>
+
+          <p>
+            ReplicaCAD's link in <code>download_asset.py</code> is expired; download the dataset from
+            this <a href="https://drive.google.com/file/d/1mqImztNX1LYZFBzt9z895C814RsyGe4N/view?usp=sharing" target="_blank" rel="noopener">google drive link</a>
+            and unpack it manually:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>pip install gdown
+mkdir -p ~/.maniskill/data/scene_datasets/replica_cad_dataset
+gdown "https://drive.google.com/uc?id=1mqImztNX1LYZFBzt9z895C814RsyGe4N" -O replica_cad_dataset.zip
+unzip -o replica_cad_dataset.zip -d ~/.maniskill/data/scene_datasets/replica_cad_dataset &amp;&amp; rm replica_cad_dataset.zip</code></pre>
+          </div>
+
+          <h3>External GLB assets</h3>
+          <p>
+            External GLB assets (Sketchfab models, Hunyuan-generated meshes, etc.) are downloaded to
+            <code>~/.maniskill/data/sketchfab/objects/{object_key}/model.glb</code>, registered in
+            <code>mani_skill/assets/sketchfab_registry.json</code>, and loaded in tasks with
+            <code>create_sketchfab_actor(...)</code>. See
+            <code>mani_skill/assets/sketchfab_README.md</code> for the full pipeline. Three L3
+            environments also require the <code>balance_scale</code> and <code>weight_on_scale</code>
+            GLBs from the <a href="https://drive.google.com/drive/folders/1W2Zmi3m_0pXwNnj8iwSR_5oBEc1Y-hwm?usp=sharing" target="_blank" rel="noopener">shared GLB asset folder</a>:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>~/.maniskill/data/sketchfab/objects/balance_scale/model.glb
+~/.maniskill/data/sketchfab/objects/weight_on_scale/model.glb</code></pre>
+          </div>
+
+          <h2 id="asset-namespaces">Asset namespaces</h2>
+          <p>
+            The benchmark uses four asset namespaces. <code>MS_ASSET_DIR</code> can override the default
+            <code>~/.maniskill</code> root; the paths below show the default layout.
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Asset set</th><th>Required location</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>ManiSkill YCB</td><td><code>~/.maniskill/data/assets/mani_skill2_ycb/</code></td></tr>
+              <tr><td>RoboTwin objects</td><td><code>~/.maniskill/data/robotwin/objects/</code></td></tr>
+              <tr><td>RoboTwin background textures</td><td><code>~/.maniskill/data/robotwin/background_texture/</code></td></tr>
+              <tr><td>PartNet-Mobility</td><td><code>~/.maniskill/data/partnet_mobility/dataset/</code></td></tr>
+              <tr><td>External GLB objects</td><td><code>~/.maniskill/data/sketchfab/objects/{object_key}/model.glb</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2 id="verify">Verify the install</h2>
+          <p>
+            Quick sanity check: create and step one of the smallest benchmark environments. You should
+            see a success-rate tensor from <code>evaluate()</code>:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">import</span> gymnasium <span class="hl-kw">as</span> gym
+<span class="hl-kw">import</span> mani_skill.envs  <span class="hl-com"># Registers all benchmark environments.</span>
+
+<span class="hl-kw">from</span> mani_skill.envs.tasks.tabletop.utils.dual_task_camera_utils <span class="hl-kw">import</span> (
+    configure_dual_task_level,
+)
+
+configure_dual_task_level(<span class="hl-str">"L0"</span>)
+env = gym.make(
+    <span class="hl-str">"TwoRobotStirSpoon-v1"</span>,
+    obs_mode=<span class="hl-str">"state"</span>,
+    control_mode=<span class="hl-str">"pd_joint_pos"</span>,
+    reward_mode=<span class="hl-str">"dense"</span>,
+    sim_backend=<span class="hl-str">"physx_cpu"</span>,
+)
+
+obs, info = env.reset(seed=<span class="hl-num">0</span>)
+action = env.action_space.sample()
+obs, reward, terminated, truncated, info = env.step(action)
+
+evaluation = env.unwrapped.evaluate()
+print(evaluation[<span class="hl-str">"success"</span>])
+env.close()</code></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Next steps</div>
+              <p>
+                Once installed, continue with the <a href="quickstart.html">quickstart</a> to run your
+                first baseline, or jump straight to the
+                <a href="domain-randomization.html">domain randomization</a> tutorial.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="index.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Documentation home</span>
+            </a>
+            <a class="doc-pager-link next" href="quickstart.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">Quickstart</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+/* Doc page: TOC scrollspy + code copy buttons */
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>

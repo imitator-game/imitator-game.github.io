@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contribute — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-code-branch"></i>Community</div>
+          <h1 class="doc-title">Contribute</h1>
+          <p class="doc-subtitle">
+             The Imitator Game is an open-source community for robot imitation from human video. Everyone
+             is welcome to contribute tasks, models, embodiments, assets, demonstrations, or evaluation
+             ideas through the shared design templates and reproducible protocols.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html" class="active"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="directions">How to grow the benchmark</h2>
+          <p>
+            Anyone interested in imitative ability (goal-directed imitation, video-conditioned policies,
+            cross-embodiment skill transfer, intent inference, affordance adaptation, ...) is welcome to
+            participate. The project grows through four connected contribution paths, all gated by the
+            same design templates and evaluation contracts. Contributions should include enough information
+            for maintainers to reproduce and evaluate them:
+          </p>
+
+          <div class="doc-feature-grid">
+            <div class="doc-feature">
+              <div class="doc-feature-icon"><i class="fas fa-cubes"></i></div>
+              <h4>Tasks</h4>
+              <p>
+                Contribute new Imitator tasks (L0–L3) designed with the task template under
+                <code>mani_skill/envs/tasks/_template/</code>, together with their motion-planning
+                 solutions. Accepted tasks can then be added to the benchmark task set, task mapping, and
+                 collection pipeline.
+              </p>
+            </div>
+            <div class="doc-feature">
+              <div class="doc-feature-icon"><i class="fas fa-robot"></i></div>
+              <h4>Models</h4>
+              <p>
+                Contribute new imitation-learning models built on the baseline template under
+                 <code>examples/baselines/_template/</code>, together with the evaluation interface and
+                 training/evaluation recipe needed for reproducibility.
+              </p>
+            </div>
+            <div class="doc-feature">
+              <div class="doc-feature-icon"><i class="fas fa-box"></i></div>
+              <h4>Embodiments / assets</h4>
+              <p>
+                 Contribute new robots using the robot template under
+                 <code>mani_skill/agents/robots/_template/</code> and diverse scene assets. New assets
+                 should follow the documented asset pipeline and licensing requirements.
+              </p>
+            </div>
+            <div class="doc-feature">
+              <div class="doc-feature-icon"><i class="fas fa-earth-asia"></i></div>
+              <h4>Real-world evaluation</h4>
+              <p>
+                 Submit a reproducible model package and simulation environment through the shared
+                 protocol. After the simulation package is reviewed, contributors may request deployment
+                 on our real-robot platform under the agreed evaluation conditions.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="pairing">Pairing service</h2>
+          <p>
+            Human demonstration data is only useful for imitation when it is paired with robot
+             trajectories. For accepted community-contributed tasks, we may collect human and robot
+             pairing demonstrations and merge the paired data into IG-10K-format datasets under the shared
+             LeRobot format.
+          </p>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Request pairing</div>
+              <p>
+                 Community members can request pairing for accepted tasks. Pairing is coordinated after
+                 the task protocol, reset conditions, and evaluation standard are agreed with maintainers.
+              </p>
+            </div>
+          </div>
+
+          <h3>Real-device paired data collection</h3>
+          <p>
+             For an accepted task, contributors can provide the human demonstration and task protocol while
+             the project team determines whether matching robot demonstrations can be collected. When
+             available, paired episodes can be released alongside simulated data under the IG-10K / LeRobot
+             contract.
+          </p>
+          <p>
+             See the <a href="data-collection.html">data collection guide</a> for preparation details and
+             the <a href="../gallery.html">Task Gallery</a> for published human, simulated, and real-robot
+             rollouts.
+          </p>
+
+          <h2 id="upload">Submit a model or simulation environment</h2>
+          <p>
+            We accept more than standalone checkpoints. To request a real-world evaluation, submit a
+             reproducible bundle through a pull request. Include the model checkpoint or source, inference
+             API, environment dependencies, license, task protocol, reset conditions, task-specific
+             evaluation standard, and commands needed to reproduce inference. We first reproduce the
+             simulation result before scheduling hardware time.
+          </p>
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-file-arrow-up"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Use the contribution protocol</div>
+              <p>
+                Open a pull request with the model or environment package, a short README, the relevant
+                 task IDs and L0–L3 levels, checkpoint or asset locations, licensing information,
+                 dependencies, and simulator-side evaluation results. Maintainers confirm that the bundle
+                 is reproducible before considering real-robot evaluation. The repository does not currently
+                 provide an automatic policy-upload endpoint.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="deploy">Real-world deployment and evaluation</h2>
+          <p>
+             After the simulation package is reproducible and passes review, contributors can request
+             deployment on the real-robot platform. The team runs the agreed evaluation protocol and
+             records rollout videos and evaluation conditions.
+          </p>
+          <p>
+             Hardware runs are scheduled only after the package is reproducible. Approved real-world
+             rollouts can be added to the Imitator Arena for blind A/B comparison against the same human
+             reference.
+          </p>
+
+          <h2 id="arena-submit">Publish results to Imitator Arena</h2>
+          <p>
+            Once a real-world evaluation is complete, we can add the approved rollouts to
+            <strong>Imitator Arena</strong>. The Arena presents a human reference and anonymous model
+            rollouts for blind A/B human evaluation, turning a private hardware run into a public,
+            community-readable comparison.
+          </p>
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-ranking-star"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">From submission to public comparison</div>
+              <p>
+                 The complete path is: submit a reproducible package, reproduce the task in simulation,
+                 request real-robot deployment, run the agreed evaluation, and publish approved rollouts to
+                 the <a href="../arena.html">Imitator Arena</a>. The <a href="../gallery.html">Gallery</a>
+                 keeps the underlying videos discoverable.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="workflow">Contribution workflow</h2>
+
+          <ol>
+            <li>
+              Follow the design templates:
+              <code>examples/baselines/_template/</code> for models,
+              <code>mani_skill/envs/tasks/_template/</code> for L0–L3 tasks, and
+              <code>mani_skill/agents/robots/_template/</code> for robots.
+            </li>
+             <li>Open a pull request with your task, model, robot, embodiment, or asset contribution.</li>
+            <li>
+              Maintainers review the contribution against the templates (data contract, environment
+              contract, L0–L3 semantics, motion-planning solution).
+            </li>
+            <li>
+               Once accepted, the contribution is merged, registered, and, where applicable, considered
+               for human/robot pairing and release.
+            </li>
+            <li>
+               For real-world evaluation, provide the reproducible model or source, API, dependencies,
+               license, task protocol, reset conditions, evaluation standard, and simulator results.
+            </li>
+            <li>
+               After review, request deployment on the real platform; hardware runs are scheduled only after
+               the package is reproducible.
+            </li>
+            <li>
+              Approved real-world rollouts are published in Imitator Arena for blind A/B community
+              evaluation and linked from the Task Gallery.
+            </li>
+          </ol>
+
+          <h2 id="sync">Active ManiSkill sync</h2>
+          <p>
+            We keep the simulation framework actively updated with the upstream
+            <a href="https://www.maniskill.ai/" target="_blank" rel="noopener">ManiSkill</a> repository
+            so the community can use the latest simulation features. To keep the ecosystem coherent,
+            <strong>all contributions must follow the shared ManiSkill design templates</strong> — the
+            robot agent template, the environment interface, and the motion-planning interface are the
+            same ones the upstream project documents. If you build on a new ManiSkill feature, please
+            keep the common interfaces intact.
+          </p>
+
+          <h2 id="community">Join the community</h2>
+          <p>
+            Questions about the benchmark, data, or a potential contribution are welcome. Use whichever community channel is most convenient:
+          </p>
+          <div class="community-grid">
+            <div class="community-card">
+              <div class="doc-feature-icon"><i class="fab fa-discord"></i></div>
+              <h3>Discord</h3>
+              <p>Join the project community for announcements, technical discussion, and collaboration.</p>
+              <a class="pst-btn pst-btn-primary discord-btn" href="https://discord.gg/p8QVXWwWyZ" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join on Discord</a>
+            </div>
+            <div class="community-card">
+              <div class="doc-feature-icon"><i class="fab fa-weixin"></i></div>
+              <h3>WeChat community</h3>
+              <p>For Chinese-language discussion, scan the QR code to join the project group.</p>
+              <img class="wechat-qr" src="../assets/media/wechat_group.jpg" alt="QR code for The Imitator Game WeChat group">
+              <div class="wechat-qr-caption">Scan to join the WeChat group</div>
+            </div>
+          </div>
+          <p>For direct technical inquiries, contact <a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a>.</p>
+
+          <h2 id="citation">Citation</h2>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bibtex</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>@unpublished{imitatorgame2026,
+  title={The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction},
+  author={Zhou, Xunzhe and Cai, Yiyang and Wang, Fengyi and Ju, Ran and Ren, Hanxiang and Liu, Ruizhe and Zhang, Yu and Luo, Qian and Chen, Feng and Zhou, Pei and Ma, Yi and Yang, Yanchao},
+  url={https://github.com/imitator-game/The-Imitator-Game},
+  year={2026}
+}</code></pre>
+          </div>
+
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Start here</div>
+              <p>
+                New to the codebase? Follow the <a href="getting-started.html">installation</a> and
+                <a href="quickstart.html">quickstart</a> guides, then build your first task with
+                <a href="create-task.html">creating a new task</a>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="create-task.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Creating a new task</span>
+            </a>
+            <a class="doc-pager-link next" href="index.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">Documentation home</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>

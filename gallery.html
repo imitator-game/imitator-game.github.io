@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -6,12 +6,12 @@
   <title>Task Gallery — The Imitator Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/png" href="assets/media/logo.png">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260815-dark-palette-3">
   <link rel="stylesheet" href="assets/css/pages.css">
   <script>
     (function () {
-      const t = localStorage.getItem("pst-theme") || "light";
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", t);
     })();
   </script>
@@ -23,7 +23,7 @@
     <div class="pst-content-wrapper pst-header-inner">
       <a href="index.html" class="pst-header-brand">
         <span class="brand-logo" aria-hidden="true">
-          <img src="assets/media/logo.png" alt="The Imitator Game logo">
+          <img src="assets/media/logo.svg" alt="The Imitator Game logo">
         </span>
         The&thinsp;Imitator&thinsp;Game
       </a>
@@ -31,6 +31,8 @@
         <a href="index.html"><i class="fas fa-home"></i>Home</a>
         <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html" class="active"><i class="fas fa-film"></i>Gallery</a>
+        <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
       </nav>
       <div class="pst-header-end">
         <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>

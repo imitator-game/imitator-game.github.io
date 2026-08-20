@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baselines — The Imitator Game Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="../assets/media/logo.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <script>
+    (function () {
+      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<div class="pst-page">
+
+  <!-- HEADER -->
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="../index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true">
+          <img src="../assets/media/logo.svg" alt="The Imitator Game logo">
+        </span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
+        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+      </nav>
+      <div class="pst-header-end">
+        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pst-main">
+    <div class="pst-content-wrapper">
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-eyebrow"><i class="fas fa-robot"></i>Training</div>
+          <h1 class="doc-title">Baselines</h1>
+          <p class="doc-subtitle">
+            Nine state-of-the-art imitation-learning models, all consuming the same paired human–robot
+            LeRobot dataset contract through shared loaders and task encoders.
+          </p>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+
+        <aside class="doc-sidebar" aria-label="Documentation navigation">
+          <div class="doc-sidebar-title">Docs</div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
+            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
+            <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
+            <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Tutorials</span>
+            <a href="domain-randomization.html"><i class="fas fa-shuffle"></i>Domain randomization</a>
+            <a href="data-collection.html"><i class="fas fa-video"></i>Data collection</a>
+            <a href="baselines.html" class="active"><i class="fas fa-robot"></i>Baselines</a>
+            <a href="create-task.html"><i class="fas fa-cubes"></i>Creating a new task</a>
+          </div>
+          <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Community</span>
+            <a href="contribute.html"><i class="fas fa-code-branch"></i>Contribute</a>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="doc-main doc-prose">
+
+          <h2 id="overview">Baseline overview</h2>
+          <p>
+            Each baseline is a self-contained directory under
+            <code>examples/baselines/</code> with its own README describing the method, training and
+            rollout entry points, and the key hyperparameters used to reproduce the paper's experiments.
+          </p>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Directory</th><th>Method</th><th>Training entry</th><th>Eval entry</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>act/</code></td><td>ACT (Action Chunking with Transformers)</td><td><code>train_act_imitator.py</code></td><td><code>eval_act_imitator.py</code> / <code>parallel_eval_act.py</code></td></tr>
+              <tr><td><code>diffusion_policy/</code></td><td>Diffusion Policy (1D UNet)</td><td><code>train_dp_imitator.py</code></td><td><code>eval_dp_imitator.py</code> / <code>parallel_eval_dp.py</code></td></tr>
+              <tr><td><code>vqbet/</code></td><td>VQ-BeT (VQ-VAE + behavior Transformer)</td><td><code>pretrain_vqvae_imitator.py</code> → <code>train_vqbet_imitator.py</code></td><td><code>eval_vqbet_imitator.py</code> / <code>parallel_eval_vqbet.py</code></td></tr>
+              <tr><td><code>uniskill/</code></td><td>UniSkill (IDM + conditional diffusion)</td><td><code>diffusion/train_uniskill.py</code> → <code>diffusion/train_cond_dp.py</code></td><td><code>diffusion/eval_uniskill.py</code></td></tr>
+              <tr><td><code>xskill/</code></td><td>XSkill (skill discovery + diffusion)</td><td><code>scripts/stage1_pretrain_encoder.py</code> → <code>scripts/stage2_skill_transfer.py</code></td><td><code>scripts/eval_xskill.py</code></td></tr>
+              <tr><td><code>gr00t/</code></td><td>NVIDIA GR00T N1.6 (flow-matching VLA)</td><td><code>gr00t.experiment.launch_finetune</code></td><td><code>gr00t.eval.parallel_eval_imitator</code> / <code>eval_imitator</code></td></tr>
+              <tr><td><code>rdt/</code></td><td>RDT-1B (diffusion transformer, LoRA finetune)</td><td><code>train_rdt_lora.py</code> / <code>train_rdt_scratch.py</code></td><td><code>eval_rdt_lora.py</code> / <code>parallel_eval_rdt.py</code></td></tr>
+              <tr><td><code>pi/</code></td><td>π0 / π0.5 (flow-matching VLA, JAX)</td><td><code>train_pi_lerobot_jax.py</code></td><td><code>eval_pi_lerobot_jax.py</code> / <code>parallel_eval_pi_lerobot_jax.py</code></td></tr>
+              <tr><td><code>openvla_oft/</code></td><td>OpenVLA (LoRA finetune, discrete/regression/diffusion head)</td><td><code>train_openvla.py</code></td><td><code>eval_openvla.py</code> / <code>eval_openvla_batch.py</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2 id="shared">Shared infrastructure</h2>
+
+          <table class="pst-table">
+            <thead>
+              <tr><th>Directory</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>lerobot_dataset/</code></td><td>LeRobot dataset loaders, human/sim/robot dataloaders, detection/learning-in/configs, evaluation processor, mask-gen tools</td></tr>
+              <tr><td><code>encoders/</code></td><td>Shared observation/state encoders and the frozen task-video backbone used by ACT / Diffusion Policy / VQ-BeT</td></tr>
+              <tr><td><code>hand_estimation/</code></td><td>HaMeR and WiLoR hand-tracking tools used to estimate MANO hand features for the human dataset</td></tr>
+              <tr><td><code>exp_scripts/</code></td><td>Experiment launchers that reproduce the paper's training and evaluation runs</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Common conventions</div>
+              <p>
+                <strong>Data</strong> — human demonstrations and simulation/robot trajectories are
+                consumed through the LeRobot interface under <code>lerobot_dataset/</code>.
+                <strong>Environment</strong> — baselines share the repository Python environment
+                (<code>uv sync --active</code>). GR00T additionally provides a dedicated
+                <code>uv</code> environment in <code>gr00t/pyproject.toml</code>; Pi (JAX) additionally
+                depends on the <code>openpi</code> package pinned in <code>pi/pyproject.toml</code>.
+                <strong>Splits</strong> — configs named
+                <code>&lt;kind&gt;_train_config_{15,30,45}.json</code> are the 15/30/45-task training
+                splits; <code>*_test_config_seen.json</code>, <code>*_test_config_unseen.json</code>,
+                and the <code>eval/exp_list/*.txt</code> env lists are the seen/unseen evaluation
+                splits.
+              </p>
+            </div>
+          </div>
+
+          <h2 id="act">ACT</h2>
+          <p>
+            The policy receives a robot observation stream together with a task representation extracted
+            from the human demonstration video, and predicts a chunk of dual-arm actions with a
+            DETR-style transformer decoder. The reference training command uses the frozen task-video
+            (video-only) configuration:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-var">TAG</span>=&lt;15|30|45&gt;
+<span class="hl-var">BACKBONE</span>=&lt;dinov2_vitl14|siglip2_so400m|videomae_large&gt;
+
+python -m examples.baselines.act.train_act_imitator \
+  --human-root demos/demo_data \
+  --sim-root demos/imitator_data \
+  --human-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/human_train_config_${TAG}.json \
+  --sim-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/sim_train_config_${TAG}.json \
+  --task-mapping-file examples/baselines/lerobot_dataset/task_mapping.json \
+  --input-mode video_only \
+  --task-encoder-type frozen_backbone \
+  --frozen-backbone-type ${BACKBONE} \
+  --frozen-backbone-num-frames 10 \
+  --frozen-backbone-adapter-layers 1 \
+  --frozen-backbone-seq-patches 32 \
+  --pred-horizon 24 \
+  --batch-size 128 \
+  --total-epochs 10 \
+  --warmup-epochs 1 \
+  --lr 1e-4 \
+  --control-mode pd_joint_pos \
+  --env-id TwoRobotPourCup-v1 \
+  --max-episode-steps 500 \
+  --no-include-depth</code></pre>
+          </div>
+
+          <p>
+            Additional model hyperparameters used in the reported ablation runs:
+            <code>--hidden-dim 1024 --dim-feedforward 4096 --nheads 16 --enc-layers 12 --dec-layers 12</code>.
+            Checkpoints are written to <code>runs/&lt;run_name&gt;/checkpoints/</code>, including
+            <code>final_model.pt</code>.
+          </p>
+
+          <h2 id="diffusion">Diffusion Policy</h2>
+          <p>
+            The model conditions a 1D action diffusion model (UNet) on robot observations together with
+            a task representation extracted from the human demonstration video:
+          </p>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>python -m examples.baselines.diffusion_policy.train_dp_imitator \
+  --human-root demos/demo_data \
+  --sim-root demos/imitator_data \
+  --human-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/human_train_config_${TAG}.json \
+  --sim-dataset-file examples/baselines/lerobot_dataset/config/exp_configs/sim_train_config_${TAG}.json \
+  --task-mapping-file examples/baselines/lerobot_dataset/task_mapping.json \
+  --input-mode video_only \
+  --task-encoder-type frozen_backbone \
+  --frozen-backbone-type ${BACKBONE} \
+  --frozen-backbone-num-frames 10 \
+  --control-mode pd_joint_pos \
+  --batch-size 256 \
+  --total-epochs 10 \
+  --lr 1e-4 \
+  --num-dataload-workers 24 \
+  --env-id TwoRobotPourCup-v1 \
+  --max-episode-steps 500 \
+  --unet-dims 352 704 1408 2816</code></pre>
+          </div>
+
+          <h2 id="others">Other baselines</h2>
+          <p>
+            Every baseline has its own README with training and evaluation commands. Highlights:
+          </p>
+
+          <ul>
+            <li>
+              <strong>VQ-BeT</strong> — two-stage: pretrain the VQ-VAE
+              (<code>pretrain_vqvae_imitator.py</code>), then train the behavior Transformer
+              (<code>train_vqbet_imitator.py</code>).
+            </li>
+            <li>
+              <strong>UniSkill</strong> — cross-embodiment skill learning: train the inverse-dynamics
+              module (<code>diffusion/train_uniskill.py</code>), then the conditional diffusion policy
+              (<code>diffusion/train_cond_dp.py</code>).
+            </li>
+            <li>
+              <strong>XSkill</strong> — skill discovery + transfer: stage 1 pretrains the encoder
+              (<code>scripts/stage1_pretrain_encoder.py</code>), stage 2 transfers the skill
+              (<code>scripts/stage2_skill_transfer.py</code>).
+            </li>
+            <li>
+              <strong>GR00T N1.6</strong> — flow-matching VLA, LoRA fine-tuned on the shared bimanual
+              dataset with its dedicated <code>uv</code> environment:
+            </li>
+          </ul>
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code>cd examples/baselines/gr00t
+uv sync
+source .venv/bin/activate
+<span class="hl-com"># then, from the repository root:</span>
+CUDA_VISIBLE_DEVICES=0 python -m gr00t.experiment.launch_finetune \
+  --embodiment-tag NEW_EMBODIMENT \
+  --human-config-path examples/baselines/lerobot_dataset/config/exp_configs/human_train_config_${TAG}.json \
+  --sim-config-path examples/baselines/lerobot_dataset/config/exp_configs/sim_train_config_${TAG}.json \
+  --lerobot-version v3 \
+  --language-source human_desc \
+  --batch-size 256 \
+  --num-epochs 10 \
+  --save-epochs 1 \
+  --use-backbone-lora --backbone-lora-rank 64 \
+  --use-llm-lora --llm-lora-rank 64 \
+  --tune-projector \
+  --base-model-path &lt;GR00T-N1.6-3B cache path&gt; \
+  --dataset-path demos/imitator_data</code></pre>
+          </div>
+
+          <ul>
+            <li><strong>RDT-1B</strong> — diffusion transformer fine-tuned with LoRA (<code>train_rdt_lora.py</code>) or from scratch (<code>train_rdt_scratch.py</code>).</li>
+            <li><strong>π0 / π0.5</strong> — flow-matching VLA in JAX (<code>train_pi_lerobot_jax.py</code>), depends on the pinned <code>openpi</code> package.</li>
+            <li><strong>OpenVLA</strong> — LoRA fine-tuning with a discrete / regression / diffusion action head (<code>train_openvla.py</code>).</li>
+          </ul>
+
+          <h2 id="contract">The paired dataset contract</h2>
+          <p>
+            The released baselines consume the shared contract in
+            <code>examples/baselines/lerobot_dataset</code>:
+          </p>
+
+          <ul>
+            <li>ACT, Diffusion Policy, and VQ-BeT use <code>HumanSimPairedDataset</code> directly.</li>
+            <li>OpenVLA-OFT, π0.5, and RDT adapt the paired sample to their model-specific token, tensor, or JAX layouts.</li>
+            <li>XSkill and UniSkill enable the skill-frame fields through wrappers around the paired interface.</li>
+            <li>GR00T uses its own episode loader but reads the same LeRobot directories, experiment configs, task mapping, and descriptions.</li>
+          </ul>
+
+          <p>
+            The common training arguments are therefore the human and simulation data roots, their
+            experiment config files, <code>task_mapping.json</code>, the task-description files, camera
+            selection, observation/action horizons, and <code>input_mode</code>. Model-specific commands
+            and hyperparameters are documented in each policy's README. See the
+            <a href="data-collection.html">data collection</a> page for conversion and split setup.
+          </p>
+
+          <div class="callout callout-success">
+            <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Next steps</div>
+              <p>
+                Add your own model to the benchmark by following the
+                <a href="create-task.html">baseline template</a>, or contribute new tasks, models and
+                robots through the <a href="contribute.html">community guide</a>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Pager -->
+          <nav class="doc-pager">
+            <a class="doc-pager-link" href="data-collection.html">
+              <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
+              <span class="doc-pager-title">Data collection</span>
+            </a>
+            <a class="doc-pager-link next" href="create-task.html">
+              <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
+              <span class="doc-pager-title">Creating a new task</span>
+            </a>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-inner">
+      <span><img src="../assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
+      <span>The Imitator Game Team @ 2026</span>
+    </div>
+  </footer>
+
+</div>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.doc-toc a'));
+  if (!headings.length) return;
+  var headerH = (document.querySelector('.pst-header') || {}).offsetHeight || 56;
+  function updateActive() {
+    var currentId = '';
+    headings.forEach(function (h) {
+      if (h.getBoundingClientRect().top <= headerH + 100) currentId = h.id;
+    });
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+})();
+
+document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(function () {});
+  });
+});
+</script>
+</body>
+</html>
