@@ -1,0 +1,142 @@
+/* ============================================================
+   charts.css — live-SVG appendix figures (charts.js) + figdeck +
+   leaderboard-preview support. Loaded by index.html / leaderboard.html.
+   ============================================================ */
+
+.ig-chart { position: relative; margin-top: .6rem; }
+.ig-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ── SVG text ─────────────────────────────────────────────── */
+.ig-t {
+  font-family: 'Noto Sans', system-ui, sans-serif;
+  fill: var(--text);
+}
+.ig-t-tick   { font-size: 11px; fill: var(--text-muted); }
+.ig-t-axis   { font-size: 12.5px; font-weight: 600; fill: var(--text-muted); font-family: 'Google Sans', sans-serif; }
+.ig-t-panel  { font-size: 12.5px; font-weight: 700; fill: var(--text); font-family: 'Google Sans', sans-serif; }
+.ig-t-note   { font-size: 11px; font-style: italic; fill: var(--text-muted); }
+.ig-t-strong { font-size: 13px; font-weight: 700; fill: var(--text); }
+.ig-t-val    { font-size: 10.5px; font-weight: 600; fill: var(--text); }
+.ig-t-right  { text-anchor: start; }
+
+/* ── Entrance animation ──────────────────────────────────────
+   Base: fade + tiny rise. Bars grow from baseline. Lines draw in
+   via stroke-dashoffset (set inline by JS; overridden to 0 here).
+   ============================================================ */
+.ig-anim {
+  opacity: 0;
+  transform: translate3d(0, 6px, 0);
+  transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out);
+}
+.ig-anim.is-drawn { opacity: 1; transform: none; }
+
+.ig-dot {
+  transform-box: fill-box; transform-origin: center;
+  transform: scale(.35);
+  transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-spring);
+}
+.ig-dot.is-drawn { opacity: 1; transform: scale(1); }
+
+.ig-bar {
+  transform-box: fill-box;
+  transform: scaleY(0);
+  transition: transform 680ms var(--ease-out);
+}
+.ig-bar.is-drawn { transform: scaleY(1); }
+
+.ig-bar-x {
+  transform-box: fill-box;
+  transform: scaleX(0);
+  transition: transform 680ms var(--ease-out);
+}
+.ig-bar-x.is-drawn { transform: scaleX(1); }
+
+.ig-line {
+  transition: stroke-dashoffset 950ms var(--ease-out);
+}
+.ig-line.is-drawn { stroke-dashoffset: 0 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ig-anim, .ig-dot, .ig-bar, .ig-bar-x, .ig-line { transition: none !important; }
+}
+
+/* ── Hover tooltip ────────────────────────────────────────── */
+.ig-tip {
+  position: fixed; top: 0; left: 0; z-index: 300;
+  max-width: 240px; padding: .55rem .7rem;
+  background: var(--on-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-lg);
+  font: 500 .78rem/1.4 'Noto Sans', sans-serif; color: var(--text);
+  opacity: 0; pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.ig-tip b { display: block; font: 700 .82rem/1.3 'Google Sans', sans-serif; margin-bottom: .1rem; }
+.ig-tip i { font-style: normal; color: var(--text-muted); }
+.ig-tip-fam {
+  display: inline-block; margin-left: .4rem; padding: 0 .4rem;
+  border: 1px solid currentColor; border-radius: var(--radius-pill);
+  font-size: .68rem; font-weight: 700;
+}
+
+/* ── Legend ───────────────────────────────────────────────── */
+.ig-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; margin-top: .9rem; justify-content: center; }
+.ig-legend-item {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font: 600 .78rem/1 'Google Sans', sans-serif; color: var(--text-muted);
+}
+.ig-legend-swatch { width: 11px; height: 11px; flex-shrink: 0; display: inline-block; }
+.ig-legend-dot    { border-radius: 50%; }
+.ig-legend-square { border-radius: 2px; }
+.ig-legend-tri     { width: 0; height: 0; background: transparent !important;
+  border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid currentColor; }
+.ig-legend-dash   { height: 3px; width: 16px; border-radius: 2px; }
+
+/* ── Chart note ───────────────────────────────────────────── */
+.ig-chart-note {
+  margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--border);
+  font-size: .84rem; line-height: 1.6; color: var(--text-muted);
+}
+.ig-chart-note b { color: var(--text); }
+
+/* ── In-chart tab switcher (encoder chart) ───────────────── */
+.ig-chart-tabs { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .8rem; }
+.ig-chart-tab {
+  padding: .38rem .85rem; border-radius: var(--radius-pill);
+  border: 1px solid var(--border); background: var(--on-bg); color: var(--text-muted);
+  font: 600 .8rem/1 'Google Sans', sans-serif; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.ig-chart-tab:hover { border-color: var(--primary); color: var(--text); }
+.ig-chart-tab.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* ── Figure deck (results section tab nav + panels) ───────── */
+.ig-figdeck-nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+.ig-figdeck-tab {
+  padding: .55rem 1rem; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--on-bg); color: var(--text-muted);
+  font: 600 .82rem/1.3 'Google Sans', sans-serif; text-align: left; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.ig-figdeck-tab:hover { border-color: var(--primary); color: var(--text); transform: translateY(-2px); }
+.ig-figdeck-tab.is-active { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
+.ig-figdeck-tab small { display: block; font-weight: 400; opacity: .75; font-size: .72rem; margin-top: .1rem; }
+
+.ig-figdeck-panel { display: none; }
+.ig-figdeck-panel.is-active { display: block; animation: ig-fig-in 420ms var(--ease-out); }
+@keyframes ig-fig-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.ig-figure { background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.6rem 1.8rem; }
+.ig-figure-head { display: flex; align-items: baseline; gap: .7rem; margin-bottom: .3rem; flex-wrap: wrap; }
+.ig-figure-tag {
+  font: 700 .68rem/1 'Google Sans', sans-serif; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--primary); background: var(--primary-bg); padding: .2rem .55rem; border-radius: var(--radius-pill);
+}
+.ig-figure-title { font: 700 1.15rem/1.3 'Google Sans', sans-serif; margin: 0; }
+.ig-figure-caption { margin-top: 1.1rem; font-size: .88rem; line-height: 1.65; color: var(--text-muted); }
+.ig-figure-caption b { color: var(--text); }
+
+@media (max-width: 760px) {
+  .ig-figure { padding: 1.2rem 1.1rem; }
+  .ig-figdeck-nav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: .3rem; }
+  .ig-figdeck-tab { flex-shrink: 0; }
+}

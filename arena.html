@@ -1,42 +1,48 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arena — The Imitator Game</title>
+  <meta name="description" content="Blind A/B comparison of two anonymous model rollouts against the same human demonstration.">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/png" href="assets/media/logo.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260815-dark-palette-3">
-  <link rel="stylesheet" href="assets/css/pages.css">
+  <link rel="icon" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/pages.css?v=20260824-motion">
   <script>
+    /* No-flash theme boot — mirrors theme.js, must stay in <head>. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body class="arena-page">
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <header class="pst-header">
     <div class="pst-content-wrapper pst-header-inner">
       <a href="index.html" class="pst-header-brand">
         <span class="brand-logo" aria-hidden="true">
-          <img src="assets/media/logo.svg" alt="The Imitator Game logo">
+          <img src="assets/media/logo.svg" alt="">
         </span>
         The&thinsp;Imitator&thinsp;Game
       </a>
       <nav class="pst-header-nav">
         <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
         <a href="arena.html" class="active"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
         <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -45,12 +51,14 @@
 
       <div class="arena-header">
         <div>
-          <h1 class="arena-title">Imitator Arena</h1>
-          <p class="arena-subtitle">
-            Watch the human reference and compare two anonymous model rollouts.
+          <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-gavel"></i>Blind comparison</div>
+          <h1 class="arena-title" data-split="45" data-reveal>Imitator Arena</h1>
+          <p class="arena-subtitle" data-reveal="up" data-reveal-delay="180">
+            Watch the human reference, then judge two anonymous model rollouts of the same episode.
+            Model identities are never shown, and A/B order is randomised per comparison.
           </p>
         </div>
-        <div id="arena-bucket-badge" class="arena-bucket-badge"></div>
+        <div id="arena-bucket-badge" class="arena-bucket-badge" data-reveal="down" data-reveal-delay="120"></div>
       </div>
 
       <!-- Re-rendered for each comparison -->
@@ -62,7 +70,14 @@
     </div>
   </main>
 
+  <footer class="lp-footer"><div class="lp-footer-inner">
+    <span>The Imitator Game</span>
+    <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+  </div></footer>
 </div>
+
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/motion.js"></script>
 <script src="assets/js/manifest-data.js"></script>
 <script src="assets/js/site.js"></script>
 <script src="assets/js/arena.js"></script>

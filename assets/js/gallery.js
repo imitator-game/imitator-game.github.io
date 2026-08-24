@@ -50,7 +50,20 @@ function renderGrid() {
       </a>`;
   }).join("");
 
+  stagger(grid.children, 45);
   updateCount(groups.length);
+}
+
+/* Cards and task panels are injected after motion.js has already scanned the
+   page, so tag them and re-run the observer. No-op without motion.js, which
+   keeps the content visible rather than stuck at opacity 0. */
+function stagger(nodes, step) {
+  if (!window.IGMotion) return;
+  Array.prototype.forEach.call(nodes, function (n, i) {
+    n.setAttribute("data-reveal", "up");
+    n.dataset.revealDelay = String(Math.min(i, 14) * (step || 45));
+  });
+  window.IGMotion.reveal();
 }
 
 function updateCount(n) {
@@ -137,6 +150,7 @@ function renderTask(tg) {
     </div>
     ${cards}`;
 
+  stagger(taskView.querySelectorAll(".pst-card"), 90);
   observeVideos(taskView);
   window.scrollTo(0, 0);
 }

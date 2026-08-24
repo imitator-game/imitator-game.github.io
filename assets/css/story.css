@@ -1,0 +1,250 @@
+/* ============================================================
+   story.css — the opening narrative and the level ladder.
+
+   The signature element of the site: a pinned stage on the right
+   that swaps footage while the argument scrolls past on the left.
+   The demonstration stays put; the imitator's world drifts further
+   from it beat by beat. That drift is the benchmark.
+   ============================================================ */
+
+/* ── Hero additions ─────────────────────────────────────────── */
+.hero-badges {
+  display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 1.2rem;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .3rem .8rem; border-radius: var(--radius-pill);
+  background: var(--on-bg); border: 1px solid var(--border);
+  font: 600 .78rem/1 'Google Sans', system-ui, sans-serif;
+  color: var(--text-muted);
+}
+.hero-badge i { color: var(--primary); font-size: .78rem; }
+.hero-badge b { color: var(--text); font-weight: 700; }
+
+.hero-strip {
+  margin-top: 2.6rem; padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+.hero-strip-label {
+  font: 700 .68rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: .85rem; text-align: center;
+}
+
+/* Headline numbers under the hero */
+.hero-metrics {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.4rem; margin-top: 2.2rem; max-width: 780px; margin-inline: auto;
+}
+.hero-metric-v {
+  display: block;
+  font: 700 2.1rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: -.03em;
+}
+.hero-metric-l {
+  display: block; font-size: .8rem; color: var(--text-muted); margin-top: .35rem; line-height: 1.4;
+}
+
+/* ── Story band ─────────────────────────────────────────────── */
+.story-band { position: relative; }
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.story-copy { padding-block: 4rem; }
+
+.story-beat {
+  min-height: 66vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: 2rem;
+  opacity: .34;
+  transition: opacity 520ms var(--ease-out);
+}
+.story-beat.is-active { opacity: 1; }
+
+.story-beat-tag {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font: 700 .7rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--beat, var(--primary)); margin-bottom: .9rem;
+}
+.story-beat-tag::before {
+  content: ""; width: 24px; height: 2px; border-radius: 2px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform 520ms var(--ease-out);
+}
+.story-beat.is-active .story-beat-tag::before { transform: scaleX(1); }
+
+.story-beat h2 {
+  font: 700 clamp(1.5rem, 3vw, 2.15rem)/1.2 'Google Sans', system-ui, sans-serif;
+  letter-spacing: -.028em; margin-bottom: .9rem;
+}
+.story-beat p {
+  font-size: 1.02rem; line-height: 1.72; color: var(--text-muted); max-width: 46ch;
+}
+.story-beat p + p { margin-top: .8rem; }
+.story-beat strong { color: var(--text); font-weight: 600; }
+
+.story-beat-stat {
+  margin-top: 1.3rem; padding-left: 1rem;
+  border-left: 3px solid var(--beat, var(--primary));
+}
+.story-beat-stat b {
+  display: block;
+  font: 700 1.5rem/1.1 'Google Sans', system-ui, sans-serif;
+  color: var(--beat, var(--primary)); letter-spacing: -.02em;
+}
+.story-beat-stat span { font-size: .82rem; color: var(--text-muted); }
+
+/* ── Pinned stage ───────────────────────────────────────────── */
+.story-stage {
+  position: sticky; top: 96px;
+  height: min(76vh, 620px);
+  display: flex; flex-direction: column; gap: .8rem;
+}
+
+.story-frames { position: relative; flex: 1; border-radius: var(--radius-lg); overflow: hidden; }
+.story-frame {
+  position: absolute; inset: 0;
+  opacity: 0; transform: scale(1.04);
+  transition: opacity 650ms var(--ease-out), transform 900ms var(--ease-out);
+  pointer-events: none;
+}
+.story-frame .ig-shot { height: 100%; aspect-ratio: auto; border-radius: var(--radius-lg); }
+.story-stage.beat-0 .story-frame[data-frame="0"],
+.story-stage.beat-1 .story-frame[data-frame="1"],
+.story-stage.beat-2 .story-frame[data-frame="2"],
+.story-stage.beat-3 .story-frame[data-frame="3"],
+.story-stage.beat-4 .story-frame[data-frame="4"] {
+  opacity: 1; transform: none; pointer-events: auto;
+}
+
+/* Progress rail: the four levels, filling as you read */
+.story-rail { display: flex; gap: .4rem; }
+.story-rail-seg {
+  flex: 1; height: 4px; border-radius: 2px; background: var(--border);
+  position: relative; overflow: hidden;
+}
+.story-rail-seg::after {
+  content: ""; position: absolute; inset: 0; background: var(--seg);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 620ms var(--ease-out);
+}
+.story-stage.beat-1 .story-rail-seg:nth-child(1)::after,
+.story-stage.beat-2 .story-rail-seg:nth-child(-n+2)::after,
+.story-stage.beat-3 .story-rail-seg:nth-child(-n+3)::after,
+.story-stage.beat-4 .story-rail-seg::after { transform: scaleX(1); }
+
+.story-caption {
+  font-size: .82rem; color: var(--text-muted); min-height: 2.6em; line-height: 1.5;
+}
+
+@media (max-width: 940px) {
+  .story-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .story-stage { position: sticky; top: 68px; height: 46vh; }
+  .story-beat { min-height: auto; padding-block: 1.6rem; opacity: 1; }
+  .story-copy { padding-block: 1.5rem; }
+}
+
+/* ── Level ladder ───────────────────────────────────────────── */
+.ladder {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin-top: 2rem;
+}
+.ladder-step {
+  position: relative;
+  background: var(--on-bg); border: 1px solid var(--border);
+  border-top: 3px solid var(--lv);
+  border-radius: var(--radius); overflow: hidden;
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.ladder-step:hover { transform: translateY(-7px); box-shadow: var(--shadow-lg); }
+.ladder-step .ig-shot { border-radius: 0; border: none; border-bottom: 1px solid var(--border); }
+.ladder-body { padding: .95rem 1rem 1.1rem; }
+.ladder-id {
+  font: 700 .78rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .08em; color: var(--lv);
+}
+.ladder-name { font: 600 .95rem/1.3 'Google Sans', system-ui, sans-serif; margin: .35rem 0 .4rem; }
+.ladder-desc { font-size: .82rem; line-height: 1.55; color: var(--text-muted); }
+.ladder-score {
+  display: flex; align-items: baseline; gap: .4rem;
+  margin-top: .8rem; padding-top: .7rem; border-top: 1px solid var(--border);
+}
+.ladder-score b { font: 700 1.25rem/1 'Google Sans', system-ui, sans-serif; color: var(--lv); }
+.ladder-score span { font-size: .74rem; color: var(--text-muted); }
+
+@media (max-width: 900px) { .ladder { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .ladder { grid-template-columns: 1fr; } }
+
+/* ── Leaderboard preview ────────────────────────────────────── */
+.lbp {
+  background: var(--on-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);
+  margin-top: 1.6rem;
+}
+.lbp-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .9rem 1.2rem; background: var(--surface); border-bottom: 1px solid var(--border);
+  font: 600 .84rem/1 'Google Sans', system-ui, sans-serif; color: var(--text-muted);
+}
+.lbp-row {
+  display: grid; grid-template-columns: 34px 1fr 92px 92px;
+  align-items: center; gap: .7rem;
+  padding: .7rem 1.2rem; border-bottom: 1px solid var(--border);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.lbp-row:last-child { border-bottom: none; }
+.lbp-row:hover { background: var(--surface); }
+.lbp-rank { font: 700 .82rem/1 'Google Sans', system-ui, sans-serif; color: var(--text-muted); }
+.lbp-name { font-weight: 600; font-size: .92rem; display: flex; align-items: center; gap: .5rem; }
+.lbp-name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tone); flex-shrink: 0; }
+.lbp-metric {
+  position: relative; text-align: right;
+  font-variant-numeric: tabular-nums; font-weight: 600; font-size: .9rem;
+}
+.lbp-metric small { display: block; font-size: .66rem; color: var(--text-muted); font-weight: 400; }
+.lbp-track {
+  position: absolute; left: 0; right: 0; bottom: -3px; height: 3px;
+  border-radius: 2px; background: var(--tone); opacity: .3;
+  transform: scaleX(var(--v, 0)); transform-origin: right;
+  transition: transform 900ms var(--ease-out);
+}
+.is-in .lbp-track { transform: scaleX(var(--v, 0)); }
+
+@media (max-width: 620px) {
+  .lbp-row { grid-template-columns: 28px 1fr 76px; }
+  .lbp-row > :last-child, .lbp-head > :last-child { display: none; }
+}
+
+/* ── Platform cards (what this site is, not just what the paper says) ── */
+.plat {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem; margin-top: 2rem;
+}
+.plat-card {
+  display: flex; flex-direction: column;
+  background: var(--on-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.4rem 1.3rem;
+  text-decoration: none; color: var(--text);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+.plat-card:hover {
+  transform: translateY(-7px); box-shadow: var(--shadow-lg);
+  border-color: var(--tone); text-decoration: none; color: var(--text);
+}
+.plat-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 11px; margin-bottom: .9rem;
+  background: color-mix(in srgb, var(--tone) 15%, transparent); color: var(--tone); font-size: 1.02rem;
+}
+.plat-card h3 { font: 600 1.05rem/1.3 'Google Sans', system-ui, sans-serif; margin-bottom: .45rem; }
+.plat-card p  { font-size: .87rem; line-height: 1.6; color: var(--text-muted); flex: 1; }
+.plat-go {
+  margin-top: 1rem; font: 600 .82rem/1 'Google Sans', system-ui, sans-serif; color: var(--tone);
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.plat-card:hover .plat-go { gap: .6rem; }
+.plat-go i { transition: transform var(--dur-fast) var(--ease-out); }

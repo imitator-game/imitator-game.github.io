@@ -1,38 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data &amp; Downloads — The Imitator Game</title>
+  <meta name="description" content="Download the complete IG-10K dataset and the shared ManiSkill asset package from Hugging Face or ModelScope.">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/png" href="assets/media/logo.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260815-dark-palette-3">
-  <link rel="stylesheet" href="assets/css/pages.css">
-  <link rel="stylesheet" href="assets/css/docs.css?v=20260815-doc-sidebar-2">
+  <link rel="icon" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/pages.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/docs.css?v=20260824-motion">
   <script>
+    /* No-flash theme boot — mirrors theme.js, must stay in <head>. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
+
   <header class="pst-header">
     <div class="pst-content-wrapper pst-header-inner">
       <a href="index.html" class="pst-header-brand">
-        <span class="brand-logo" aria-hidden="true"><img src="assets/media/logo.png" alt="The Imitator Game logo"></span>
+        <span class="brand-logo" aria-hidden="true"><img src="assets/media/logo.svg" alt=""></span>
         The&thinsp;Imitator&thinsp;Game
       </a>
       <nav class="pst-header-nav">
         <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
         <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
         <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
       </nav>
-      <div class="pst-header-end"><button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button></div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -40,14 +49,14 @@
     <div class="pst-content-wrapper">
       <div class="doc-header">
         <div>
-          <div class="doc-eyebrow"><i class="fas fa-database"></i>Downloads</div>
-          <h1 class="doc-title">Data &amp; assets</h1>
-          <p class="doc-subtitle">A single index for the complete IG-10K dataset and the shared ManiSkill asset package. Choose the mirror that works best for your environment.</p>
+          <div class="doc-eyebrow" data-reveal="up"><i class="fas fa-database"></i>Downloads</div>
+          <h1 class="doc-title" data-split="45" data-reveal>Data &amp; assets</h1>
+          <p class="doc-subtitle" data-reveal="up" data-reveal-delay="180">A single index for the complete IG-10K dataset and the shared ManiSkill asset package. Choose the mirror that works best for your environment.</p>
         </div>
       </div>
 
-      <div class="download-grid">
-        <article class="download-card">
+      <div class="download-grid" data-stagger="90">
+        <article class="download-card ig-lift">
           <div class="doc-card-icon"><i class="fas fa-database"></i></div>
           <h2>IG-10K Dataset</h2>
           <p>Human demonstrations and paired simulation data in the project LeRobot format.</p>
@@ -57,7 +66,7 @@
             <pre><code>hf download imitator-game/IG-10K-Dataset --repo-type dataset --local-dir demos</code></pre>
           </div>
         </article>
-        <article class="download-card">
+        <article class="download-card ig-lift">
           <div class="doc-card-icon"><i class="fas fa-database"></i></div>
           <h2>IG-10K Dataset</h2>
           <p>ModelScope mirror of the complete dataset for users who prefer that registry.</p>
@@ -67,7 +76,7 @@
             <pre><code>modelscope download --dataset Zhouxunzhe/IG-10K-Dataset --local_dir demos</code></pre>
           </div>
         </article>
-        <article class="download-card">
+        <article class="download-card ig-lift">
           <div class="doc-card-icon"><i class="fas fa-cubes"></i></div>
           <h2>IG-10K Assets</h2>
           <p>The shared YCB, RoboTwin, PartNet-Mobility and external asset package for the benchmark.</p>
@@ -77,7 +86,7 @@
             <pre><code>hf download imitator-game/IG-10K-Assets --repo-type dataset --local-dir ~/.maniskill/data</code></pre>
           </div>
         </article>
-        <article class="download-card">
+        <article class="download-card ig-lift">
           <div class="doc-card-icon"><i class="fas fa-cubes"></i></div>
           <h2>IG-10K Assets</h2>
           <p>ModelScope mirror of the asset package used by the simulation environments.</p>
@@ -90,22 +99,29 @@
       </div>
 
       <section class="download-notes doc-prose">
-        <h2 id="layout">Where the files go</h2>
-        <p>After downloading, the training data is organized into the human demonstration root and the converted simulation root:</p>
-        <div class="code-block"><div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div><pre><code>demos/
+        <h2 id="layout" data-reveal="up">Where the files go</h2>
+        <p data-reveal="up" data-reveal-delay="80">After downloading, the training data is organized into the human demonstration root and the converted simulation root:</p>
+        <div class="code-block" data-reveal="up" data-reveal-delay="140"><div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div><pre><code>demos/
 ├── demo_data/       human demonstration data, including MANO features
 └── imitator_data/   simulation / robot LeRobot datasets
 
 ~/.maniskill/data/    shared simulation assets</code></pre></div>
-        <div class="callout callout-info">
+        <div class="callout callout-info" data-reveal="up" data-reveal-delay="200">
           <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
           <div class="callout-body"><div class="callout-title">Continue with the documentation</div><p>See <a href="docs/getting-started.html">installation</a> for assets and Vulkan, <a href="docs/data-collection.html">data collection</a> for conversion, and <a href="docs/baselines.html">baselines</a> for training and evaluation.</p></div>
         </div>
       </section>
     </div>
   </main>
-  <footer class="lp-footer"><div class="lp-footer-inner"><span><img src="assets/media/logo.png" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span><span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span></div></footer>
+
+  <footer class="lp-footer"><div class="lp-footer-inner">
+    <span>The Imitator Game</span>
+    <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+  </div></footer>
 </div>
+
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/motion.js"></script>
 <script src="assets/js/site.js"></script>
 <script>
 document.querySelectorAll('.code-copy-btn').forEach(function (btn) {

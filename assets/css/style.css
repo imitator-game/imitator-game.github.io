@@ -145,6 +145,33 @@ a:hover { color: var(--primary-hover); text-decoration: underline; text-decorati
 }
 .brand-icon { font-size: 1.2rem; }
 
+/* Brand mark.
+   These rules used to live only in pages.css, which index.html and
+   submit.html never load — an <img> pointing at an SVG with no intrinsic
+   size then falls back to 300x150 and blows the header apart. Sizing the
+   mark here means every page gets it, whatever sheets it happens to load. */
+.brand-logo {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  flex: 0 0 26px;               /* never let flex shrink distort it */
+  border-radius: 6px;
+  background: transparent;
+  margin-right: .3rem;
+  overflow: hidden;
+}
+.brand-logo img,
+.brand-logo svg {
+  width: 26px; height: 26px;
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+}
+/* Alt text must not paint a broken-image caption across the header if the
+   file is missing — the link text already names the site. */
+.brand-logo img { color: transparent; font-size: 0; }
+
 .pst-header-nav {
   display: flex; gap: .15rem; flex: 1;
 }
@@ -1952,4 +1979,27 @@ body.landing-page .pst-header-nav { display: none; }
   .results-carousel-dots {
     display: none !important;
   }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       SHARED FOOTER
+   ═══════════════════════════════════════════════════════════ */
+/* Was defined only in landing.css, but leaderboard.html, data.html,
+   arena.html and gallery.html all use .lp-footer without loading that
+   sheet — the footer rendered as bare inline text. Defined here so it is
+   the same strip on every page. */
+.lp-footer {
+  background: var(--on-bg);
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.lp-footer-inner {
+  max-width: 1400px; margin: 0 auto; padding: 1.1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font-size: .85rem; color: var(--text-muted);
+}
+.lp-footer-inner a { color: var(--text-muted); }
+.lp-footer-inner a:hover { color: var(--primary); }
+@media (max-width: 640px) {
+  .lp-footer-inner { flex-direction: column; gap: .35rem; text-align: center; padding: 1rem 1.25rem; }
 }

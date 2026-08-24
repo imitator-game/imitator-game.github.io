@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard — The Imitator Game</title>
+  <meta name="description" content="Standings for The Imitator Game: 9 models, 15 trained variants, scored in simulation, on hardware, and by human Arena judges.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/pages.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/charts.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/leaderboard.css?v=20260824-motion">
+  <script>
+    /* No-flash theme boot — mirrors theme.js, must stay in <head>. */
+    (function () {
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
+    })();
+  </script>
+</head>
+<body>
+<div class="ig-scroll-progress"></div>
+<div class="pst-page">
+
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true"><img src="assets/media/logo.svg" alt="The Imitator Game logo"></span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="leaderboard.html" class="active"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
+        <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
+      </nav>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
+    </div>
+  </header>
+
+  <main class="pst-main" style="padding:0;">
+
+    <!-- ── Header band ─────────────────────────────────────── -->
+    <section class="lb-hero lp-band-hero">
+      <div class="ig-hero-field" aria-hidden="true">
+        <span class="ig-hero-blob b1"></span><span class="ig-hero-blob b2"></span><span class="ig-hero-blob b3"></span>
+      </div>
+      <div class="lb-hero-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
+        <h1 class="lb-title" data-split="45" data-reveal>Who imitates best?</h1>
+        <p class="lb-sub" data-reveal="up" data-reveal-delay="200">
+          Nine models, fifteen trained variants, scored three ways: an automated metric in simulation,
+          trials on a dual-arm platform, and blind human comparisons in the Arena. Sort any column.
+          The gaps between the three views are the interesting part.
+        </p>
+
+        <div class="lb-stats" data-stagger="80">
+          <div class="lb-stat"><span class="lb-stat-v tone-va" data-count-to="0.81" data-count-decimals="2">0.00</span>
+            <span class="lb-stat-l">Best simulation SR — ACT/DINOv2</span></div>
+          <div class="lb-stat"><span class="lb-stat-v tone-skill" data-count-to="0.95" data-count-decimals="2">0.00</span>
+            <span class="lb-stat-l">Best Arena win rate — XSkill, P+FT</span></div>
+          <div class="lb-stat"><span class="lb-stat-v tone-vla" data-count-to="13" data-count-suffix="%">0%</span>
+            <span class="lb-stat-l">Ceiling on zero-shot transfer</span></div>
+          <div class="lb-stat"><span class="lb-stat-v tone-l3" data-count-to="0.29" data-count-decimals="2">0.00</span>
+            <span class="lb-stat-l">Average success at L3</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Controls ────────────────────────────────────────── -->
+    <div class="lb-controls" data-reveal="up">
+      <div class="lb-tabs" role="tablist">
+        <button class="lb-tab is-active" data-board="sim">Simulation</button>
+        <button class="lb-tab" data-board="real">Real-world Arena</button>
+        <button class="lb-tab" data-board="level">By level</button>
+      </div>
+      <div class="lb-filters">
+        <span class="lb-chip" data-fam="VLA" style="--chip:var(--fig-vla)">VLA</span>
+        <span class="lb-chip" data-fam="Skill" style="--chip:var(--fig-skill)">Video-Skill</span>
+        <span class="lb-chip" data-fam="VideoVA" style="--chip:var(--fig-videova)">Video-VA</span>
+        <input id="lb-search" class="lb-search" type="search" placeholder="Find a model…" aria-label="Find a model">
+      </div>
+    </div>
+
+    <div class="lb-wrap">
+      <div id="lb-regime" class="lb-regime" style="display:none;margin-bottom:.8rem;">
+        <button class="lb-regime-btn is-active" data-regime="seen">Seen tasks</button>
+        <button class="lb-regime-btn" data-regime="zs">Zero-shot</button>
+        <button class="lb-regime-btn" data-regime="scr">From scratch</button>
+        <button class="lb-regime-btn" data-regime="pft">Pretrain + fine-tune</button>
+      </div>
+
+      <p class="lb-note" id="lb-note"></p>
+
+      <div class="lb-table-shell">
+        <table class="lb-table">
+          <thead id="lb-head"></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div>
+
+      <p class="lb-note" style="margin-top:1rem;">
+        Metrics are defined in the <a href="docs/index.html">documentation</a>. Simulation reports success rate and
+        sub-goal success rate over 10 tasks × 4 levels; the real-world board reports human verdicts from the
+        <a href="arena.html">Arena</a> rubric. Numbers here match the paper tables exactly.
+      </p>
+    </div>
+
+    <!-- ── What the table hides ─────────────────────────────── -->
+    <div class="lp-band lp-band-gray">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-chart-line"></i>Behind the ranking</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="80">A leaderboard is a summary. Here is the shape.</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="140">
+          Ranking by seen-task success rewards trajectory fidelity. Ranking by L3 success rewards something else
+          entirely — and the two orders disagree. Hover any point for the underlying numbers.
+        </p>
+
+        <div class="ig-figure" data-reveal="up" data-reveal-delay="200" style="margin-top:1.6rem;">
+          <div class="ig-figure-head">
+            <span class="ig-figure-tag">Fig. C5</span>
+            <h3 class="ig-figure-title">Success and human score across L0–L3</h3>
+          </div>
+          <div class="ig-chart" data-chart="perlevel"></div>
+          <p class="ig-figure-caption">
+            <b>Real-world pretrain + fine-tune, by level.</b> Success holds roughly flat from L0 to L2 and then falls
+            at L3, and the human imitation score falls with it. XSkill has the steepest fall — it is the strongest
+            model through L2 and lands level with the rest at L3.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Submit strip ────────────────────────────────────── -->
+    <div class="lb-submit" style="margin-top:3rem;">
+      <div class="lb-submit-card" data-reveal="up">
+        <div>
+          <h3>Put your model on this board</h3>
+          <p>Run the public evaluation harness, submit the rollout bundle, and we replay it in the Arena.
+             Verified entries are added with the corpus size and training regime you used.</p>
+        </div>
+        <a href="submit.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-upload"></i>&ensp;Submit a model</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="lp-footer"><div class="lp-footer-inner">
+    <span>The Imitator Game</span>
+    <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+  </div></footer>
+</div>
+
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/motion.js"></script>
+<script src="assets/js/figdata.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/leaderboard.js"></script>
+</body>
+</html>

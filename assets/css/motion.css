@@ -1,0 +1,316 @@
+/* ============================================================
+   motion.css — animation layer for The Imitator Game.
+
+   Adds nothing to the palette except the *paper figure* colours
+   (lifted straight from ig_common.py) so the site charts and the
+   PDF figures read as the same artefact. Everything else reuses
+   the existing --primary / --surface / --l0..l3 tokens.
+
+   Load AFTER style.css, BEFORE page-specific sheets.
+   ============================================================ */
+
+:root {
+  /* Paper figure palette — ig_common.C_FAMILY / C_MODEL / C_LEVEL / C_ENCODER */
+  --fig-vla:        #4C72B0;   /* blue    — language-conditioned VLA        */
+  --fig-skill:      #DD8452;   /* orange  — cross-embodiment video skill    */
+  --fig-videova:    #55A868;   /* green   — video-conditioned visuomotor    */
+  --fig-purple:     #8172B3;   /* purple  — 4th representative model        */
+  --fig-grey:       #7F7F7F;
+  --fig-light:      #D9D9D9;
+
+  --fig-l0:         #6FA86F;
+  --fig-l1:         #5B8FC9;
+  --fig-l2:         #E0B44A;
+  --fig-l3:         #E28A5A;
+
+  --fig-seen:       #4C72B0;
+  --fig-zs:         #C44E52;
+  --fig-scr:        #937860;
+  --fig-pft:        #55A868;
+
+  --fig-axis:       rgba(0,0,0,.42);
+  --fig-grid:       rgba(0,0,0,.07);
+  --fig-ink:        #1d1d1f;
+
+  /* Motion */
+  --ease-out:  cubic-bezier(.16,.84,.44,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast: 180ms;
+  --dur:      420ms;
+  --dur-slow: 900ms;
+}
+
+[data-theme="dark"] {
+  /* Figure hues nudged up in luminance so they hold on the blue-gray canvas */
+  --fig-vla:     #6E93D6;
+  --fig-skill:   #F0A071;
+  --fig-videova: #79C48D;
+  --fig-purple:  #A395D6;
+  --fig-grey:    #9AA3AE;
+  --fig-light:   #3a424e;
+
+  --fig-l0:      #8CC48C;
+  --fig-l1:      #7FADE0;
+  --fig-l2:      #EDC96E;
+  --fig-l3:      #F0A47C;
+
+  --fig-seen:    #6E93D6;
+  --fig-zs:      #DF7A7E;
+  --fig-scr:     #B29682;
+  --fig-pft:     #79C48D;
+
+  --fig-axis:    rgba(243,244,245,.46);
+  --fig-grid:    rgba(243,244,245,.09);
+  --fig-ink:     #f3f4f5;
+}
+
+/* ── Reduced motion: everything resolves to its final state ──── */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .ig-marquee-track { animation: none !important; }
+}
+
+/* ============================================================
+   1 · Scroll reveal
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  will-change: opacity, transform;
+}
+[data-reveal="up"]    { transform: translate3d(0, 26px, 0); }
+[data-reveal="down"]  { transform: translate3d(0, -20px, 0); }
+[data-reveal="left"]  { transform: translate3d(-30px, 0, 0); }
+[data-reveal="right"] { transform: translate3d(30px, 0, 0); }
+[data-reveal="scale"] { transform: scale(.955); }
+[data-reveal="blur"]  { filter: blur(9px); transform: translate3d(0,14px,0); }
+[data-reveal].is-in   { opacity: 1; transform: none; filter: none; }
+
+/* ── Word-by-word headline entrance ──────────────────────────── */
+.ig-split-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, .5em, 0) rotate(1.5deg);
+  transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+}
+.is-in > .ig-split-word,
+.ig-split.is-in .ig-split-word { opacity: 1; transform: none; }
+
+/* ============================================================
+   2 · Ambient hero field
+   A slow-drifting mesh built from the three paradigm colours —
+   the same three families the whole benchmark is organised around.
+   ============================================================ */
+.ig-hero-field {
+  position: absolute; inset: -20% -10% auto -10%;
+  height: 140%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ig-hero-blob {
+  position: absolute;
+  width: 46vw; height: 46vw;
+  min-width: 340px; min-height: 340px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .20;
+  animation: ig-drift 26s var(--ease-out) infinite alternate;
+}
+[data-theme="dark"] .ig-hero-blob { opacity: .26; filter: blur(110px); }
+.ig-hero-blob.b1 { background: var(--fig-vla);     top: -12%; left: 2%;  animation-duration: 24s; }
+.ig-hero-blob.b2 { background: var(--fig-skill);   top: 6%;   left: 38%; animation-duration: 31s; animation-delay: -6s; }
+.ig-hero-blob.b3 { background: var(--fig-videova); top: -6%;  right: 0%; animation-duration: 28s; animation-delay: -13s; }
+
+@keyframes ig-drift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(3vw, 4vh, 0) scale(1.12); }
+  100% { transform: translate3d(-2vw, -3vh, 0) scale(.94); }
+}
+
+/* Faint scanline grid — reads as "instrumented environment" */
+.ig-hero-grid {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--fig-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fig-grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+.lp-band-hero { position: relative; overflow: hidden; }
+.lp-band-hero .lp-inner { position: relative; z-index: 1; }
+
+/* ============================================================
+   3 · Micro-interactions
+   ============================================================ */
+.ig-lift {
+  transition: transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out);
+}
+.ig-lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+/* Buttons: sheen sweep on hover */
+.pst-btn { position: relative; overflow: hidden; }
+.pst-btn::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.35) 50%, transparent 62%);
+  transform: translateX(-120%);
+  transition: transform 620ms var(--ease-out);
+  pointer-events: none;
+}
+.pst-btn:hover::after { transform: translateX(120%); }
+.pst-btn-primary { transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur) var(--ease-out); }
+.pst-btn-primary:hover { transform: translateY(-2px) scale(1.02); }
+.pst-btn:active { transform: translateY(0) scale(.985); }
+
+/* Nav underline that grows from the centre */
+.pst-header-nav a { position: relative; }
+.pst-header-nav a::after {
+  content: ""; position: absolute; left: 50%; right: 50%; bottom: -2px;
+  height: 2px; border-radius: 2px; background: var(--primary);
+  transition: left var(--dur) var(--ease-out), right var(--dur) var(--ease-out);
+}
+.pst-header-nav a:hover::after,
+.pst-header-nav a.active::after { left: .35rem; right: .35rem; }
+
+/* Scroll progress hairline under the sticky header */
+.ig-scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--fig-vla), var(--fig-skill), var(--fig-videova));
+  z-index: 200; pointer-events: none;
+}
+
+/* ============================================================
+   4 · Theme switch (dropdown)
+   ============================================================ */
+.theme-switch { position: relative; }
+.theme-switch-btn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  height: 32px; padding: 0 .7rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--on-bg); color: var(--text);
+  font: 600 .8rem/1 'Google Sans', system-ui, sans-serif;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.theme-switch-btn:hover { border-color: var(--primary); }
+.theme-switch-caret { font-size: .6rem; opacity: .55; transition: transform var(--dur-fast) var(--ease-out); }
+.theme-switch.is-open .theme-switch-caret { transform: rotate(180deg); }
+
+.theme-switch-menu {
+  position: absolute; right: 0; top: calc(100% + .45rem);
+  min-width: 158px; margin: 0; padding: .3rem; list-style: none;
+  background: var(--on-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(-6px) scale(.97);
+  pointer-events: none; z-index: 220;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.theme-switch.is-open .theme-switch-menu { opacity: 1; transform: none; pointer-events: auto; }
+.theme-switch-menu li {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .45rem .6rem; border-radius: var(--radius-sm);
+  font-size: .85rem; cursor: pointer; color: var(--text);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.theme-switch-menu li:hover { background: var(--surface); }
+.theme-switch-menu li i:first-child { width: 1em; opacity: .7; }
+.theme-switch-tick { margin-left: auto; font-size: .7rem; color: var(--primary); opacity: 0; }
+.theme-switch-menu li.is-active { color: var(--primary); }
+.theme-switch-menu li.is-active .theme-switch-tick { opacity: 1; }
+
+/* ============================================================
+   5 · Counters & stat type
+   ============================================================ */
+.ig-counter { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ============================================================
+   6 · Ticker of evaluated models (hero footer)
+   ============================================================ */
+.ig-marquee {
+  overflow: hidden; position: relative;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.ig-marquee-track {
+  display: flex; gap: 2.2rem; width: max-content;
+  animation: ig-marquee 42s linear infinite;
+}
+.ig-marquee:hover .ig-marquee-track { animation-play-state: paused; }
+.ig-marquee-item {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font: 600 .82rem/1 'Google Sans', system-ui, sans-serif;
+  color: var(--text-muted); white-space: nowrap;
+}
+.ig-marquee-item::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--dot, var(--fig-grey));
+}
+@keyframes ig-marquee { to { transform: translateX(-50%); } }
+
+/* ============================================================
+   7 · Video frames (for the story shots you will film)
+   ============================================================ */
+.ig-shot {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #0d1117;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out);
+}
+.ig-shot:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.ig-shot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ig-shot-4x3 { aspect-ratio: 4 / 3; }
+.ig-shot-label {
+  position: absolute; top: .7rem; left: .75rem; z-index: 4;
+  padding: .2rem .6rem; border-radius: var(--radius-pill);
+  font: 700 .66rem/1.4 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: #fff; background: rgba(0,0,0,.55);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.ig-shot-label.is-human { background: rgba(111,168,111,.85); }
+.ig-shot-label.is-robot { background: rgba(226,138,90,.88); }
+.ig-shot-label.is-sim   { background: rgba(91,143,201,.88); }
+
+/* Placeholder shown until the file exists — tells you exactly what to drop in */
+.ig-shot-slot {
+  position: absolute; inset: 0; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  padding: 1.25rem; text-align: center;
+  background:
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.028) 0 12px, transparent 12px 24px),
+    linear-gradient(150deg, #182131, #0c1017);
+  color: rgba(255,255,255,.62); font-size: .84rem;
+}
+.ig-shot-slot i { font-size: 1.4rem; opacity: .5; }
+.ig-shot-slot code {
+  font-size: .72rem; color: rgba(255,255,255,.45);
+  background: rgba(255,255,255,.07); padding: .18rem .45rem; border-radius: 4px;
+  word-break: break-all;
+}
+.ig-shot.is-empty video { display: none; }
+.ig-shot.is-empty .ig-shot-slot { display: flex; }
+
+/* ============================================================
+   8 · Section eyebrow with a drawn rule
+   ============================================================ */
+.ig-eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font: 700 .74rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--primary); margin-bottom: .9rem;
+}
+.ig-eyebrow::before {
+  content: ""; height: 2px; width: 0; background: currentColor; border-radius: 2px;
+  transition: width 700ms var(--ease-out) 120ms;
+}
+.is-in .ig-eyebrow::before, .ig-eyebrow.is-in::before { width: 30px; }

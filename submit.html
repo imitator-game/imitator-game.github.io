@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a model — The Imitator Game</title>
+  <meta name="description" content="Run the Imitator Game evaluation harness and put your policy on the leaderboard and in the Arena.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/pages.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/submit.css?v=20260824-motion">
+  <script>
+    (function () {
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
+    })();
+  </script>
+</head>
+<body>
+<div class="ig-scroll-progress"></div>
+<div class="pst-page">
+
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true"><img src="assets/media/logo.svg" alt="The Imitator Game logo"></span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="submit.html" class="active"><i class="fas fa-upload"></i>Submit</a>
+        <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
+      </nav>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
+    </div>
+  </header>
+
+  <main class="pst-main" style="padding:0;">
+
+    <section class="lp-band lp-band-hero sub-hero">
+      <div class="ig-hero-field" aria-hidden="true">
+        <span class="ig-hero-blob b1"></span><span class="ig-hero-blob b2"></span><span class="ig-hero-blob b3"></span>
+      </div>
+      <div class="lp-inner lp-inner-narrow">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-upload"></i>Open submission</div>
+        <h1 class="sub-title" data-split="45" data-reveal>Enter your policy</h1>
+        <p class="sub-lead" data-reveal="up" data-reveal-delay="180">
+          The evaluation harness is public and the task splits are fixed. Run it, send us the rollout bundle,
+          and your model appears on the leaderboard with the same numbers everyone else is measured by —
+          and in the Arena, where human judges compare it blind against the current field.
+        </p>
+        <div class="sub-cta" data-reveal="up" data-reveal-delay="280">
+          <a class="pst-btn pst-btn-primary pst-btn-lg" href="https://github.com/imitator-game/The-Imitator-Game" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>&ensp;Get the harness
+          </a>
+          <a class="pst-btn pst-btn-lg" href="#bundle"><i class="fas fa-box-open"></i>&ensp;Bundle format</a>
+          <a class="pst-btn pst-btn-lg" href="#form"><i class="fas fa-paper-plane"></i>&ensp;Start a submission</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Steps ───────────────────────────────────────────── -->
+    <div class="lp-band lp-band-white">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-list-check"></i>How it works</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Four steps, about a day of compute</h2>
+
+        <ol class="sub-steps" data-stagger="110">
+          <li class="sub-step">
+            <span class="sub-step-n">1</span>
+            <h3>Train on a fixed corpus</h3>
+            <p>Pretrain on the 15-, 30-, or 45-task IG-10K split. The splits are frozen and shipped with the
+               harness, so a corpus size is comparable across every entry on the board.</p>
+            <code>ig train --corpus 45 --policy your_policy</code>
+          </li>
+          <li class="sub-step">
+            <span class="sub-step-n">2</span>
+            <h3>Roll out all four regimes</h3>
+            <p>Seen tasks, zero-shot on the held-out five, from-scratch few-shot, and pretrain + fine-tune.
+               Every regime runs at all four levels — 40 task–level pairs per domain.</p>
+            <code>ig eval --regimes seen,zs,scratch,pft --levels L0-L3</code>
+          </li>
+          <li class="sub-step">
+            <span class="sub-step-n">3</span>
+            <h3>Package the rollouts</h3>
+            <p>The harness writes a bundle with per-episode videos, the automated metrics, and a metadata
+               file describing the model. Videos are what the Arena replays, so keep them.</p>
+            <code>ig package --out my_model_bundle/</code>
+          </li>
+          <li class="sub-step">
+            <span class="sub-step-n">4</span>
+            <h3>Send it in</h3>
+            <p>Open a submission below. We verify the metrics reproduce, add the entry to the leaderboard,
+               and enter the rollouts into the Arena rotation for human comparison.</p>
+            <code>≈ 3–5 working days to verify</code>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ── Rules ───────────────────────────────────────────── -->
+    <div class="lp-band lp-band-gray">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-scale-balanced"></i>What counts</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Rules of the board</h2>
+        <div class="sub-rules" data-stagger="90">
+          <div class="sub-rule ig-lift">
+            <i class="fas fa-lock"></i>
+            <h4>The held-out five stay held out</h4>
+            <p>No unseen-task demonstrations in pretraining. Few-shot regimes use exactly 10 demonstrations
+               per unseen task — the same budget for every level.</p>
+          </div>
+          <div class="sub-rule ig-lift">
+            <i class="fas fa-video"></i>
+            <h4>One human video in, one rollout out</h4>
+            <p>The policy sees the demonstration video for the episode it is executing. No privileged state,
+               no per-episode hand tuning, no retries that are not reported.</p>
+          </div>
+          <div class="sub-rule ig-lift">
+            <i class="fas fa-tag"></i>
+            <h4>Declare the corpus and the regime</h4>
+            <p>Entries are listed with their pretraining corpus size and training regime. A 45-task entry is
+               not compared against a 15-task entry without saying so.</p>
+          </div>
+          <div class="sub-rule ig-lift">
+            <i class="fas fa-eye"></i>
+            <h4>Rollouts are public</h4>
+            <p>Submitted videos go into the Gallery and the Arena. Weights are yours; the behaviour is on
+               the record so anyone can see what the number means.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Bundle ──────────────────────────────────────────── -->
+    <div class="lp-band lp-band-white" id="bundle">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-box-open"></i>Bundle format</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">What to send</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
+          A directory, or a link to one. The harness produces this layout for you; if you evaluated
+          outside the harness, match it by hand.
+        </p>
+
+        <div class="sub-code-grid">
+          <div class="sub-code" data-reveal="up">
+            <div class="sub-code-head"><span>Directory</span><button class="sub-copy" type="button">Copy</button></div>
+<pre><code>my_model_bundle/
+├── meta.json              model card and training setup
+├── metrics.json           SR / Sub-SR per task × level × regime
+├── rollouts/
+│   ├── seen/L0/&lt;task&gt;/ep_000.mp4
+│   ├── zs/L3/&lt;task&gt;/ep_004.mp4
+│   └── …                  one clip per evaluated episode
+└── logs/                  harness stdout, config, git SHA</code></pre>
+          </div>
+
+          <div class="sub-code" data-reveal="up" data-reveal-delay="120">
+            <div class="sub-code-head"><span>meta.json</span><button class="sub-copy" type="button">Copy</button></div>
+<pre><code>{
+  "model_name": "MyPolicy/DINOv2",
+  "family": "Video-VA",
+  "conditioning": "human_video",
+  "corpus_tasks": 45,
+  "regimes": ["seen", "zs", "scratch", "pft"],
+  "params_b": 0.9,
+  "domain": "simulation",
+  "authors": ["…"],
+  "paper_url": "",
+  "code_url": "",
+  "license": "…",
+  "harness_version": "1.0.0"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Form ────────────────────────────────────────────── -->
+    <div class="lp-band lp-band-gray" id="form">
+      <div class="lp-inner lp-inner-narrow">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-paper-plane"></i>Submission</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Start a submission</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
+          Fill this in and it opens a pre-filled tracking issue — nothing is sent from this page.
+          If you would rather not use GitHub, copy the summary and email it instead.
+        </p>
+
+        <form class="sub-form" id="sub-form" data-reveal="up" data-reveal-delay="150">
+          <div class="sub-field">
+            <label for="f-model">Model name</label>
+            <input id="f-model" name="model" placeholder="MyPolicy/DINOv2" required>
+          </div>
+          <div class="sub-row">
+            <div class="sub-field">
+              <label for="f-family">Paradigm</label>
+              <select id="f-family" name="family">
+                <option>Language-conditioned VLA</option>
+                <option>Cross-embodiment skill</option>
+                <option selected>Video-conditioned visuomotor</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="sub-field">
+              <label for="f-corpus">Pretraining corpus</label>
+              <select id="f-corpus" name="corpus">
+                <option>15 tasks</option><option>30 tasks</option>
+                <option selected>45 tasks</option><option>None</option>
+              </select>
+            </div>
+            <div class="sub-field">
+              <label for="f-domain">Domain</label>
+              <select id="f-domain" name="domain">
+                <option selected>Simulation</option><option>Real world</option><option>Both</option>
+              </select>
+            </div>
+          </div>
+          <div class="sub-field">
+            <label for="f-bundle">Bundle link</label>
+            <input id="f-bundle" name="bundle" placeholder="https://huggingface.co/… or a release URL" required>
+          </div>
+          <div class="sub-field">
+            <label for="f-contact">Contact</label>
+            <input id="f-contact" name="contact" placeholder="email or GitHub handle" required>
+          </div>
+          <div class="sub-field">
+            <label for="f-notes">Anything we should know</label>
+            <textarea id="f-notes" name="notes" rows="4" placeholder="Deviations from the default protocol, hardware, known failure modes…"></textarea>
+          </div>
+          <div class="sub-actions">
+            <button type="submit" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fab fa-github"></i>&ensp;Open a tracking issue</button>
+            <button type="button" class="pst-btn pst-btn-lg" id="sub-copy-summary"><i class="fas fa-copy"></i>&ensp;Copy summary</button>
+          </div>
+          <p class="sub-hint" id="sub-hint"></p>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="lp-footer"><div class="lp-footer-inner">
+    <span>The Imitator Game</span>
+    <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+  </div></footer>
+</div>
+
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/motion.js"></script>
+<script>
+/* Submission form → pre-filled GitHub issue. Static site, no backend. */
+(function () {
+  var REPO = "https://github.com/imitator-game/The-Imitator-Game";
+  var form = document.getElementById("sub-form");
+  var hint = document.getElementById("sub-hint");
+  if (!form) return;
+
+  function summary() {
+    var d = new FormData(form), o = {};
+    d.forEach(function (v, k) { o[k] = v; });
+    return [
+      "### Model submission",
+      "",
+      "- **Model:** " + (o.model || "—"),
+      "- **Paradigm:** " + o.family,
+      "- **Pretraining corpus:** " + o.corpus,
+      "- **Domain:** " + o.domain,
+      "- **Bundle:** " + (o.bundle || "—"),
+      "- **Contact:** " + (o.contact || "—"),
+      "",
+      "**Notes**",
+      "",
+      (o.notes || "_none_"),
+      "",
+      "---",
+      "Checklist:",
+      "- [ ] Unseen tasks excluded from pretraining",
+      "- [ ] 10 demonstrations per unseen task in the few-shot regimes",
+      "- [ ] All four levels evaluated in every regime",
+      "- [ ] `meta.json` and `metrics.json` present in the bundle"
+    ].join("\n");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var title = "Submission: " + (document.getElementById("f-model").value || "new model");
+    var url = REPO + "/issues/new?title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(summary());
+    window.open(url, "_blank", "noopener");
+    hint.textContent = "Opened a pre-filled issue in a new tab. Attach the bundle link there if it needs access.";
+  });
+
+  document.getElementById("sub-copy-summary").addEventListener("click", function () {
+    navigator.clipboard.writeText(summary()).then(function () {
+      hint.textContent = "Summary copied. Send it to the maintainers with your bundle link.";
+    }, function () {
+      hint.textContent = "Copy failed — select the fields and copy manually.";
+    });
+  });
+
+  document.querySelectorAll(".sub-copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var pre = b.closest(".sub-code").querySelector("pre");
+      navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+        b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1800);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

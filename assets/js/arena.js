@@ -184,6 +184,29 @@ function render(pick) {
   // State held on the card for validation
   CURRENT = { bucket, success_a: null, success_b: null, preference: null };
   wireCard();
+  revealCard();
+}
+
+/* The arena card is injected after DOMContentLoaded, so motion.js has
+   already finished its sweep of [data-reveal] elements. Tag the panels now
+   and re-run the observer, so each new comparison enters the same way the
+   rest of the site does. Guarded: without motion.js the card just appears,
+   it never sits invisible at opacity 0. */
+function revealCard() {
+  if (!window.IGMotion) return;
+  const card = document.getElementById("arena-card");
+  const panels = card.querySelectorAll(".arena-model-panel");
+  [
+    [card.querySelector(".arena-sidebar"), "left", 0],
+    [panels[0], "up", 90],
+    [panels[1], "up", 170],
+    [card.querySelector(".arena-bottom-bar"), "up", 250],
+  ].forEach(([node, dir, delay]) => {
+    if (!node) return;
+    node.setAttribute("data-reveal", dir);
+    node.dataset.revealDelay = String(delay);
+  });
+  window.IGMotion.reveal();
 }
 
 /* ── Interaction wiring (per render) ───────────────────────── */
