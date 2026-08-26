@@ -7,17 +7,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -50,7 +64,7 @@
           <div class="doc-eyebrow"><i class="fas fa-robot"></i>Training</div>
           <h1 class="doc-title">Baselines</h1>
           <p class="doc-subtitle">
-            Nine state-of-the-art imitation-learning models, all consuming the same paired human–robot
+            Nine state-of-the-art imitation-learning models, all consuming the same paired human-robot
             LeRobot dataset contract through shared loaders and task encoders.
           </p>
         </div>
@@ -61,7 +75,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -324,7 +338,9 @@ CUDA_VISIBLE_DEVICES=0 python -m gr00t.experiment.launch_finetune \
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 (function () {
   var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));

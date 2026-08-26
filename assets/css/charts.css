@@ -109,21 +109,87 @@
 .ig-chart-tab:hover { border-color: var(--primary); color: var(--text); }
 .ig-chart-tab.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
-/* ── Figure deck (results section tab nav + panels) ───────── */
-.ig-figdeck-nav { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+/* ── Figure deck (results section segmented showcase + panels) ─
+   An editorial index rather than a flat tab bar: figures cluster under
+   the same Q1/Q2/Q3 groups the key-finding cards above use, each pill
+   carries a top accent rail in that figure's own chart colour (a visual
+   preview of what you're about to see), a dot-rail below tracks position
+   across the whole deck, and prev/next arrows + a "n / N" counter give a
+   second, linear way to move through it. Same panels, same data — only
+   how you travel between them changed. */
+.ig-figdeck-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+  flex-wrap: wrap; margin-bottom: .7rem;
+}
+.ig-figdeck-nav { display: flex; gap: 1.4rem; flex-wrap: wrap; flex: 1; min-width: 0; }
+.ig-figdeck-group { display: flex; flex-direction: column; gap: .4rem; }
+.ig-figdeck-group-label {
+  font: 700 .66rem/1 'Google Sans', sans-serif; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); padding-left: .2rem;
+}
+.ig-figdeck-group-tabs { display: inline-flex; gap: .2rem; padding: .3rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); }
+
 .ig-figdeck-tab {
-  padding: .55rem 1rem; border-radius: var(--radius);
-  border: 1px solid var(--border); background: var(--on-bg); color: var(--text-muted);
+  position: relative;
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: .1rem;
+  padding: .5rem 1rem .45rem; border-radius: var(--radius-pill);
+  border: none; background: transparent; color: var(--text-muted);
   font: 600 .82rem/1.3 'Google Sans', sans-serif; text-align: left; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.ig-figdeck-tab::before {
+  content: ""; position: absolute; left: .9rem; right: .9rem; top: .3rem; height: 2.5px; border-radius: 2px;
+  background: var(--accent, var(--primary)); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out);
+}
+.ig-figdeck-tab:hover { color: var(--text); transform: translateY(-1px); }
+.ig-figdeck-tab:hover::before { opacity: .5; }
+.ig-figdeck-tab.is-active { background: var(--accent, var(--primary)); color: #fff; }
+.ig-figdeck-tab.is-active::before { opacity: 0; }
+.ig-figdeck-tab.is-active small { color: rgba(255,255,255,.82); }
+.ig-figdeck-tab small { display: block; font-weight: 400; opacity: .8; font-size: .7rem; line-height: 1.1; }
+.ig-figdeck-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Prev / next + counter, aligned to the right of the nav on wide screens */
+.ig-figdeck-controls {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .3rem; height: fit-content;
+}
+.ig-figdeck-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--on-bg); color: var(--text-muted);
+  cursor: pointer; font-size: .75rem;
   transition: all var(--dur-fast) var(--ease-out);
 }
-.ig-figdeck-tab:hover { border-color: var(--primary); color: var(--text); transform: translateY(-2px); }
-.ig-figdeck-tab.is-active { border-color: var(--primary); background: var(--primary-bg); color: var(--primary); }
-.ig-figdeck-tab small { display: block; font-weight: 400; opacity: .75; font-size: .72rem; margin-top: .1rem; }
+.ig-figdeck-arrow:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+.ig-figdeck-arrow:disabled { opacity: .3; cursor: default; }
+.ig-figdeck-counter {
+  font: 700 .78rem/1 'Google Sans', sans-serif; color: var(--text-muted);
+  font-variant-numeric: tabular-nums; min-width: 3.4em; text-align: center;
+}
+
+/* Dot rail: a quiet, always-visible map of the whole deck */
+.ig-figdeck-rail { display: flex; gap: .35rem; margin: .2rem 0 1.3rem; }
+.ig-figdeck-dot {
+  flex: 1; max-width: 46px; height: 4px; border-radius: 2px;
+  background: var(--border); cursor: pointer; border: none; padding: 0;
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.ig-figdeck-dot:hover { transform: scaleY(1.4); }
+.ig-figdeck-dot.is-active { background: var(--accent, var(--primary)); }
+
+@media (max-width: 640px) {
+  .ig-figdeck-head { flex-direction: column; }
+  .ig-figdeck-controls { align-self: flex-end; }
+}
 
 .ig-figdeck-panel { display: none; }
 .ig-figdeck-panel.is-active { display: block; animation: ig-fig-in 420ms var(--ease-out); }
+.ig-figdeck-panel[hidden] { display: none !important; }
 @keyframes ig-fig-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ig-figdeck-panel.is-active { animation: none; }
+}
 
 .ig-figure { background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.6rem 1.8rem; }
 .ig-figure-head { display: flex; align-items: baseline; gap: .7rem; margin-bottom: .3rem; flex-wrap: wrap; }
@@ -132,11 +198,18 @@
   color: var(--primary); background: var(--primary-bg); padding: .2rem .55rem; border-radius: var(--radius-pill);
 }
 .ig-figure-title { font: 700 1.15rem/1.3 'Google Sans', sans-serif; margin: 0; }
+/* Authored paper figures: intrinsic ratio, never cropped or overlaid. */
+.ig-figure > img {
+  width: 100%; height: auto; display: block;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  margin-top: .5rem;
+}
 .ig-figure-caption { margin-top: 1.1rem; font-size: .88rem; line-height: 1.65; color: var(--text-muted); }
 .ig-figure-caption b { color: var(--text); }
 
 @media (max-width: 760px) {
   .ig-figure { padding: 1.2rem 1.1rem; }
-  .ig-figdeck-nav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: .3rem; }
+  .ig-figdeck-nav { display: flex; overflow-x: auto; flex-wrap: nowrap; padding: .3rem; }
   .ig-figdeck-tab { flex-shrink: 0; }
 }

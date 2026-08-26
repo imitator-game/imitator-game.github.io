@@ -7,17 +7,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -62,7 +76,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -82,19 +96,6 @@
         <div class="doc-main doc-prose">
 
           <h2 id="pipeline">Data pipeline</h2>
-          <p>
-            The training data path after simulation is:
-          </p>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>motion-planning H5
-  → h5_to_lerobot.py
-  → one LeRobot dataset per L{0,1,2,3}_{task}-v1
-  → experiment split config + task_mapping.json
-  → HumanSimPairedDataset
-  → baseline-specific adapter</code></pre>
-          </div>
 
           <p>
             Top-level dataset directories used by the baselines (relative to the repository root):
@@ -113,29 +114,13 @@ demos/imitator_data   Robot (simulation) demonstrations in LeRobot format</code>
             writes successful episodes through <code>RecordEpisode</code>.
           </p>
 
-          <p><strong>L0:</strong></p>
+          <p><strong>L0-L2:</strong></p>
           <div class="code-block">
             <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
 <pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
-  -e TwoRobotStirSpoon-v1 --l0 \
+  -e TwoRobotStirSpoon-v1 --l0 \ # --l1 and --l2 are also valid
   -n 1 --only-count-success \
   --traj-name L0_TwoRobotStirSpoon-v1 \
-  --record-dir demos</code></pre>
-          </div>
-
-          <p><strong>L1 and L2</strong> use the same environment ID with their corresponding switch:</p>
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>python -m mani_skill.examples.motionplanning.dual.two_robot_run \
-  -e TwoRobotStirSpoon-v1 --l1 \
-  -n 1 --only-count-success \
-  --traj-name L1_TwoRobotStirSpoon-v1 \
-  --record-dir demos
-
-python -m mani_skill.examples.motionplanning.dual.two_robot_run \
-  -e TwoRobotStirSpoon-v1 --l2 \
-  -n 1 --only-count-success \
-  --traj-name L2_TwoRobotStirSpoon-v1 \
   --record-dir demos</code></pre>
           </div>
 
@@ -189,19 +174,7 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
           </div>
 
           <p>
-            Omit <code>--tasks</code> and <code>--levels</code> to use all 50 tasks and all four levels.
-            The scheduler:
-          </p>
-
-          <ol>
-            <li>maps L0–L2 to <code>{task}-v1</code> and L3 to <code>{task}L3-v1</code>;</li>
-            <li>counts successful episodes already present in the companion JSON;</li>
-            <li>launches only the missing trajectories;</li>
-            <li>retries failed or stalled jobs; and</li>
-            <li>writes progress to <code>demos/generation_stats.json</code> and logs to the collection log directory.</li>
-          </ol>
-
-          <p>
+            Omit <code>--tasks</code> and <code>--levels</code> to use all 50 tasks and all four levels. 
             Inspect the planned task-level jobs without launching simulation:
           </p>
           <div class="code-block">
@@ -210,21 +183,6 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
           </div>
 
           <h2 id="convert">H5 → LeRobot</h2>
-          <p>
-            First inspect all H5 files that the recursive conversion would process:
-          </p>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>python -m examples.baselines.lerobot_dataset.h5_to_lerobot \
-  --input demos \
-  --output-dir demos/imitator_data \
-  --recursive \
-  --no-gpu \
-  --dry-run</code></pre>
-          </div>
-
-          <p>Then convert them:</p>
 
           <div class="code-block">
             <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
@@ -275,7 +233,7 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
 
           <div class="callout callout-info">
             <div class="callout-icon"><i class="fas fa-cloud-arrow-down"></i></div>
-            <div class="callout-body"><div class="callout-title">Download the released data</div><p>The complete IG-10K dataset and shared asset package are indexed on the <a href="../data.html">Data &amp; downloads</a> page. The current human data includes RGB/depth streams, MANO features, and optional offline segmentation-mask annotations; masks are not used by the released policy baselines.</p></div>
+            <div class="callout-body"><div class="callout-title">Download the released data</div><p>The complete IG-10K dataset and shared asset package are indexed on the <a href="../data.html">Data &amp; downloads</a> page. Current data includes RGB/depth streams, MANO features, and optional offline segmentation-mask annotations.</p></div>
           </div>
 
           <table class="pst-table">
@@ -324,7 +282,7 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
 
           <ul>
             <li>
-              <code>task_mapping.json</code> maps each human demonstration ID to the corresponding L0–L3
+              <code>task_mapping.json</code> maps each human demonstration ID to the corresponding L0-L3
               simulation repository IDs. For example, <code>human_H1</code> is paired with all four
               <code>TwoRobotStirSpoon</code> levels.
             </li>
@@ -395,19 +353,7 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
             <code>{output_dir}/{camera}/{task}/{level}_{env_id}_{camera}_ep{episode_id}.mp4</code>.
           </p>
 
-          <p>
-            To generate trajectories and all selected camera videos in one sequential job:
-          </p>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>python scripts/run_dual_task_multiview_batch.py \
-  --tasks TwoRobotStirSpoon-v1 TwoRobotPlaceBookBookcase-v1 \
-  --levels L0 L1 L2 L3 \
-  --cameras cam1 cam2 cam3 zed2i \
-  --count 1 \
-  --out-root demos/dual_task_multiview</code></pre>
-          </div>
+          
 
           <div class="callout callout-success">
             <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
@@ -448,7 +394,9 @@ demos/{env_id}/motionplanning/{trajectory_name}.json</code></pre>
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 (function () {
   var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));

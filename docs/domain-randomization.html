@@ -7,17 +7,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -63,7 +77,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -150,154 +164,6 @@
         wall_texture, table_texture, ground_texture = <span class="hl-kw">None</span>, <span class="hl-kw">None</span>, <span class="hl-kw">None</span></code></pre>
           </div>
 
-          <p>
-            Each of the three surfaces gets an independently sampled texture, so a single episode can mix
-            different wall / table / ground appearances. The <code>eval_mode</code> flag switches the
-            texture pool from the <code>seen</code> split to the <code>unseen</code> split, which is how
-            you keep evaluation appearances out of the training distribution.
-          </p>
-
-          <h2 id="background-usage">How to enable it</h2>
-          <p>
-            The <code>TableSceneBuilder</code> is constructed in your task's <code>_load_scene</code>.
-            Set <code>random_background=True</code> in the constructor to turn the randomization on:
-          </p>
-
-          <div class="api-card">
-            <div class="api-card-signature">
-<span class="sig-kw">TableSceneBuilder</span>(env, <span class="sig-arg">random_background=False</span>, <span class="sig-arg">robot_init_qpos_noise=0.02</span>)</div>
-            <div class="api-card-desc">
-              <code>random_background</code> — enable RoboTwin texture randomization for the wall,
-              table and ground. <code>robot_init_qpos_noise</code> — standard deviation of the Gaussian
-              noise added to the robot's initial joint configuration at reset.
-            </div>
-          </div>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code><span class="hl-kw">from</span> mani_skill.utils.scene_builder.table <span class="hl-kw">import</span> TableSceneBuilder
-
-<span class="hl-kw">class</span> <span class="hl-fn">TwoRobotMyTaskEnv</span>(BaseEnv):
-    <span class="hl-kw">def</span> <span class="hl-fn">_load_scene</span>(self, options: dict):
-        self.table_scene = TableSceneBuilder(
-            env=self,
-            <span class="hl-deco">random_background=True</span>,                <span class="hl-com"># ← enables texture randomization</span>
-            robot_init_qpos_noise=self.robot_init_qpos_noise,
-        )
-        self.table_scene.build()   <span class="hl-com"># uses random_background from the constructor</span>
-        <span class="hl-com"># ... load your actors / articulations</span></code></pre>
-          </div>
-
-          <div class="callout callout-warning">
-            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
-            <div class="callout-body">
-              <div class="callout-title">Textures are sampled at scene build time</div>
-              <p>
-                Textures are chosen inside <code>build()</code> / <code>create_table_and_wall()</code>,
-                which runs during scene construction. If your environment is built once and reused, the
-                background stays fixed for the lifetime of the scene unless the environment is
-                reconfigured. With <code>reconfiguration_freq</code> set (e.g. 1 for single-env
-                workflows), each reset rebuilds the scene and re-samples the textures.
-              </p>
-            </div>
-          </div>
-
-          <p>
-            The RoboTwin task examples (<code>mani_skill/envs/tasks/tabletop/rm_tasks/</code>) build the
-            same builder — for example <code>rm_microwave.py</code> constructs
-            <code>TableSceneBuilder(self, robot_init_qpos_noise=...)</code> and calls
-            <code>self.table_scene.build(random_background=False)</code> directly. Both call styles are
-            valid; passing the flag to the constructor keeps the default consistent.
-          </p>
-
-          <h2 id="placement">Object placement randomization</h2>
-          <p>
-            In addition to the background, every object's spawn pose is randomized per episode. The
-            template does this in <code>_initialize_episode</code> by adding a uniform XY jitter to the
-            base pose before calling <code>set_pose</code>:
-          </p>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code><span class="hl-kw">def</span> <span class="hl-fn">_initialize_episode</span>(self, env_idx: torch.Tensor, options: dict):
-    <span class="hl-kw">with</span> torch.device(self.device):
-        b = len(env_idx)
-        self.table_scene.initialize(env_idx)
-
-        <span class="hl-com"># Randomize apple pose (with optional L1 xy offset).</span>
-        xyz = torch.zeros((b, <span class="hl-num">3</span>), device=self.device)
-        xyz[:, <span class="hl-num">0</span>] = -<span class="hl-num">0.1</span>
-        xyz[:, <span class="hl-num">1</span>] = -<span class="hl-num">0.15</span>
-        xyz[:, <span class="hl-num">2</span>] = self.apple_z
-        <span class="hl-deco">xyz[:, :2] += torch.rand((b, 2), device=self.device) * 0.02</span>   <span class="hl-com"># ← placement jitter</span>
-        xyz = apply_l1_offset_xy(xyz, offset=(-<span class="hl-num">0.1</span>, <span class="hl-num">0.1</span>))
-        qs = torch.tensor([euler2quat(<span class="hl-num">0</span>, <span class="hl-num">0</span>, np.pi / <span class="hl-num">6</span>)] * b,
-                          device=self.device, dtype=torch.float32)
-        self.apple.set_pose(Pose.create_from_pq(p=xyz, q=qs))
-
-        <span class="hl-com"># Randomize basket pose (shared offset so items stay inside).</span>
-        basket_xyz = torch.zeros((b, <span class="hl-num">3</span>), device=self.device)
-        basket_xyz[:, <span class="hl-num">0</span>] = <span class="hl-num">0.0</span>
-        basket_xyz[:, <span class="hl-num">1</span>] = <span class="hl-num">0.1</span>
-        basket_xyz[:, <span class="hl-num">2</span>] = self.basket_z
-        <span class="hl-deco">basket_xyz[:, :2] += torch.rand((b, 2), device=self.device) * 0.02</span>
-        basket_xyz = apply_l1_offset_xy(basket_xyz, offset=(-<span class="hl-num">0.1</span>, <span class="hl-num">0.1</span>))
-        self.breadbasket.set_pose(...)</code></pre>
-          </div>
-
-          <p>
-            <code>torch.rand((b, 2))</code> draws <code>b</code> uniform samples in
-            <code>[0, 1)</code> for the X and Y axes. Multiplied by the scale, each object receives a
-            one-sided offset in <code>[0, scale)</code> on each axis — so the default
-            <code>0.02</code> meters gives a 2 cm × 2 cm offset range from the anchor point. For a
-            symmetric range around the anchor, subtract <code>0.5</code> before scaling as shown below.
-          </p>
-
-          <h2 id="placement-usage">Tuning the jitter</h2>
-          <p>
-            <strong>The scale IS the randomization strength.</strong> Increase the multiplier to spread
-            objects further apart across episodes, or decrease it to keep placements tight:
-          </p>
-
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code><span class="hl-com"># Default: [0, 0.02) m per axis (2 cm × 2 cm one-sided range)</span>
-xyz[:, :2] += torch.rand((b, <span class="hl-num">2</span>), device=self.device) * <span class="hl-num">0.02</span>
-
-<span class="hl-com"># Stronger: [0, 0.1) m per axis</span>
-xyz[:, :2] += torch.rand((b, <span class="hl-num">2</span>), device=self.device) * <span class="hl-num">0.1</span>
-
-<span class="hl-com"># Even stronger: [0, 0.25) m per axis</span>
-xyz[:, :2] += torch.rand((b, <span class="hl-num">2</span>), device=self.device) * <span class="hl-num">0.25</span></code></pre>
-          </div>
-
-          <div class="callout callout-info">
-            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
-            <div class="callout-body">
-              <div class="callout-title">Two useful patterns</div>
-              <p>
-                <strong>Symmetric noise</strong> — subtract half the scale so the nominal position stays
-                at the center: <code>xyz[:, :2] += (torch.rand((b, 2), ...) - 0.5) * 0.1</code>.
-                <strong>Shared offset for coupled objects</strong> — draw one offset and reuse it for
-                every object that must stay together (the template does this for the apple and basket),
-                so randomized placements don't break relative geometry.
-              </p>
-            </div>
-          </div>
-
-          <div class="callout callout-warning">
-            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
-            <div class="callout-body">
-              <div class="callout-title">Don't exceed the workspace</div>
-              <p>
-                Keep the scale small enough that objects stay within the dual-Panda reachable workspace
-                and don't collide with the wall or fall off the table (the table is 2.0 m × 1.2 m).
-                Start from <code>0.02</code> and increase gradually while watching
-                <code>env.reset(seed=...)</code> behavior.
-              </p>
-            </div>
-          </div>
-
           <h2 id="qpos-noise">Robot init qpos noise</h2>
           <p>
             The robot's initial joint configuration is also perturbed at every reset. In
@@ -323,74 +189,115 @@ self.env.agent.reset(qpos)</code></pre>
             arm configuration.
           </p>
 
-          <h2 id="combined">Combined example</h2>
+          <h2 id="background-usage">How to enable it</h2>
           <p>
-            A task that turns everything up: randomized background, stronger placement jitter, and a
-            slightly noisier robot start:
+            The <code>TableSceneBuilder</code> is constructed in your task's <code>_load_scene</code>.
+            Set <code>random_background=True</code> in the constructor to turn the randomization on:
+          </p>
+
+
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
+<pre><code><span class="hl-kw">from</span> mani_skill.utils.scene_builder.table <span class="hl-kw">import</span> TableSceneBuilder
+
+<span class="hl-kw">class</span> <span class="hl-fn">TwoRobotMyTaskEnv</span>(BaseEnv):
+    <span class="hl-kw">def</span> <span class="hl-fn">_load_scene</span>(self, options: dict):
+        self.table_scene = TableSceneBuilder(
+            env=self,
+            <span class="hl-deco">random_background=True</span>,                <span class="hl-com"># ← enables texture randomization</span>
+            <span class="hl-deco">robot_init_qpos_noise=0.02</span>,            <span class="hl-com"># ← enables robot initial joint pose randomization</span>
+        )
+        self.table_scene.build()   <span class="hl-com"># uses random_background from the constructor</span>
+        <span class="hl-com"># ... load your actors / articulations</span></code></pre>
+          </div>
+
+          <!-- <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Textures are sampled at scene build time</div>
+              <p>
+                Textures are chosen inside <code>build()</code> / <code>create_table_and_wall()</code>,
+                which runs during scene construction. If your environment is built once and reused, the
+                background stays fixed for the lifetime of the scene unless the environment is
+                reconfigured. With <code>reconfiguration_freq</code> set (e.g. 1 for single-env
+                workflows), each reset rebuilds the scene and re-samples the textures.
+              </p>
+            </div>
+          </div> -->
+
+          <h2 id="placement">Object placement randomization</h2>
+          <p>
+            In addition to the background, every object's spawn pose is randomized per episode. The
+            template does this in <code>_initialize_episode</code> by adding a uniform XY jitter to the
+            base pose before calling <code>set_pose</code>:
           </p>
 
           <div class="code-block">
             <div class="code-block-header"><span class="code-block-lang">python</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code><span class="hl-kw">class</span> <span class="hl-fn">TwoRobotMyTaskEnv</span>(BaseEnv):
-    <span class="hl-kw">def</span> <span class="hl-fn">__init__</span>(self, *args, robot_uids=(<span class="hl-str">"panda_wristcam"</span>, <span class="hl-str">"panda_wristcam"</span>),
-                 robot_init_qpos_noise=<span class="hl-num">0.05</span>, placement_noise=<span class="hl-num">0.1</span>, **kwargs):
-        self.robot_init_qpos_noise = robot_init_qpos_noise
-        self.placement_noise = placement_noise
-        super().__init__(*args, robot_uids=robot_uids, **kwargs)
+<pre><code><span class="hl-kw">def</span> <span class="hl-fn">_initialize_episode</span>(self, env_idx: torch.Tensor, options: dict):
+    <span class="hl-kw">with</span> torch.device(self.device):
+        b = len(env_idx)
+        self.table_scene.initialize(env_idx)
 
-    <span class="hl-kw">def</span> <span class="hl-fn">_load_scene</span>(self, options: dict):
-        self.table_scene = TableSceneBuilder(
-            env=self,
-            <span class="hl-deco">random_background=True</span>,                       <span class="hl-com"># randomized textures</span>
-            robot_init_qpos_noise=self.robot_init_qpos_noise,
-        )
-        self.table_scene.build()
-        <span class="hl-com"># ... load actors</span>
+        <span class="hl-com"># Randomize apple pose (with optional L1 xy offset).</span>
+        xyz = torch.zeros((b, <span class="hl-num">3</span>), device=self.device)
+        xyz[:, <span class="hl-num">0</span>] = -<span class="hl-num">0.1</span>
+        xyz[:, <span class="hl-num">1</span>] = -<span class="hl-num">0.15</span>
+        xyz[:, <span class="hl-num">2</span>] = self.apple_z
+        <span class="hl-deco">xyz[:, :2] += torch.rand((b, 2), device=self.device) * 0.02</span>   <span class="hl-com"># ← placement jitter</span>
+        xyz = apply_l1_offset_xy(xyz, offset=(-<span class="hl-num">0.1</span>, <span class="hl-num">0.1</span>))    
+        qs = torch.tensor([euler2quat(<span class="hl-num">0</span>, <span class="hl-num">0</span>, np.pi / <span class="hl-num">6</span>)] * b,          <span class="hl-com"># ← rotation jitter</span>
+                          device=self.device, dtype=torch.float32)
+        self.apple.set_pose(Pose.create_from_pq(p=xyz, q=qs))
 
-    <span class="hl-kw">def</span> <span class="hl-fn">_initialize_episode</span>(self, env_idx: torch.Tensor, options: dict):
-        <span class="hl-kw">with</span> torch.device(self.device):
-            b = len(env_idx)
-            self.table_scene.initialize(env_idx)
-
-            xyz = torch.zeros((b, <span class="hl-num">3</span>), device=self.device)
-            xyz[:, <span class="hl-num">0</span>] = -<span class="hl-num">0.1</span>
-            xyz[:, <span class="hl-num">1</span>] = -<span class="hl-num">0.15</span>
-            xyz[:, <span class="hl-num">2</span>] = self.apple_z
-            <span class="hl-deco">xyz[:, :2] += (torch.rand((b, 2), device=self.device) - 0.5) * 2 * self.placement_noise</span>
-            xyz = apply_l1_offset_xy(xyz, offset=(-<span class="hl-num">0.1</span>, <span class="hl-num">0.1</span>))
-            self.apple.set_pose(Pose.create_from_pq(
-                p=xyz, q=torch.tensor([euler2quat(<span class="hl-num">0</span>, <span class="hl-num">0</span>, np.pi / <span class="hl-num">6</span>)] * b,
-                                      device=self.device, dtype=torch.float32)))</code></pre>
+        <span class="hl-com"># Randomize basket pose (shared offset so items stay inside).</span>
+        basket_xyz = torch.zeros((b, <span class="hl-num">3</span>), device=self.device)
+        basket_xyz[:, <span class="hl-num">0</span>] = <span class="hl-num">0.0</span>
+        basket_xyz[:, <span class="hl-num">1</span>] = <span class="hl-num">0.1</span>
+        basket_xyz[:, <span class="hl-num">2</span>] = self.basket_z
+        <span class="hl-deco">basket_xyz[:, :2] += torch.rand((b, 2), device=self.device) * 0.02</span>
+        basket_xyz = apply_l1_offset_xy(basket_xyz, offset=(-<span class="hl-num">0.1</span>, <span class="hl-num">0.1</span>))
+        self.breadbasket.set_pose(...)</code></pre>
           </div>
 
-          <h2 id="assets-note">Required assets</h2>
           <p>
-            Background randomization reads textures from
-            <code>~/.maniskill/data/robotwin/background_texture/{seen,unseen}/</code>. Install them with
-            the RoboTwin downloader (see the <a href="getting-started.html">installation</a> page):
+            <code>torch.rand((b, 2))</code> draws <code>b</code> uniform samples in
+            <code>[0, 1)</code> for the X and Y axes. Multiplied by the scale, each object receives a
+            one-sided offset in <code>[0, scale)</code> on each axis — so the default
+            <code>0.02</code> meters gives a 2 cm × 2 cm offset range from the anchor point. For a
+            symmetric range around the anchor, subtract <code>0.5</code> before scaling.
           </p>
 
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>mkdir -p ~/.maniskill/data/robotwin
-python -m mani_skill.utils.download_robotwin
-cd ~/.maniskill/data/robotwin
-unzip objects.zip &amp;&amp; rm -rf objects.zip
-unzip background_texture.zip &amp;&amp; rm -rf background_texture.zip</code></pre>
-          </div>
 
-          <div class="callout callout-danger">
-            <div class="callout-icon"><i class="fas fa-circle-exclamation"></i></div>
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
             <div class="callout-body">
-              <div class="callout-title">random_background=True requires the texture dataset</div>
+              <div class="callout-title">Two useful patterns</div>
               <p>
-                If <code>random_background=True</code> but the
-                <code>background_texture/</code> folder is missing, the builder calls
-                <code>os.listdir</code> on a non-existent directory and raises. Download the RoboTwin
-                assets first.
+                <strong>Symmetric noise</strong> — subtract half the scale so the nominal position stays
+                at the center: <code>xyz[:, :2] += (torch.rand((b, 2), ...) - 0.5) * 0.1</code>.
+                <br>
+                <strong>Shared offset for coupled objects</strong> — draw one offset and reuse it for
+                every object that must stay together (the template does this for the apple and basket),
+                so randomized placements don't break relative geometry.
               </p>
             </div>
           </div>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Don't exceed the workspace</div>
+              <p>
+                Keep the scale small enough that objects stay within the dual-Panda reachable workspace
+                and don't collide with the wall or fall off the table (the table is 2.0 m × 1.2 m).
+                Start from <code>0.02</code> and increase gradually while watching
+                <code>env.reset(seed=...)</code> behavior.
+              </p>
+            </div>
+          </div>
+
+          
 
           <div class="callout callout-success">
             <div class="callout-icon"><i class="fas fa-circle-check"></i></div>
@@ -408,7 +315,7 @@ unzip background_texture.zip &amp;&amp; rm -rf background_texture.zip</code></pr
           <nav class="doc-pager">
             <a class="doc-pager-link" href="levels.html">
               <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
-              <span class="doc-pager-title">The four levels L0–L3</span>
+              <span class="doc-pager-title">The four levels L0-L3</span>
             </a>
             <a class="doc-pager-link next" href="data-collection.html">
               <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
@@ -431,7 +338,9 @@ unzip background_texture.zip &amp;&amp; rm -rf background_texture.zip</code></pr
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 (function () {
   var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));

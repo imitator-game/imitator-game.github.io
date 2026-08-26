@@ -33,6 +33,71 @@ function mediaUrl(manifest, path) {
   return base + path;
 }
 
+/* ── Shared media interfaces (used by gallery.js + landing.js) ────────
+   Two small, reusable ways to render any clip:
+     IGMedia.video(src, opts) → the real, playing clip.
+     IGMedia.image(src, opts) → a still. Pass opts.poster for a dedicated
+       image; leave it out and the clip's OWN first frame is used
+       instead (a paused <video> seeked to 0.1s via a Media Fragment) —
+       no separate poster image ever needs to be generated or stored.
+   Both default to lazy (`data-src`, filled in by a loader later); pass
+   opts.lazy:false for an immediate real `src`. */
+(function () {
+  function escAttr(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  window.IGMedia = {
+    video: function (src, opts) {
+      opts = opts || {};
+      var lazy = opts.lazy !== false;
+      var bits = ['muted', 'playsinline'];
+      if (opts.loop !== false) bits.push('loop');
+      bits.push('preload="' + (opts.preload || 'metadata') + '"');
+      if (opts.autoplay) bits.push('data-autoplay');
+      bits.push((lazy ? 'data-src="' : 'src="') + escAttr(src) + '"');
+      if (opts.className) bits.push('class="' + escAttr(opts.className) + '"');
+      return '<video ' + bits.join(' ') + '></video>';
+    },
+    image: function (src, opts) {
+      opts = opts || {};
+      if (opts.poster) {
+        return '<img src="' + escAttr(opts.poster) + '" alt="' + escAttr(opts.alt || '') + '"' +
+          (opts.className ? ' class="' + escAttr(opts.className) + '"' : '') + ' loading="lazy">';
+      }
+      var lazy = opts.lazy !== false;
+      var attr = (lazy ? 'data-src="' : 'src="') + escAttr(src) + '#t=0.1"';
+      return '<video muted playsinline preload="metadata" ' + attr +
+        (opts.className ? ' class="' + escAttr(opts.className) + '"' : '') + '></video>';
+    }
+  };
+})();
+
+/* ============================================================
+   Brand logo — always returns to the top of the page it's on
+   ============================================================
+   The main fix for "logo/Home lands mid-page instead of at the top" lives
+   in each page's <head> (history.scrollRestoration = 'manual' set before
+   anything else, plus a load-time scrollTo(0,0)) — that's what actually
+   stops the browser from restoring an old scroll offset on refresh or on
+   a fresh navigation. This part only covers the one case that isn't a
+   navigation at all: some browsers no-op a click to the exact URL already
+   loaded, so nothing above ever runs — the logo needs its own handler for
+   that click specifically. */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.pst-header-brand').forEach(function (brand) {
+    brand.addEventListener('click', function (e) {
+      var dest = new URL(brand.getAttribute('href'), location.href);
+      var norm = function (p) { return p.replace(/\/index\.html$/, '/').replace(/\/$/, ''); };
+      if (norm(dest.pathname) === norm(location.pathname)) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+});
+
 /* ============================================================
    Results Carousel — infinite-loop gallery
    ============================================================ */

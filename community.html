@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community — The Imitator Game</title>
+  <meta name="description" content="Join The Imitator Game community: Discord, WeChat, and the four contribution paths for tasks, models, embodiments and real-world evaluation.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/media/logo.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/pages.css?v=20260824-motion">
+  <script>
+    /* Scroll-position fix — see index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — mirrors theme.js, must stay in <head>. */
+    (function () {
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
+    })();
+  </script>
+  <style>
+    /* Scoped to this page only — prefixed cmy- so nothing collides with the
+       shared stylesheets. Everything else on the page reuses lp-band /
+       ig-eyebrow / paper-section-* from style.css and pages.css. */
+    .cmy-channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:1.9rem;}
+    .cmy-channel{display:flex;flex-direction:column;align-items:flex-start;padding:1.6rem 1.5rem;border:1px solid var(--border);border-radius:16px;background:var(--on-bg);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;}
+    .cmy-channel:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.10);border-color:rgba(128,128,128,.38);}
+    /* The whole card, not just the QR image, needs lifting above its
+       siblings: the card itself becomes a stacking context on hover (via
+       `transform`), and without its own z-index it still paints in plain
+       DOM order — so a later sibling card (e.g. GitHub) was rendering over
+       the WeChat card's own background/border, cutting it off mid-shape. */
+    .cmy-channel:has(.cmy-qr:hover){position:relative;z-index:60;}
+    .cmy-channel-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;font-size:1.25rem;margin-bottom:1rem;background:rgba(128,128,128,.12);}
+    .cmy-channel h3{margin:0 0 .5rem;font-size:1.12rem;font-weight:600;}
+    .cmy-channel p{margin:0 0 1.15rem;font-size:.94rem;line-height:1.62;opacity:.82;}
+    .cmy-channel .pst-btn{margin-top:auto;}
+    /* Real WeChat QR exports (see wechat_group.jpg) are ~1050×1725 — a tall
+       0.61 ratio, not a square — so the box is sized to match instead of
+       squashing/letterboxing the source image. */
+    .cmy-qr{
+      width:132px;aspect-ratio:1050/1725;height:auto;object-fit:cover;
+      box-sizing:border-box;border-radius:12px;background:#fff;padding:7px;
+      border:1px solid rgba(128,128,128,.22);cursor:zoom-in;
+      transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s cubic-bezier(.4,0,.2,1);
+    }
+    .cmy-qr:hover,.cmy-qr:focus-visible{
+      transform:scale(2.4);
+      box-shadow:0 20px 46px rgba(0,0,0,.28);
+      position:relative;
+      z-index:50;
+    }
+    /* Fade this card's own icon/title/text out while its QR is zoomed, so
+       nothing behind the enlarged image can ever peek past its edges —
+       the growth is centred on the image itself and doesn't reliably reach
+       as far as the header sitting above it in the same card. */
+    .cmy-channel:has(.cmy-qr:hover) .cmy-channel-icon,
+    .cmy-channel:has(.cmy-qr:hover) h3,
+    .cmy-channel:has(.cmy-qr:hover) p,
+    .cmy-channel:has(.cmy-qr:hover) .cmy-qr-cap{
+      opacity:0;
+      transition:opacity .15s ease;
+    }
+    .cmy-qr-cap{margin-top:.6rem;font-size:.82rem;opacity:.66;transition:opacity .15s ease;}
+    .cmy-paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem;margin-top:1.9rem;}
+    .cmy-path{padding:1.5rem;border:1px solid var(--border);border-radius:16px;transition:transform .25s ease,box-shadow .25s ease;}
+    .cmy-path:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.09);}
+    .cmy-path-icon{font-size:1.2rem;margin-bottom:.85rem;opacity:.85;}
+    .cmy-path h4{margin:0 0 .55rem;font-size:1.04rem;font-weight:600;}
+    .cmy-path p{margin:0;font-size:.92rem;line-height:1.62;opacity:.82;}
+    .cmy-path code{font-size:.84em;}
+    .cmy-steps{list-style:none;counter-reset:cmy;padding:0;margin:1.9rem 0 0;display:grid;gap:.9rem;}
+    .cmy-steps li{counter-increment:cmy;position:relative;padding:1.05rem 1.3rem 1.05rem 3.4rem;border:1px solid var(--border);border-radius:13px;font-size:.95rem;line-height:1.6;}
+    .cmy-steps li::before{content:counter(cmy);position:absolute;left:1.15rem;top:1.05rem;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:rgba(128,128,128,.15);}
+     .cmy-contact{margin-top:1.6rem;font-size:.95rem;opacity:.85;}
+     .cmy-hero .hero-cta{margin-top:1.4rem;}
+     @media (max-width:640px){.cmy-channel,.cmy-path{padding:1.25rem;}}
+  </style>
+</head>
+<body>
+<div class="ig-scroll-progress"></div>
+<div class="pst-page">
+
+  <header class="pst-header">
+    <div class="pst-content-wrapper pst-header-inner">
+      <a href="index.html" class="pst-header-brand">
+        <span class="brand-logo" aria-hidden="true"><img src="assets/media/logo.svg" alt="The Imitator Game logo"></span>
+        The&thinsp;Imitator&thinsp;Game
+      </a>
+      <nav class="pst-header-nav">
+        <a href="index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="docs/guide.html"><i class="fas fa-book"></i>Docs</a>
+        <a href="community.html" class="active"><i class="fas fa-people-group"></i>Community</a>
+        <a href="data.html"><i class="fas fa-database"></i>Data</a>
+        <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
+        <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
+        <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
+      </nav>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
+    </div>
+  </header>
+
+  <main class="pst-main" style="padding:0;">
+
+    <!-- ── Hero ────────────────────────────────────────────── -->
+    <section class="lp-band lp-band-hero cmy-hero">
+      <div class="ig-hero-field" aria-hidden="true">
+        <span class="ig-hero-blob b1"></span><span class="ig-hero-blob b2"></span><span class="ig-hero-blob b3"></span>
+      </div>
+      <div class="lp-inner" style="text-align:center;">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-people-group"></i>Community</div>
+        <h1 class="page-title" data-split="45" data-reveal>Build the benchmark with us</h1>
+        <p class="page-subtitle" data-reveal="up" data-reveal-delay="180">
+          The Imitator Game is an open-source community for robot imitation from human video.
+          Tasks, models, embodiments, assets, demonstrations and evaluation ideas are all welcome!
+        </p>
+        <div class="hero-cta" data-reveal="up" data-reveal-delay="280">
+          <a class="pst-btn pst-btn-primary pst-btn-lg" href="https://discord.gg/p8QVXWwWyZ" target="_blank" rel="noopener">
+            <i class="fab fa-discord"></i>&ensp;Join on Discord
+          </a>
+          <a class="pst-btn pst-btn-lg" href="#channels"><i class="fab fa-weixin"></i>&ensp;WeChat group</a>
+          <a class="pst-btn pst-btn-lg" href="docs/contribute.html"><i class="fas fa-code-branch"></i>&ensp;Contribution guide</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Channels ────────────────────────────────────────── -->
+    <div class="lp-band lp-band-white" id="channels">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-comments"></i>Where we talk</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Pick whichever channel is convenient</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="110">
+          Questions about the benchmark, the data, or a contribution you are considering are all fair game.
+          There is no wrong door — ask in the one you already have open.
+        </p>
+
+        <div class="cmy-channels" data-stagger="90">
+          <div class="cmy-channel ig-lift">
+            <div class="cmy-channel-icon"><i class="fab fa-discord"></i></div>
+            <h3>Discord</h3>
+            <p>Announcements, technical discussion, and collaboration. The fastest place to reach maintainers
+               and other people working on video-conditioned policies.</p>
+            <a class="pst-btn pst-btn-primary" href="https://discord.gg/p8QVXWwWyZ" target="_blank" rel="noopener">
+              <i class="fab fa-discord"></i>&ensp;Join on Discord
+            </a>
+          </div>
+
+          <div class="cmy-channel ig-lift">
+            <div class="cmy-channel-icon"><i class="fab fa-weixin"></i></div>
+            <h3>WeChat group</h3>
+            <p>For Chinese-language discussion. Scan the code to join the project group.</p>
+            <img class="cmy-qr" src="assets/media/wechat_group.jpg" alt="QR code for The Imitator Game WeChat group">
+            <div class="cmy-qr-cap">Scan to join the WeChat group</div>
+          </div>
+
+          <div class="cmy-channel ig-lift">
+            <div class="cmy-channel-icon"><i class="fab fa-github"></i></div>
+            <h3>GitHub</h3>
+            <p>Issues for bugs and benchmark questions, pull requests for tasks, models, robots and assets.
+               Every contribution path ends here.</p>
+            <a class="pst-btn" href="https://github.com/imitator-game/The-Imitator-Game" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>&ensp;Open the repository
+            </a>
+          </div>
+
+          <div class="cmy-channel ig-lift">
+            <div class="cmy-channel-icon"><i class="fas fa-envelope"></i></div>
+            <h3>Direct contact</h3>
+            <p>For collaboration proposals, hardware time, or anything that does not belong in a public
+               thread, contact the project lead directly.</p>
+            <a class="pst-btn" href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">
+              <i class="fas fa-arrow-up-right-from-square"></i>&ensp;Xunzhe Zhou
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="lp-footer"><div class="lp-footer-inner">
+    <span>The Imitator Game</span>
+    <span>The Imitator Game Team @ 2026</span>
+  </div></footer>
+</div>
+
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/motion.js"></script>
+</body>
+</html>

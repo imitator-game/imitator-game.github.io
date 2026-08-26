@@ -7,17 +7,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -47,12 +61,13 @@
 
       <div class="doc-header">
         <div>
-          <div class="doc-eyebrow"><i class="fas fa-code-branch"></i>Community</div>
+          <div class="doc-eyebrow"><i class="fas fa-code-branch"></i>Contributing</div>
           <h1 class="doc-title">Contribute</h1>
           <p class="doc-subtitle">
              The Imitator Game is an open-source community for robot imitation from human video. Everyone
              is welcome to contribute tasks, models, embodiments, assets, demonstrations, or evaluation
-             ideas through the shared design templates and reproducible protocols.
+             ideas through the shared design templates and reproducible protocols. Discord, WeChat, and the
+             rest of the community channels live on the <a href="../community.html">Community</a> page.
           </p>
         </div>
       </div>
@@ -62,7 +77,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -95,7 +110,7 @@
               <div class="doc-feature-icon"><i class="fas fa-cubes"></i></div>
               <h4>Tasks</h4>
               <p>
-                Contribute new Imitator tasks (L0–L3) designed with the task template under
+                Contribute new Imitator tasks (L0-L3) designed with the task template under
                 <code>mani_skill/envs/tasks/_template/</code>, together with their motion-planning
                  solutions. Accepted tasks can then be added to the benchmark task set, task mapping, and
                  collection pipeline.
@@ -154,9 +169,7 @@
              For an accepted task, contributors can provide the human demonstration and task protocol while
              the project team determines whether matching robot demonstrations can be collected. When
              available, paired episodes can be released alongside simulated data under the IG-10K / LeRobot
-             contract.
-          </p>
-          <p>
+             contract. 
              See the <a href="data-collection.html">data collection guide</a> for preparation details and
              the <a href="../gallery.html">Task Gallery</a> for published human, simulated, and real-robot
              rollouts.
@@ -176,7 +189,7 @@
               <div class="callout-title">Use the contribution protocol</div>
               <p>
                 Open a pull request with the model or environment package, a short README, the relevant
-                 task IDs and L0–L3 levels, checkpoint or asset locations, licensing information,
+                 task IDs and L0-L3 levels, checkpoint or asset locations, licensing information,
                  dependencies, and simulator-side evaluation results. Maintainers confirm that the bundle
                  is reproducible before considering real-robot evaluation. The repository does not currently
                  provide an automatic policy-upload endpoint.
@@ -222,13 +235,13 @@
             <li>
               Follow the design templates:
               <code>examples/baselines/_template/</code> for models,
-              <code>mani_skill/envs/tasks/_template/</code> for L0–L3 tasks, and
+              <code>mani_skill/envs/tasks/_template/</code> for L0-L3 tasks, and
               <code>mani_skill/agents/robots/_template/</code> for robots.
             </li>
              <li>Open a pull request with your task, model, robot, embodiment, or asset contribution.</li>
             <li>
               Maintainers review the contribution against the templates (data contract, environment
-              contract, L0–L3 semantics, motion-planning solution).
+              contract, L0-L3 semantics, motion-planning solution).
             </li>
             <li>
                Once accepted, the contribution is merged, registered, and, where applicable, considered
@@ -259,36 +272,37 @@
             keep the common interfaces intact.
           </p>
 
-          <h2 id="community">Join the community</h2>
+          <h2 id="community">Questions before you open a pull request?</h2>
           <p>
-            Questions about the benchmark, data, or a potential contribution are welcome. Use whichever community channel is most convenient:
+            Discord, the WeChat group, direct contact, and the full path from a pull request to a public
+            Arena comparison all live on the <a href="../community.html">Community</a> page — this page
+            stays focused on the templates and contracts a contribution has to satisfy.
           </p>
-          <div class="community-grid">
-            <div class="community-card">
-              <div class="doc-feature-icon"><i class="fab fa-discord"></i></div>
-              <h3>Discord</h3>
-              <p>Join the project community for announcements, technical discussion, and collaboration.</p>
-              <a class="pst-btn pst-btn-primary discord-btn" href="https://discord.gg/p8QVXWwWyZ" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join on Discord</a>
-            </div>
-            <div class="community-card">
-              <div class="doc-feature-icon"><i class="fab fa-weixin"></i></div>
-              <h3>WeChat community</h3>
-              <p>For Chinese-language discussion, scan the QR code to join the project group.</p>
-              <img class="wechat-qr" src="../assets/media/wechat_group.jpg" alt="QR code for The Imitator Game WeChat group">
-              <div class="wechat-qr-caption">Scan to join the WeChat group</div>
+          <div class="callout callout-info">
+            <div class="callout-icon"><i class="fas fa-people-group"></i></div>
+            <div class="callout-body">
+              <div class="callout-title">Join the community</div>
+              <p>
+                See <a href="../community.html#channels">where we talk</a> for Discord and WeChat, and
+                <a href="../community.html">the Community page</a> for the pairing service and the full
+                contribution-to-Arena pipeline. For direct technical inquiries, contact
+                <a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a>.
+              </p>
             </div>
           </div>
-          <p>For direct technical inquiries, contact <a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a>.</p>
 
           <h2 id="citation">Citation</h2>
 
           <div class="code-block">
             <div class="code-block-header"><span class="code-block-lang">bibtex</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code>@unpublished{imitatorgame2026,
-  title={The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction},
-  author={Zhou, Xunzhe and Cai, Yiyang and Wang, Fengyi and Ju, Ran and Ren, Hanxiang and Liu, Ruizhe and Zhang, Yu and Luo, Qian and Chen, Feng and Zhou, Pei and Ma, Yi and Yang, Yanchao},
-  url={https://github.com/imitator-game/The-Imitator-Game},
-  year={2026}
+<pre><code>@misc{zhou2026imitatorgamebenchmarkingrobot,
+      title={The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction}, 
+      author={Xunzhe Zhou and Yiyang Cai and Fengyi Wang and Ran Ju and Hanxiang Ren and Ruizhe Liu and Yu Zhang and Qian Luo and Feng Chen and Pei Zhou and Yi Ma and Yanchao Yang},
+      year={2026},
+      eprint={2608.22301},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2608.22301}, 
 }</code></pre>
           </div>
 
@@ -310,7 +324,7 @@
               <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
               <span class="doc-pager-title">Creating a new task</span>
             </a>
-            <a class="doc-pager-link next" href="index.html">
+            <a class="doc-pager-link next" href="guide.html">
               <span class="doc-pager-label">Next&ensp;<i class="fas fa-arrow-right"></i></span>
               <span class="doc-pager-title">Documentation home</span>
             </a>
@@ -331,7 +345,9 @@
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 (function () {
   var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));

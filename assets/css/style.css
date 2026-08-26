@@ -84,7 +84,8 @@
 /* ── Reset ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
   background: var(--bg);
@@ -658,28 +659,56 @@ select.pst-form-control {
   font-weight: 500;
 }
 
+/* Floating showcase reel — plays real video (not stills), sits above
+   the grid, borderless, same tile system as the hero/task reels. */
+.gallery-showcase {
+  margin-bottom: 1.8rem; height: 150px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.gallery-showcase .ig-hero-reel-row { animation-play-state: running; }
+.gallery-showcase-tile { border: none; box-shadow: 0 10px 26px rgba(0,0,0,.14); }
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.25rem;
+  gap: 2.1rem 1.5rem;
 }
 
+/* Floating cards: no card box, no border — just the 16:9 clip lifted
+   off the page with a soft shadow, and plain text underneath. Every
+   source clip is already 16:9, so the media box below never crops or
+   letterboxes it. */
 .gallery-card {
-  background: var(--on-bg);
+  background: transparent;
   border: none;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.35rem;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
   text-decoration: none; color: var(--text);
-  display: flex; flex-direction: column; gap: .75rem;
-  transition: box-shadow var(--transition), transform var(--transition);
+  display: flex; flex-direction: column; gap: .8rem;
+  transition: transform var(--transition);
 }
-.gallery-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-  text-decoration: none;
-}
+.gallery-card:hover { transform: translateY(-6px); text-decoration: none; }
 
+.gallery-card-media {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--surface), var(--on-bg));
+  box-shadow: 0 10px 28px rgba(0,0,0,.12);
+  transition: box-shadow var(--transition);
+}
+.gallery-card:hover .gallery-card-media { box-shadow: 0 18px 44px rgba(0,0,0,.2); }
+.gallery-card-media video, .gallery-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-card-fallback {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.6); font-size: 1.4rem;
+  background: linear-gradient(135deg, var(--fig-vla), var(--fig-videova));
+}
+.gallery-card-media.is-empty video, .gallery-card-media.is-empty img { display: none; }
+.gallery-card-media.is-empty .gallery-card-fallback { display: flex; }
+
+.gallery-card-body { display: flex; flex-direction: column; gap: .55rem; }
 .gallery-card-levels { display: flex; gap: .35rem; }
 .gallery-lv-dot {
   font-size: .72rem; font-weight: 600;
@@ -694,9 +723,9 @@ select.pst-form-control {
 .gallery-lv-dot.level-L2, .gallery-lv-dot.level-l2 { color: var(--l2); }
 .gallery-lv-dot.level-L3, .gallery-lv-dot.level-l3 { color: var(--l3); }
 
-.gallery-card-title { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
-.gallery-card-desc  { font-size: .88rem; color: var(--text-muted); line-height: 1.55; flex: 1; }
-.gallery-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: .75rem; border-top: 1px solid var(--border); }
+.gallery-card-title { font-size: 1.1rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
+.gallery-card-desc  { font-size: .87rem; color: var(--text-muted); line-height: 1.55; }
+.gallery-card-footer { display: flex; justify-content: space-between; align-items: center; }
 .gallery-card-meta  { font-size: .8rem; color: var(--text-muted); font-weight: 500; }
 .gallery-card-arrow { font-size: 1.1rem; color: var(--primary); }
 
@@ -953,6 +982,14 @@ select.pst-form-control {
   color: var(--primary); font-weight: 600;
   margin-right: .3rem;
   font-variant-numeric: tabular-nums;
+}
+@media (max-width: 640px) {
+  .arena-rubric-row { align-items: flex-start; flex-wrap: wrap; }
+  .arena-rubric-anchors {
+    flex-basis: 100%; flex-wrap: wrap; justify-content: flex-start;
+    gap: .45rem .7rem;
+  }
+  .arena-rubric-anchors span { white-space: normal; }
 }
 .arena-bottom-main {
   display: grid;
@@ -1918,10 +1955,13 @@ body.landing-page .pst-header-nav { display: none; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem 1.5rem 1.25rem;
+  padding: 1.5rem 0 1.25rem;
   margin-top: 1rem;
 }
 .bibtex-pre {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 1.5rem;
   font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, monospace;
   font-size: .875rem;
   line-height: 1.65;
@@ -1982,6 +2022,89 @@ body.landing-page .pst-header-nav { display: none; }
 }
 
 /* ── ═══════════════════════════════════════════════════════════
+       SHARED BANDS
+   ═══════════════════════════════════════════════════════════ */
+/* The lp-band / lp-inner layout used to live only in landing.css, but
+   submit.html, leaderboard.html, data.html, gallery.html, arena.html and
+   the docs pages all use the same bands without loading that sheet — so
+   their sections rendered unpadded against the page edge. Defined here so
+   every page gets the same centred, padded content column. */
+.lp-band { width: 100%; }
+
+.lp-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+.lp-inner-wide   { max-width: 1400px; }
+.lp-inner-narrow { max-width: 900px; }
+
+/* Remove the paper-section's own margin/max-width when inside a band */
+.lp-band .paper-section,
+.lp-band .paper-section-abstract {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+}
+.lp-band .paper-section-wide {
+  width: 100%; max-width: none; padding-inline: 0;
+}
+
+/* Band backgrounds */
+.lp-band-white { background: var(--on-bg); }
+.lp-band-gray  { background: var(--surface); }
+.lp-band-hero  { background: var(--bg); }
+.lp-band-accent {
+  background: linear-gradient(135deg, var(--primary) 0%, #5e5ce6 100%);
+}
+
+[data-theme="dark"] .lp-band-accent {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(88,183,198,.24), transparent 42%),
+    linear-gradient(135deg, #173943 0%, #25243f 100%);
+}
+
+/* Accent band text overrides */
+.lp-band-accent .paper-section-eyebrow { color: rgba(255,255,255,.78); }
+.lp-band-accent .paper-section-title   { color: #fff; }
+.lp-band-accent .paper-section-body    { color: rgba(255,255,255,.9); }
+.lp-band-accent .pst-btn {
+  background: rgba(255,255,255,.18); color: #fff;
+}
+.lp-band-accent .pst-btn:hover {
+  background: rgba(255,255,255,.28); color: #fff; text-decoration: none;
+}
+.lp-band-accent .pst-btn-primary {
+  background: #fff; color: var(--primary);
+}
+.lp-band-accent .pst-btn-primary:hover {
+  background: rgba(255,255,255,.9); color: var(--primary);
+}
+
+[data-theme="dark"] .lp-band-accent .pst-btn {
+  background: rgba(20,24,30,.34);
+  border: 1px solid rgba(243,244,245,.2);
+}
+[data-theme="dark"] .lp-band-accent .pst-btn:hover {
+  background: rgba(20,24,30,.52);
+  border-color: rgba(243,244,245,.34);
+}
+[data-theme="dark"] .lp-band-accent .pst-btn-primary {
+  background: #f3f4f5;
+  color: #173943;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+[data-theme="dark"] .lp-band-accent .pst-btn-primary:hover {
+  background: #ffffff;
+  color: #173943;
+}
+
+@media (max-width: 640px) {
+  .lp-inner { padding: 3.5rem 1.25rem; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
        SHARED FOOTER
    ═══════════════════════════════════════════════════════════ */
 /* Was defined only in landing.css, but leaderboard.html, data.html,
@@ -2002,4 +2125,697 @@ body.landing-page .pst-header-nav { display: none; }
 .lp-footer-inner a:hover { color: var(--primary); }
 @media (max-width: 640px) {
   .lp-footer-inner { flex-direction: column; gap: .35rem; text-align: center; padding: 1rem 1.25rem; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       HOME HERO — fills exactly one screen, whatever the screen
+   ═══════════════════════════════════════════════════════════ */
+/* min-height stacks vh → svh → dvh on purpose: older browsers stop at
+   plain vh, browsers that understand svh/dvh get the later, more correct
+   value — dvh in particular keeps the hero at "one screen" as mobile
+   toolbars show/hide, instead of leaving a gap or clipping content. */
+/* The header is sticky + translucent (see .pst-header), so pulling the
+   hero up underneath it by exactly the header's own height — instead of
+   starting the hero flush below the header — lets the reel scroll
+   continuously through the frosted header bar with no seam or solid
+   white strip at the top of the page. --header-h must match
+   .pst-header-inner's height (56px) below. */
+:root { --header-h: 56px; }
+#hero {
+  position: relative;
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: var(--header-h);
+  min-height: calc(100vh + var(--header-h));
+  min-height: calc(100svh + var(--header-h));
+  min-height: calc(100dvh + var(--header-h));
+  display: flex;
+  align-items: center;
+}
+#hero > .lp-inner {
+  width: 100%;
+  padding-block: clamp(1.5rem, 6dvh, 4rem);
+}
+/* Spacing scales with viewport *height* (not just width), so the same
+   markup reads as generously spaced on a tall monitor and compact on a
+   short laptop screen, without separate breakpoints for every size. */
+#hero .hero-badges   { margin-bottom: clamp(.85rem, 2.2dvh, 1.6rem); }
+#hero .hero-title    { margin-bottom: clamp(.3rem, 1dvh, .6rem); }
+#hero .hero-tagline  { margin-bottom: clamp(1rem, 2.6dvh, 1.75rem); }
+#hero .hero-authors  { margin-bottom: clamp(1rem, 2.6dvh, 1.75rem); }
+#hero .hero-abstract { margin-bottom: clamp(1.2rem, 3dvh, 2.25rem); }
+#hero .hero-cta      { margin-bottom: clamp(1.2rem, 3dvh, 2.2rem); }
+#hero .hero-metrics  { margin-top: clamp(1.2rem, 3dvh, 2.2rem); gap: clamp(.9rem, 2.4dvh, 1.4rem); }
+#hero .hero-strip    { margin-top: clamp(1.2rem, 3dvh, 2.6rem); padding-top: clamp(.9rem, 2dvh, 1.4rem); }
+/* .hero-strip / .hero-strip-label had NO styling at all before this block —
+   the ticker was rendering as unstyled text directly over a busy video
+   background, which is why it read as "invisible". It now carries its own
+   frosted pill background so it stays legible on its own, independent of
+   how much of the big .ig-hero-textscrim panel happens to reach this far
+   down (that panel is ALSO taller now — see .ig-hero-textscrim below). */
+#hero .hero-strip {
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: .9rem 1.4rem 1.05rem;
+}
+#hero .hero-strip-label {
+  font: 700 .68rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Drop the least essential rows first as the viewport gets shorter, so the
+   title / tagline / authors / CTA / headline numbers — the identity of the
+   page — are the last things to give up space. */
+@media (max-height: 780px) {
+  #hero .hero-strip  { display: none; }
+  #hero .hero-badges { display: none; }
+}
+@media (max-height: 640px) {
+  #hero .hero-abstract { display: none; }
+}
+
+.hero-scrollcue {
+  position: absolute; left: 50%; bottom: clamp(.9rem, 2.6dvh, 1.9rem);
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .35rem;
+  color: var(--text-muted); text-decoration: none;
+  font: 600 .66rem/1 'Google Sans', system-ui, sans-serif;
+  letter-spacing: .13em; text-transform: uppercase;
+  opacity: .68; z-index: 2;
+  animation: ig-bob 2.6s ease-in-out infinite;
+  transition: opacity var(--dur-fast, 180ms) ease, color var(--dur-fast, 180ms) ease;
+}
+.hero-scrollcue:hover { opacity: 1; color: var(--primary); text-decoration: none; }
+.hero-scrollcue i { font-size: .8rem; }
+@keyframes ig-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(6px); }
+}
+@media (max-height: 640px) { .hero-scrollcue { display: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-scrollcue { animation: none; } }
+
+/* ── ═══════════════════════════════════════════════════════════
+       HERO VIDEO REEL — multi-row scrolling mosaic behind the hero
+   ═══════════════════════════════════════════════════════════ */
+/* Sits between the grid/blob background and the hero copy: several rows
+   of footage from the Gallery, filling the full hero height, scrolling in
+   alternating directions at different speeds. Tiles are shown as-is —
+   plain bordered cards, no crop/fade mask on the reel itself — because a
+   soft-edged frosted panel behind the text (below) is what keeps the copy
+   readable, not dimming the footage. */
+/* --reel-gap is THE single number that controls spacing in every reel on
+   the page: row-to-row (the `gap` below) AND tile-to-tile within a row
+   (`.ig-hero-reel-row`'s own `gap`, which reads the same variable) — so
+   the two distances always match, as requested. Change this one value to
+   adjust spacing everywhere. Keep landing.js's REEL_GAP_PX in sync (it
+   uses the same number to size the hero reel's row count). */
+.ig-hero-reel {
+  --reel-gap: 14px;
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; flex-direction: column; justify-content: flex-start;
+  gap: var(--reel-gap);
+  padding-block: var(--reel-gap);
+}
+.ig-hero-reel-row {
+  display: flex; align-items: center; gap: var(--reel-gap);
+  width: max-content;
+  animation: ig-marquee var(--dur, 60s) linear infinite;
+  will-change: transform;
+  /* Promote the row to its own compositor layer and stop the browser
+     re-measuring its children as part of the row's own layout/paint —
+     without this, a tile decoding a video frame elsewhere on the row
+     (or the loadedmetadata width-settle before finalizeReelRow starts
+     the loop) can force a layout pass that the main thread has to do
+     WHILE the marquee's transform animation is also running, which is
+     exactly the visible "jump / brief stall" during scroll. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout paint;
+}
+.ig-hero-reel-row[data-dir="right"] { animation-direction: reverse; }
+/* Held paused until landing.js has measured every tile's real size and
+   cloned a pixel-identical duplicate row (see finalizeReelRow in
+   landing.js) — starting the loop before that point is what used to
+   cause a visible jump/stutter at the seam. */
+.ig-hero-reel-row.is-pending { animation-play-state: paused; }
+/* Hover-to-pause is intentionally scoped, not global: the title reel
+   (#hero-reel) keeps scrolling under the hero copy even when the pointer
+   is resting somewhere over the hero, while the "eval suite" reel further
+   down the page (.suite-reel-wrap) does pause on hover, since there the
+   point is to let you actually look at a clip. See the .suite-reel-wrap
+   rule further down for that one. */
+
+.ig-reel-tile {
+  position: relative; flex: none;
+  display: block;
+  height: var(--h, 92px); width: var(--w, 150px);
+  border-radius: 12px; overflow: hidden;
+  background: linear-gradient(135deg, var(--surface), var(--on-bg));
+  border: 1.5px solid rgba(127,127,127,.22);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  color: inherit; text-decoration: none; cursor: pointer;
+  /* No `width` in this transition list, on purpose — a tile's --w is only
+     ever meant to change once, silently, while its row is still
+     `.is-pending` (see finalizeReelRow in landing.js, which explicitly
+     sets transition:none for that phase). If anything ever changes a
+     tile's width again after the row starts scrolling, animating that
+     resize is itself the stutter: the row's translateX keeps running on
+     the compositor while this tile eases its box over 260ms, so the row
+     visibly hitches at that tile's position. Dropping `width` here makes
+     any such change snap instantly instead of animating. */
+  transition: transform 200ms var(--ease-out, ease), box-shadow 200ms var(--ease-out, ease);
+}
+.ig-reel-tile:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  text-decoration: none; color: inherit;
+}
+.ig-reel-tile.tone-human { --tone: var(--fig-l0); }
+.ig-reel-tile.tone-robot { --tone: var(--fig-l3); }
+.ig-reel-tile.tone-sim   { --tone: var(--fig-l1); }
+/* object-fit:contain, not cover — the tile's own width is computed in JS
+   from each clip's real intrinsic aspect ratio (see landing.js), so this
+   is a safety net for the brief moment before metadata loads, not a crop. */
+.ig-reel-tile video { width: 100%; height: 100%; object-fit: contain; display: block; }
+.ig-reel-fallback {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.7); font-size: 1rem;
+  background: linear-gradient(135deg, var(--fig-vla), var(--fig-videova));
+  opacity: .38;
+}
+.ig-reel-tile.is-empty video { display: none; }
+.ig-reel-tile.is-empty .ig-reel-fallback { display: flex; }
+
+/* Ambient colour wash across the whole reel — ties it to the brand palette
+   and fades the strip into the header above and the next section below.
+   Deliberately light: it is not what makes the hero copy readable. */
+.ig-hero-scrim {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(165deg, color-mix(in srgb, var(--secondary) 14%, transparent) 0%, transparent 46%),
+    linear-gradient(205deg, color-mix(in srgb, var(--primary) 11%, transparent) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg) 0%, transparent 13%, transparent 87%, var(--bg) 100%);
+}
+[data-theme="dark"] .ig-hero-scrim {
+  background:
+    linear-gradient(165deg, color-mix(in srgb, var(--secondary) 22%, transparent) 0%, transparent 46%),
+    linear-gradient(205deg, color-mix(in srgb, var(--primary) 18%, transparent) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg) 0%, transparent 13%, transparent 87%, var(--bg) 100%);
+}
+
+/* Frosted panel behind the title/authors/CTA column only — a real blur of
+   the footage underneath it, tinted with the brand hero palette instead of
+   a flat white/grey wash. Shape comes entirely from a multi-stop mask
+   (opaque core → long gradual fade → fully transparent) with NO
+   border-radius/clip on the element itself — a hard-edged box clipped to
+   an ellipse *and* a soft radial mask on top of it is what was drawing
+   the visible oval rim before; one soft mask alone reads as a glow with
+   no edge at all. */
+/* Blur / contrast knobs for the frosted panel behind the hero copy:
+     - blur(30px) below       → how blurred the reel looks through the panel.
+     - color-mix(... N% ...) on the last background layer → how opaque/solid
+       the panel's core is (raise N for more contrast, lower for more see-
+       through video). This was too transparent (20%/34%) for text to read
+       reliably over bright clips — raised to 46%/58%.
+     - the mask-image stops → the panel's SHAPE. First stop (#000) is the
+       fully-opaque core; last (transparent) is where it fades to nothing.
+       Numbers between are the fade curve. Widen the early stops (e.g.
+       0%→40%→65%→88%) for a bigger solid core and a softer, later-starting
+       edge — this is what removes a visible "oval rim". */
+.ig-hero-textscrim {
+  position: absolute; left: 50%; top: 52%; z-index: 0;
+  transform: translate(-50%, -50%);
+  width: min(96vw, 1440px);
+  height: min(148%, 960px);
+  pointer-events: none;
+  backdrop-filter: blur(30px) saturate(1.1);
+  -webkit-backdrop-filter: blur(30px) saturate(1.1);
+  background:
+    radial-gradient(ellipse 50% 50% at 28% 20%, color-mix(in srgb, var(--fig-vla) 18%, transparent) 0%, transparent 74%),
+    radial-gradient(ellipse 50% 50% at 74% 26%, color-mix(in srgb, var(--fig-skill) 15%, transparent) 0%, transparent 74%),
+    radial-gradient(ellipse 55% 48% at 50% 86%, color-mix(in srgb, var(--fig-videova) 15%, transparent) 0%, transparent 76%),
+    color-mix(in srgb, var(--bg) 40%, transparent);
+  /* Much longer, more gradual fade than before — small opaque core, then
+     many gentle steps all the way out past 95% — this is specifically
+     what removes the hard rectangle: a short fade (like the old
+     0%→46%→70%→90%→100%) still reads as an edge once you're on a wide
+     screen, because the box itself is much bigger than the fade distance
+     needs to be. Stretching the fade to consume nearly the whole box
+     means there is never a sharp light/dark boundary anywhere on screen. */
+  -webkit-mask-image: radial-gradient(ellipse 56% 88% at 50% 50%,
+    #000 0%, #000 22%, rgba(0,0,0,.86) 38%, rgba(0,0,0,.62) 54%,
+    rgba(0,0,0,.38) 68%, rgba(0,0,0,.2) 80%, rgba(0,0,0,.08) 90%, transparent 100%);
+  mask-image: radial-gradient(ellipse 56% 88% at 50% 50%,
+    #000 0%, #000 22%, rgba(0,0,0,.86) 38%, rgba(0,0,0,.62) 54%,
+    rgba(0,0,0,.38) 68%, rgba(0,0,0,.2) 80%, rgba(0,0,0,.08) 90%, transparent 100%);
+}
+[data-theme="dark"] .ig-hero-textscrim {
+  background:
+    radial-gradient(ellipse 50% 50% at 28% 24%, color-mix(in srgb, var(--fig-vla) 28%, transparent) 0%, transparent 74%),
+    radial-gradient(ellipse 50% 50% at 74% 30%, color-mix(in srgb, var(--fig-skill) 24%, transparent) 0%, transparent 74%),
+    radial-gradient(ellipse 55% 48% at 50% 82%, color-mix(in srgb, var(--fig-videova) 24%, transparent) 0%, transparent 76%),
+    color-mix(in srgb, var(--bg) 52%, transparent);
+}
+/* Belt-and-braces text legibility: a soft shadow that reads as nothing
+   over the opaque panel core but keeps text readable if it ever sits
+   nearer the panel's faded edge. */
+#hero .hero-title, #hero .hero-tagline, #hero .hero-abstract,
+#hero .hero-author-names, #hero .hero-affil {
+  text-shadow: 0 1px 20px color-mix(in srgb, var(--bg) 72%, transparent);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  /* No backdrop-filter support: fall back to a stronger flat wash so text
+     still reads, same soft mask. */
+  .ig-hero-textscrim { background: color-mix(in srgb, var(--bg) 88%, transparent); }
+}
+
+@media (max-width: 700px) {
+  /* Decorative and data-heavy (many autoplaying clips) — skip it on small
+     screens to save bandwidth/battery; the blob field still carries the
+     background there. The text panel stays (still needed for contrast
+     against the grid/blobs) but shrinks to hug the narrower column. */
+  .ig-hero-reel { display: none; }
+  .ig-hero-textscrim { width: 122vw; height: 122vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ig-hero-reel-row { animation: none !important; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       EXTENSIBILITY PANEL — shared by index.html and submit.html
+   ═══════════════════════════════════════════════════════════ */
+.ext-panel {
+  margin-top: 2.4rem;
+  padding: 1.9rem 2rem;
+  background: var(--on-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.ext-panel-head h3 {
+  display: flex; align-items: center; gap: .55rem;
+  font: 700 1.12rem/1.3 'Google Sans', system-ui, sans-serif;
+  margin-bottom: .55rem;
+}
+.ext-panel-head h3 i { color: var(--primary); }
+.ext-panel-head p { font-size: .92rem; line-height: 1.65; color: var(--text-muted); max-width: 780px; }
+
+.ext-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem 1.6rem; margin-top: 1.6rem;
+}
+.ext-item-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 10px; margin-bottom: .7rem;
+  background: var(--primary-bg); color: var(--primary); font-size: .95rem;
+}
+.ext-item h4 { font: 600 .95rem/1.3 'Google Sans', system-ui, sans-serif; margin-bottom: .4rem; }
+.ext-item p  { font-size: .85rem; line-height: 1.62; color: var(--text-muted); }
+.ext-item code {
+  font-size: .77rem; background: var(--surface); border: 1px solid var(--border);
+  padding: .08rem .35rem; border-radius: 5px;
+}
+@media (max-width: 640px) {
+  .ext-panel { padding: 1.5rem 1.25rem; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       GENERIC HOVER-AND-HOLD FLIP CARD (.ig-flip)
+       Shared 3D-flip primitive — used by the Seen/Unseen suite
+       cards below and by the hierarchy widget's human/robot shot
+       (#lvl-shot). Behaviour lives in landing.js (initFlipCards);
+       this just defines the two faces and the flip transform.
+       A container using this MUST set an explicit height (or size
+       via aspect-ratio/min-height) since both faces are stacked via
+       absolute positioning inside it.
+   ═══════════════════════════════════════════════════════════ */
+.ig-flip { position: relative; perspective: 1600px; }
+.ig-flip-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 640ms var(--ease-spring, cubic-bezier(.34,1.56,.64,1));
+}
+.ig-flip.is-flipped .ig-flip-inner { transform: rotateY(180deg); }
+.ig-flip-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0); /* Safari backface-visibility fix */
+}
+.ig-flip-face.ig-flip-back { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) {
+  .ig-flip-inner { transition: none; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       EVALUATION SUITE — seen/unseen task cards + labelled reel
+       (index.html "Evaluation suite" band, leaderboard.html
+       "What's being scored" band)
+   ═══════════════════════════════════════════════════════════ */
+.suite-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem; margin-top: 1.8rem;
+}
+.suite-card {
+  height: 290px; /* explicit height required by .ig-flip's absolute faces */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--dur-fast, 180ms) var(--ease-out, ease);
+}
+.suite-card:hover { box-shadow: var(--shadow-lg); }
+.suite-card .ig-flip-face {
+  background: var(--on-bg); border: 1px solid var(--border); border-top: 3px solid var(--tone);
+  border-radius: var(--radius-lg); padding: 1.5rem 1.6rem;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.suite-card-badge {
+  display: inline-block;
+  font: 700 .66rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--tone); background: color-mix(in srgb, var(--tone) 14%, transparent);
+  padding: .3rem .65rem; border-radius: var(--radius-pill); margin-bottom: .85rem;
+  align-self: flex-start;
+}
+.suite-card h3 { font: 700 1.05rem/1.35 'Google Sans', system-ui, sans-serif; margin-bottom: .55rem; }
+.suite-card p  { font-size: .88rem; line-height: 1.65; color: var(--text-muted); }
+.suite-card-hint {
+  display: inline-flex; align-items: center; gap: .4rem;
+  margin-top: auto; padding-top: .9rem;
+  font: 600 .76rem/1 'Google Sans', sans-serif; color: var(--tone);
+  opacity: .85;
+}
+.suite-card-hint i { font-size: .78rem; }
+/* Back face: a simple, clickable list of the five real tasks. */
+.suite-card-tasklist {
+  display: flex; flex-direction: column; gap: .35rem;
+  margin-top: .3rem; overflow-y: auto;
+}
+.suite-card-task {
+  display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+  padding: .6rem .8rem; border-radius: var(--radius);
+  background: var(--surface); color: var(--text); text-decoration: none;
+  font: 600 .86rem/1.3 'Google Sans', sans-serif;
+  border: 1px solid transparent;
+  transition: border-color var(--dur-fast, 180ms) var(--ease-out, ease), transform var(--dur-fast, 180ms) var(--ease-out, ease);
+}
+.suite-card-task:hover { border-color: var(--tone); transform: translateX(3px); text-decoration: none; color: var(--text); }
+.suite-card-task i { font-size: .74rem; color: var(--tone); flex-shrink: 0; }
+@media (max-width: 480px) {
+  .suite-card { height: 320px; }
+}
+
+/* ── ═══════════════════════════════════════════════════════════
+       THE HIERARCHY — level tabs + human/robot flip shot
+       (index.html "#lvl-widget", band id="levels")
+   ═══════════════════════════════════════════════════════════ */
+.lvl-widget { margin-top: 2.4rem; }
+.lvl-tabs { display: flex; gap: .65rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+.lvl-tab {
+  display: flex; flex-direction: column; align-items: flex-start; gap: .35rem;
+  min-width: 152px; padding: .75rem 1rem;
+  background: var(--on-bg); border: 1.5px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; text-align: left;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.lvl-tab:hover { transform: translateY(-2px); border-color: var(--lvl-c); }
+.lvl-tab.is-active {
+  border-color: var(--lvl-c);
+  background: color-mix(in srgb, var(--lvl-c) 9%, var(--on-bg));
+  box-shadow: 0 0 0 1px var(--lvl-c) inset;
+}
+.lvl-tab-id { font: 700 .82rem/1 'Google Sans', sans-serif; color: var(--lvl-c); }
+.lvl-tab-name { font: 600 .78rem/1.3 'Noto Sans', sans-serif; color: var(--text-muted); }
+.lvl-tab-dist { display: flex; gap: 3px; margin-top: .15rem; }
+.lvl-tab-dist i { width: 15px; height: 3px; border-radius: 2px; background: var(--border); }
+.lvl-tab-dist i.is-filled { background: var(--lvl-c); }
+
+.lvl-stage { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2.2rem; align-items: stretch; }
+.lvl-stage-media { position: relative; }
+
+/* The flip shot itself: front = human demo, back = robot/sim rollout for
+   the currently selected level. aspect-ratio gives .ig-flip the explicit
+   height its absolutely-positioned faces need (see the generic .ig-flip
+   rules above). */
+.lvl-shot { aspect-ratio: 16 / 9; border-radius: var(--radius-lg); }
+/* Force-fill the flip face exactly, instead of letting the inner .ig-shot
+   (which itself carries its own aspect-ratio:16/9 from motion.css) fight
+   over sizing with the face's own box: with height set but width left to
+   the block default, the browser can end up deriving width FROM the
+   aspect-ratio instead of stretching to fill — that's what made the shot
+   render visibly narrower than a normal 16:9 box. Setting an explicit
+   width/height and clearing aspect-ratio here removes the ambiguity. */
+.lvl-shot .ig-flip-face .ig-shot {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  aspect-ratio: auto;
+  margin: 0;
+}
+.lvl-flip-hint {
+  position: absolute; z-index: 5; right: .9rem; bottom: .9rem;
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem .75rem; border-radius: var(--radius-pill);
+  background: rgba(0,0,0,.58); color: #fff;
+  font: 600 .72rem/1 'Google Sans', sans-serif;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  pointer-events: none; opacity: .92;
+  transition: opacity 260ms var(--ease-out, ease);
+}
+.lvl-shot.is-flipped .lvl-flip-hint { opacity: 0; }
+
+.lvl-stage-info { display: flex; flex-direction: column; justify-content: center; gap: .9rem; }
+.lvl-stage-badge {
+  align-self: flex-start;
+  font: 700 .72rem/1 'Google Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; background: var(--lvl-c); padding: .32rem .75rem; border-radius: var(--radius-pill);
+}
+.lvl-stage-name { font: 700 1.3rem/1.3 'Google Sans', sans-serif; margin: 0; }
+.lvl-stage-blurb { font-size: .92rem; line-height: 1.6; color: var(--text-muted); margin: 0; }
+.lvl-stage-stat {
+  margin-top: .3rem; padding-left: 1rem; border-left: 3px solid var(--lvl-c);
+  display: flex; flex-direction: column; gap: .15rem;
+}
+.lvl-stage-stat-v { font: 700 1.8rem/1 'Google Sans', sans-serif; color: var(--lvl-c); }
+.lvl-stage-stat-l { font-size: .78rem; color: var(--text-muted); line-height: 1.4; max-width: 28ch; }
+
+@media (max-width: 900px) {
+  .lvl-stage { grid-template-columns: 1fr; gap: 1.4rem; }
+}
+
+/* Task grid — indexed straight from the Gallery manifest, one card per
+   headline task, three synced clips (human / robot / sim) at whichever
+   level the toolbar above has selected. A real CSS grid (not a manual
+   row layout) so a single `gap` gives identical spacing between columns
+   and between rows, `auto-fill` lets it fill the full band width at any
+   viewport, and every video panel gets the same fixed aspect-ratio so
+   card height never depends on which clip happened to load — no random
+   per-tile crop, no layout jump while metadata loads. */
+.suite-task-toolbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  margin-top: 2.2rem;
+}
+.suite-task-toolbar-label {
+  font: 700 .72rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.suite-level-tabs { display: flex; gap: .4rem; background: var(--surface); padding: .3rem; border-radius: var(--radius-pill); }
+.suite-level-tab {
+  padding: .38rem .95rem; border: none; border-radius: var(--radius-pill);
+  background: transparent; color: var(--text-muted);
+  font: 700 .78rem/1 'Google Sans', sans-serif; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.suite-level-tab:hover { color: var(--text); }
+.suite-level-tab.is-active { background: var(--lvc, var(--primary)); color: #fff; }
+
+.suite-task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.4rem;
+  margin-top: 1rem;
+}
+.suite-task-card {
+  display: flex; flex-direction: column;
+  background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.suite-task-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.suite-task-card-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: .6rem;
+  padding: .8rem 1rem .65rem;
+}
+.suite-task-card-title { font: 700 .92rem/1.3 'Google Sans', system-ui, sans-serif; }
+.suite-task-card-id { font-size: .72rem; color: var(--text-muted); font-weight: 600; flex-shrink: 0; }
+.suite-task-card-desc {
+  font-size: .78rem; line-height: 1.5; color: var(--text-muted);
+  padding: 0 1rem .8rem;
+}
+.suite-task-videos {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  background: var(--border);
+}
+.suite-task-video {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #0d1117;
+}
+.suite-task-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.suite-task-video-label {
+  position: absolute; top: .35rem; left: .4rem; z-index: 2;
+  font: 700 .58rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .04em; text-transform: uppercase;
+  color: #fff; background: rgba(0,0,0,.55); padding: .16rem .42rem; border-radius: 5px;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.suite-task-video-fallback {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.55); font-size: .82rem;
+  background: linear-gradient(135deg, var(--fig-vla), var(--fig-videova));
+  opacity: .3;
+}
+.suite-task-video.is-empty video { display: none; }
+.suite-task-video.is-empty .suite-task-video-fallback { display: flex; }
+.suite-task-grid-empty {
+  grid-column: 1 / -1;
+  padding: 2rem 1rem; text-align: center; color: var(--text-muted); font-size: .9rem;
+}
+@media (max-width: 640px) {
+  .suite-card { padding: 1.25rem 1.3rem; }
+  .suite-task-videos { grid-template-columns: 1fr; }
+}
+
+/* ── Task reel — a scrolling companion to the grid above, same ten
+   tasks, all levels, but as a continuously moving mosaic instead of a
+   fixed layout. Hosted inline in a bordered card, not as an absolute
+   hero background. */
+.suite-reel-wrap {
+  margin-top: 1.6rem;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--on-bg);
+  padding: 1.3rem 0 1.5rem;
+  overflow: hidden;
+}
+.suite-reel-label {
+  padding: 0 1.5rem .9rem;
+  font: 700 .7rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ig-hero-reel.task-reel {
+  position: relative; inset: auto; z-index: auto;
+  display: flex; flex-direction: column; gap: var(--reel-gap, .7rem);
+  padding-block: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.task-reel .ig-hero-reel-row { padding-inline: 1.5rem; }
+/* Eval-suite reel: hover DOES pause it (unlike the hero title reel above),
+   scoped to the bordered card that wraps it so hovering anywhere near the
+   clips — not just exactly on a moving tile — pauses the row. */
+.suite-reel-wrap:hover .ig-hero-reel-row { animation-play-state: paused; }
+.ig-reel-lv {
+  position: absolute; bottom: 6px; left: 6px; z-index: 2;
+  font: 700 .6rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .02em; color: #fff;
+  background: rgba(0,0,0,.6); padding: .18rem .45rem; border-radius: 5px;
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .suite-reel-label { padding-inline: 1.1rem; }
+  .task-reel .ig-hero-reel-row { padding-inline: 1.1rem; }
+}
+
+/* ── Suite task drawers (moved here from the Leaderboard page) ────────
+   Seen / Unseen as two side-by-side collapsible <details> "slots", each
+   opening onto a small grid of cards. Cards show id/tag/description as
+   plain text — only .suite-drawer-card-btn is an actual link, per
+   "click the button, not the text". */
+.suite-task-chip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  margin-top: 1.8rem;
+  align-items: start;
+}
+.suite-drawer {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--on-bg);
+  overflow: hidden;
+}
+.suite-drawer.is-seen   { border-top: 3px solid var(--fig-vla); }
+.suite-drawer.is-unseen { border-top: 3px solid var(--fig-l3); }
+
+.suite-drawer-head {
+  display: flex; align-items: center; gap: .7rem;
+  padding: 1.1rem 1.5rem;
+  cursor: pointer; user-select: none;
+  list-style: none; /* hide the default marker */
+}
+.suite-drawer-head::-webkit-details-marker { display: none; }
+.suite-drawer-head:hover { background: var(--surface); }
+.suite-drawer-head h4 {
+  margin: 0; font: 700 1.05rem/1 'Google Sans', sans-serif;
+}
+.suite-drawer-badge {
+  font: 700 .66rem/1 'Google Sans', sans-serif; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.suite-drawer-caret {
+  margin-left: auto; font-size: .8rem; color: var(--text-muted);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.suite-drawer[open] .suite-drawer-caret { transform: rotate(180deg); }
+
+.suite-drawer-body {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: .9rem;
+  padding: 0 1.4rem 1.5rem;
+  animation: suite-drawer-in 260ms var(--ease-out);
+}
+@keyframes suite-drawer-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.suite-drawer-card {
+  display: flex; flex-direction: column; gap: .55rem;
+  padding: .95rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.suite-drawer-card-top { display: flex; align-items: center; justify-content: space-between; gap: .4rem; }
+.suite-drawer-card-id { font: 700 .82rem/1.2 'Google Sans', sans-serif; }
+.suite-drawer-card-tag {
+  flex: none;
+  font: 700 .6rem/1 'Google Sans', sans-serif; letter-spacing: .05em; text-transform: uppercase;
+  padding: .1rem .4rem; border-radius: var(--radius-pill);
+}
+.suite-drawer-card-tag.is-seen   { color: var(--fig-vla); background: color-mix(in srgb, var(--fig-vla) 14%, transparent); }
+.suite-drawer-card-tag.is-unseen { color: var(--fig-l3);  background: color-mix(in srgb, var(--fig-l3) 14%, transparent); }
+.suite-drawer-card-desc {
+  margin: 0; flex: 1;
+  font-size: .74rem; line-height: 1.45; color: var(--text-muted);
+}
+/* The only clickable element in the card — this is the "button, not
+   text" navigation target. */
+.suite-drawer-card-btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  align-self: flex-start;
+  font: 700 .7rem/1 'Google Sans', sans-serif;
+  color: var(--primary);
+  padding: .35rem .2rem;
+  text-decoration: none;
+  transition: gap var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.suite-drawer-card-btn i { font-size: .68rem; transition: transform var(--dur-fast) var(--ease-out); }
+.suite-drawer-card-btn:hover { gap: .6rem; text-decoration: none; color: var(--primary-hover); }
+.suite-drawer-card-btn:hover i { transform: translateX(2px); }
+
+@media (max-width: 980px) {
+  .suite-drawer-body { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .suite-task-chip-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .suite-drawer-body { grid-template-columns: repeat(2, 1fr); }
 }

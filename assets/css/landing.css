@@ -53,77 +53,8 @@ body.landing-page .pst-header-nav { display: flex !important; }
 /* ── Section band system ─────────────────────────────────────── */
 /* Strips the default pst-main vertical padding; each band owns its spacing */
 .landing-main { padding: 0 !important; }
-
-.lp-band { width: 100%; }
-
-.lp-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 5rem 2rem;
-}
-.lp-inner-wide   { max-width: 1400px; }
-.lp-inner-narrow { max-width: 900px; }
-
-/* Remove the paper-section's own margin/max-width when inside a band */
-.lp-band .paper-section,
-.lp-band .paper-section-abstract {
-  margin: 0;
-  max-width: none;
-  padding: 0;
-}
-.lp-band .paper-section-wide {
-  width: 100%; max-width: none; padding-inline: 0;
-}
-
-/* Band backgrounds */
-.lp-band-white { background: var(--on-bg); }
-.lp-band-gray  { background: var(--surface); }
-.lp-band-hero  { background: var(--bg); }
-.lp-band-accent {
-  background: linear-gradient(135deg, var(--primary) 0%, #5e5ce6 100%);
-}
-
-[data-theme="dark"] .lp-band-accent {
-  background:
-    radial-gradient(circle at 15% 20%, rgba(88,183,198,.24), transparent 42%),
-    linear-gradient(135deg, #173943 0%, #25243f 100%);
-}
-
-/* Accent band text overrides */
-.lp-band-accent .paper-section-eyebrow { color: rgba(255,255,255,.78); }
-.lp-band-accent .paper-section-title   { color: #fff; }
-.lp-band-accent .paper-section-body    { color: rgba(255,255,255,.9); }
-.lp-band-accent .pst-btn {
-  background: rgba(255,255,255,.18); color: #fff;
-}
-.lp-band-accent .pst-btn:hover {
-  background: rgba(255,255,255,.28); color: #fff; text-decoration: none;
-}
-.lp-band-accent .pst-btn-primary {
-  background: #fff; color: var(--primary);
-}
-.lp-band-accent .pst-btn-primary:hover {
-  background: rgba(255,255,255,.9); color: var(--primary);
-}
-
-[data-theme="dark"] .lp-band-accent .pst-btn {
-  background: rgba(20,24,30,.34);
-  border: 1px solid rgba(243,244,245,.2);
-}
-[data-theme="dark"] .lp-band-accent .pst-btn:hover {
-  background: rgba(20,24,30,.52);
-  border-color: rgba(243,244,245,.34);
-}
-[data-theme="dark"] .lp-band-accent .pst-btn-primary {
-  background: #f3f4f5;
-  color: #173943;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(0,0,0,.18);
-}
-[data-theme="dark"] .lp-band-accent .pst-btn-primary:hover {
-  background: #ffffff;
-  color: #173943;
-}
+/* The shared .lp-band / .lp-inner layout and band backgrounds now live in
+   style.css so every page gets them, not just the landing page. */
 
 /* ── Hover float effects ─────────────────────────────────────── */
 .key-finding-card {
@@ -300,6 +231,5 @@ body.landing-page .pst-header-nav { display: flex !important; }
 }
 
 @media (max-width: 640px) {
-  .lp-inner { padding: 3.5rem 1.25rem; }
   .lp-footer-inner { flex-direction: column; gap: .35rem; text-align: center; }
 }

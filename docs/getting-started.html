@@ -7,17 +7,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -61,7 +75,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html" class="active"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -127,14 +141,10 @@ curl -sSL https://raw.githubusercontent.com/huggingface/lerobot/0e81a275fcdbf03d
           </p>
 
           <h2 id="assets">Downloading assets</h2>
-          <p>
-            Scene objects and datasets are downloaded into <code>~/.maniskill/data</code>. The standard
-            YCB assets are fetched with the built-in downloader:
-          </p>
 
-          <h3>IG-10K Assets (one-shot)</h3>
+          <h3>IG-10K Assets (one-click download)</h3>
           <p>
-            The recommended path is to download the shared asset package into <code>~/.maniskill/data</code>. It includes the assets used by the benchmark; the individual ManiSkill download commands below remain useful when you only need one namespace.
+            The recommended path is to download the shared asset package into <code>~/.maniskill/data</code>. It includes the assets used by the benchmark.
           </p>
           <div class="code-block">
             <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
@@ -149,16 +159,7 @@ done
 rm ~/.maniskill/data/*.tar.zst</code></pre>
           </div>
 
-          <div class="code-block">
-            <div class="code-block-header"><span class="code-block-lang">bash</span><button class="code-copy-btn" type="button">Copy</button></div>
-<pre><code><span class="hl-com"># download assets for a specific environment id</span>
-python -m mani_skill.utils.download_asset <span class="hl-var">${ENV_ID}</span>
-
-<span class="hl-com"># standard YCB assets</span>
-python -m mani_skill.utils.download_asset ycb</code></pre>
-          </div>
-
-          <h3>RoboTwin objects &amp; background textures</h3>
+          <!-- <h3>RoboTwin objects &amp; background textures</h3>
           <p>
             RoboTwin objects and the background textures used by
             <code>random_background=True</code> (see the
@@ -226,7 +227,7 @@ unzip -o replica_cad_dataset.zip -d ~/.maniskill/data/scene_datasets/replica_cad
             <div class="code-block-header"><span class="code-block-lang">text</span><button class="code-copy-btn" type="button">Copy</button></div>
 <pre><code>~/.maniskill/data/sketchfab/objects/balance_scale/model.glb
 ~/.maniskill/data/sketchfab/objects/weight_on_scale/model.glb</code></pre>
-          </div>
+          </div> -->
 
           <h2 id="asset-namespaces">Asset namespaces</h2>
           <p>
@@ -294,7 +295,7 @@ env.close()</code></pre>
 
           <!-- Pager -->
           <nav class="doc-pager">
-            <a class="doc-pager-link" href="index.html">
+            <a class="doc-pager-link" href="guide.html">
               <span class="doc-pager-label"><i class="fas fa-arrow-left"></i>&ensp;Prev</span>
               <span class="doc-pager-title">Documentation home</span>
             </a>
@@ -319,7 +320,9 @@ env.close()</code></pre>
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 /* Doc page: TOC scrollspy + code copy buttons */
 (function () {

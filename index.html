@@ -4,17 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Imitator Game — Benchmarking Robot Imitative Ability Beyond Action Prediction</title>
-  <meta name="description" content="A four-level benchmark, a 20,000+ episode paired human–robot dataset, an open Arena for blind human evaluation, and a live leaderboard for robot imitation from human video.">
+  <meta name="description" content="A four-level benchmark, a 20,000+ episode paired human-robot dataset, an open Arena for blind human evaluation, and a live leaderboard for robot imitation from human video.">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="icon" type="image/png" href="assets/media/logo.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260824-motion">
+   <link rel="stylesheet" href="assets/css/style.css?v=20260825-format">
   <link rel="stylesheet" href="assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="assets/css/landing.css?v=20260824-motion">
   <link rel="stylesheet" href="assets/css/story.css?v=20260824-motion">
   <link rel="stylesheet" href="assets/css/charts.css?v=20260824-motion">
+  <link rel="stylesheet" href="assets/css/levels.css?v=20260825-levels">
   <script>
+     /* Home always opens at the top. This used to also restore the
+        visitor's last scroll offset from sessionStorage, which produced
+        the jump-to-IG-10K-then-scroll-to-top glitch: navigating here
+        fresh from another page (or a plain refresh) would first snap to
+        wherever you'd scrolled to on a *previous* visit, then something
+        else on the page (e.g. a reveal/animation reflow) nudged it back
+        toward the top a moment later — visually a double jump. Home is
+        the entry point, not a "continue where you left off" page, so it
+        should just always be the top; an explicit deep link (e.g.
+        "#story") is still honoured. */
+     if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+     (function () {
+       function toTop() {
+         if (location.hash) return; // respect an explicit deep link
+         // Double rAF: run after the browser's own bfcache/scroll-restore
+         // attempt for this navigation has had a chance to happen, so our
+         // "go to top" is the one that actually sticks.
+         requestAnimationFrame(function () {
+           requestAnimationFrame(function () { window.scrollTo(0, 0); });
+         });
+       }
+       window.addEventListener('pageshow', toTop);
+     }());
     /* No-flash theme boot. First visit follows the OS; after that the
        visitor's own choice wins and survives reloads. */
     (function () {
@@ -40,14 +64,14 @@
         The&thinsp;Imitator&thinsp;Game
       </a>
       <nav class="pst-header-nav">
-        <a href="#story"><i class="fas fa-book-open-reader"></i>Story</a>
-        <a href="#levels"><i class="fas fa-layer-group"></i>Levels</a>
-        <a href="#results"><i class="fas fa-chart-simple"></i>Results</a>
+        <a href="#overview"><i class="fas fa-book-open"></i>Overview</a>
         <a href="leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="docs/guide.html"><i class="fas fa-book"></i>Docs</a>
+        <a href="community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="data.html"><i class="fas fa-database"></i>Data</a>
         <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
         <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
-        <a href="docs/index.html"><i class="fas fa-book"></i>Docs</a>
       </nav>
       <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
@@ -60,20 +84,23 @@
     ══════════════════════════════════════════════════════ -->
     <div class="lp-band lp-band-hero" id="hero">
       <div class="ig-hero-grid" aria-hidden="true"></div>
+      <div class="ig-hero-reel" id="hero-reel" aria-hidden="true"></div>
+      <div class="ig-hero-scrim" aria-hidden="true"></div>
       <div class="ig-hero-field" aria-hidden="true">
         <span class="ig-hero-blob b1"></span><span class="ig-hero-blob b2"></span><span class="ig-hero-blob b3"></span>
       </div>
+      <div class="ig-hero-textscrim" aria-hidden="true"></div>
 
       <div class="lp-inner" style="text-align:center;">
 
         <div class="hero-badges" data-reveal="down">
-          <span class="hero-badge"><i class="fas fa-layer-group"></i>Four levels, <b>L0–L3</b></span>
+          <span class="hero-badge"><i class="fas fa-layer-group"></i>Intent imitation, <b>L0-L3</b></span>
           <span class="hero-badge"><i class="fas fa-database"></i><b>20,000+</b> paired episodes</span>
-          <span class="hero-badge"><i class="fas fa-users"></i>Open human <b>Arena</b></span>
+          <span class="hero-badge"><i class="fas fa-users"></i>Human evaluation <b>Arena</b></span>
         </div>
 
         <h1 class="hero-title" data-reveal="scale" data-reveal-delay="80">
-          <img src="assets/media/logo.svg" alt="" style="width:56px;height:56px;object-fit:contain;vertical-align:middle;margin-right:.4em;border-radius:10px;">The Imitator Game
+          <img src="assets/media/logo.svg" alt="" style="width:86px;height:86px;object-fit:contain;vertical-align:middle;margin-right:.4em;border-radius:10px;">The Imitator Game
         </h1>
         <p class="hero-tagline" data-split="40" data-reveal data-reveal-delay="180">
           Benchmarking Robot Imitative Ability Beyond Action Prediction
@@ -82,9 +109,9 @@
         <div class="hero-authors" data-reveal="up" data-reveal-delay="320">
           <p class="hero-author-names">
             <a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a><sup>1,2,*,†</sup> ·
-            Yiyang Cai<sup>2,3,*</sup> · Fengyi Wang<sup>2,3,*</sup> · Ran Ju<sup>1,2,*</sup> ·
-            Hanxiang Ren<sup>2,4</sup> · Ruizhe Liu<sup>1</sup><br>
-            Yu Zhang<sup>1</sup> · Qian Luo<sup>1,2</sup> · Feng Chen<sup>1</sup> · Pei Zhou<sup>1,2</sup> ·
+            <a href="https://caibao7.github.io/" target="_blank" rel="noopener">Yiyang Cai</a><sup>2,3,*</sup> · <a href="https://github.com/fywang222" target="_blank" rel="noopener">Fengyi Wang</a><sup>2,3,*</sup> · <a href="https://github.com/RanJu1122" target="_blank" rel="noopener">Ran Ju</a><sup>1,2,*</sup> ·
+            <a href="https://github.com/ReNginx" target="_blank" rel="noopener">Hanxiang Ren</a><sup>2,4</sup> · <a href="https://zrllrz.github.io/" target="_blank" rel="noopener">Ruizhe Liu</a><sup>1</sup><br>
+            <a href="https://franklin-zhang0.github.io/" target="_blank" rel="noopener">Yu Zhang</a><sup>1</sup> · <a href="https://qianqianlo.github.io/" target="_blank" rel="noopener">Qian Luo</a><sup>1,2</sup> · <a href="https://winniechen2002.github.io/" target="_blank" rel="noopener">Feng Chen</a><sup>1</sup> · <a href="https://github.com/PeiZhou26" target="_blank" rel="noopener">Pei Zhou</a><sup>1,2</sup> ·
             <a href="https://people.eecs.berkeley.edu/~yima/" target="_blank" rel="noopener">Yi Ma</a><sup>1,2</sup> ·
             <a href="https://yanchaoyang.github.io/" target="_blank" rel="noopener">Yanchao Yang</a><sup>1,2,‡</sup>
           </p>
@@ -102,7 +129,7 @@
         </p>
 
         <div class="hero-cta" data-reveal="up" data-reveal-delay="480">
-          <a href="#" class="pst-btn pst-btn-lg hero-btn-disabled" aria-disabled="true" tabindex="-1">
+          <a href="https://arxiv.org/abs/2608.22301" class="pst-btn pst-btn-lg" target="_blank" rel="noopener">
             <i class="ai ai-arxiv"></i>&ensp;Paper
           </a>
           <a href="https://github.com/imitator-game/The-Imitator-Game" class="pst-btn pst-btn-lg" target="_blank" rel="noopener">
@@ -110,257 +137,157 @@
           </a>
           <a href="data.html" class="pst-btn pst-btn-lg"><i class="fas fa-database"></i>&ensp;IG-10K</a>
           <a href="leaderboard.html" class="pst-btn pst-btn-lg"><i class="fas fa-ranking-star"></i>&ensp;Leaderboard</a>
-          <a href="arena.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-gamepad"></i>&ensp;Open the Arena →</a>
+          <a href="documentation.html" class="pst-btn pst-btn-lg"><i class="fas fa-book"></i>&ensp;Documentation</a>
+          <a href="community.html" class="pst-btn pst-btn-lg"><i class="fas fa-people-group"></i>&ensp;Community</a>
+          <a href="gallery.html" class="pst-btn pst-btn-lg"><i class="fas fa-film"></i>&ensp;Task Gallery</a>
+          <a href="arena.html" class="pst-btn pst-btn-lg"><i class="fas fa-gamepad"></i>&ensp;Imitator Arena</a>
+          <a href="submit.html" class="pst-btn pst-btn-lg"><i class="fas fa-upload"></i>&ensp;Submit</a>
         </div>
 
         <!-- Headline numbers -->
         <div class="hero-metrics" data-stagger="110">
           <div>
             <span class="hero-metric-v" style="color:var(--fig-videova)"
-                  data-count-to="0.81" data-count-decimals="2">0.00</span>
-            <span class="hero-metric-l">best success rate<br>on seen tasks</span>
+                  data-count-to="4">0</span>
+            <span class="hero-metric-l">intent-based hierarchical imitation levels</span>
           </div>
           <div>
             <span class="hero-metric-v" style="color:var(--fig-zs)"
-                  data-count-to="13" data-count-suffix="%">0%</span>
-            <span class="hero-metric-l">ceiling on zero-shot<br>transfer, every model</span>
+                  data-count-to="20000" data-count-suffix="+">0</span>
+            <span class="hero-metric-l">paired human-robot<br> episodes</span>
           </div>
           <div>
             <span class="hero-metric-v" style="color:var(--fig-l3)"
-                  data-count-to="0.29" data-count-decimals="2">0.00</span>
-            <span class="hero-metric-l">average success<br>at L3</span>
+                  data-count-to="50" data-count-suffix="+">0</span>
+            <span class="hero-metric-l">scalable simulation<br> environments</span>
           </div>
           <div>
             <span class="hero-metric-v" style="color:var(--fig-vla)"
                   data-count-to="15">0</span>
-            <span class="hero-metric-l">trained variants<br>on the board</span>
+            <span class="hero-metric-l">evaluation variants<br> on the board</span>
           </div>
         </div>
-
-        <!-- Evaluated models ticker -->
-        <div class="hero-strip" data-reveal="up" data-reveal-delay="200">
-          <div class="hero-strip-label">Evaluated in this release</div>
-          <div class="ig-marquee"><div class="ig-marquee-track" id="model-ticker"></div></div>
-        </div>
       </div>
+
+      <a href="#overview" class="hero-scrollcue" aria-hidden="true">
+        <span>Keep scrolling</span><i class="fas fa-chevron-down"></i>
+      </a>
     </div>
 
     <!-- ══════════════════════════════════════════════════════
          2 · THE STORY — pinned stage, scrolling argument
          ★ FILM THESE. Each frame below wants one clip.
     ══════════════════════════════════════════════════════ -->
-    <div class="lp-band lp-band-white story-band" id="story" data-story>
+    <!-- <div class="lp-band lp-band-white story-band" id="story" data-story style="padding: 1rem 2rem;">
       <div class="lp-inner lp-inner-wide">
-
-        <div style="text-align:center;margin-bottom:1rem;">
-          <div class="ig-eyebrow" data-reveal="up" style="justify-content:center;"><i class="fas fa-book-open-reader"></i>The problem</div>
-          <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60" style="text-align:center;">
-            Watching is easy. Understanding is the hard part.
-          </h2>
-        </div>
 
         <div class="story-grid">
 
-          <!-- Left: the argument -->
           <div class="story-copy">
 
             <section class="story-beat" data-story-beat style="--beat:var(--fig-l0)">
-              <div class="story-beat-tag">Someone stirs the soup</div>
-              <h2>A person watches once, then does it their own way.</h2>
-              <p>They do not memorise the arc of the spoon. They work out <strong>what the motion was for</strong> —
-                the soup needs stirring — and then do that, with whatever is on the counter.</p>
-              <p>Move the pot, swap the spoon for chopsticks, hand them a wok instead of a bowl: the behaviour
-                survives all of it, because the goal survived.</p>
+              <div class="story-beat-tag">What we care about</div>
+              <h2>A person demonstrate a task, the robot imitates in its own way.</h2>
+              <p>The Imitator Game is based on the setup: a human demonstrates a task in the <strong style="color:var(--fig-l0)">Demonstrator Scene</strong>. </p>
+              <p>A robot watches the video and reproduces the underlying intent in the <strong style="color:var(--fig-l3)">Imitator Scene</strong> using whatever objects are available.</p>
             </section>
 
             <section class="story-beat" data-story-beat style="--beat:var(--fig-l1)">
-              <div class="story-beat-tag">The robot copies the arc</div>
-              <h2>Policies learn the motion, not the reason for it.</h2>
-              <p>Most methods for learning from human video extract hand keypoints or optical flow, retarget the
-                motion onto the arm, and replay it into a scene that looks like the one in the clip.</p>
-              <p>That works, and it is genuinely useful for bootstrapping behaviour. It also means the
-                demonstration and the execution scene have to stay close. <strong>Nudge the pot and the plan is
-                already wrong</strong> — even though the task never changed.</p>
+              <div class="story-beat-tag">Try to imitate intent</div>
+              <h2>Human can imitate the intent of the behavior, so will robot.</h2>
+              <p>A human draw the "Imitator" in the demonstrator scene with a pen and a paper, while the robot learns to replicate the <strong style="color:var(--fig-l1)">underlying intent</strong> by collecting the blocks and make it the letter "Imitator".</p>
             </section>
 
             <section class="story-beat" data-story-beat style="--beat:var(--fig-l2)">
-              <div class="story-beat-tag">So we widen the gap</div>
-              <h2>Four levels, each one further from the demonstration.</h2>
-              <p>L0 keeps the scene identical. L1 rearranges it. L2 replaces the objects with different instances
-                of the same kind. L3 replaces them with objects that <strong>work differently</strong> —
-                a teapot becomes a tap, and the cup still has to get filled.</p>
-              <p>Nothing else changes: same task, same supervision budget, same rubric. Only the distance between
-                what was shown and what is available.</p>
+              <div class="story-beat-tag">How to benchmark imitative ability</div>
+              <h2>With the scene mismatch increase,<br> can robot still learn?</h2>
+              <p><strong style="color:var(--fig-l0)">L0</strong> keeps the scene identical. <strong style="color:var(--fig-l1)">L1</strong> rearranges it. <strong style="color:var(--fig-l2)">L2</strong> replaces the objects with different appearance of the same kind. <strong style="color:var(--fig-l3)">L3</strong> replaces them with objects with different semantics but the same function.
+              </p>
               <div class="story-beat-stat">
-                <b>40</b><span>task–level pairs per domain, in simulation and on hardware</span>
+                <b>200</b><span>task-level pairs per domain, simulation and real world</span>
               </div>
             </section>
 
             <section class="story-beat" data-story-beat style="--beat:var(--fig-l3)">
-              <div class="story-beat-tag">And the field breaks in one place</div>
-              <h2>L0 to L2 barely moves. L3 is where it goes.</h2>
-              <p>Across nine models, success holds around 0.40 through the first three levels and then falls to
-                <strong>0.29 at L3</strong>. The human imitation score falls with it. The strongest model through
-                L2 — XSkill, at 0.56 — lands level with everything else once the affordance changes.</p>
-              <p>Rearranging a scene is survivable. Substituting an object of the same kind is survivable.
-                Achieving the same end through a <strong>different affordance</strong> is not.</p>
-              <div class="story-beat-stat">
-                <b>−0.11</b><span>drop in success from the L0–L2 mean to L3</span>
-              </div>
-            </section>
-
-            <section class="story-beat" data-story-beat style="--beat:var(--primary)">
-              <div class="story-beat-tag">So we built somewhere to measure it</div>
-              <h2>A benchmark, a dataset, and a room full of judges.</h2>
-              <p>An automated metric that tracks human verdicts at <strong>r = 0.96</strong>, 20,000+ paired
-                human–robot episodes, and an Arena where anyone can compare two anonymised rollouts against the
-                clip they were both supposed to imitate.</p>
-              <p>The board is open. If your policy watches a human and does the right thing for the right reason,
-                it should show up here.</p>
-              <div class="story-beat-stat" style="border-color:var(--primary)">
-                <b>Open</b><span>submissions, rollouts, and judgments</span>
-              </div>
+              <div class="story-beat-tag">Welcome to the Imitator Game</div>
+              <h2>A benchmark, a dataset, and one unified protocol.</h2>
+              <p>We conducted the benchmark and collected the largest environment aligned <strong style="color:var(--fig-l3)">human-robot paired dataset</strong>. We then conducted comprehensive evaluations across 15 variants with <strong style="color:var(--fig-l3)">one unified protocol</strong>.
+              </p>
             </section>
           </div>
 
-          <!-- Right: the pinned stage -->
-          <div class="story-stage" data-story-stage>
+          <div class="story-stage" data-story-stage
+               data-bg-0="assets/media/story/human_insert_flower.png"
+               data-bg-1="assets/media/story/human_write_imitator.png">
             <div class="story-frames">
 
-              <!-- FRAME 0 -->
               <div class="story-frame" data-frame="0">
-                <div class="ig-shot">
-                  <span class="ig-shot-label is-human">Demonstrator scene</span>
-                  <video muted loop playsinline data-autoplay preload="metadata"
-                         src="assets/media/story/01_human_stir.mp4"></video>
+                <div class="ig-shot ig-wipe-shot" data-wipe-box>
+                  <img class="ig-wipe-img ig-wipe-base"
+                       src="assets/media/story/human_insert_flower.png"
+                       alt="Human demonstration: placing a flower into the vase"
+                       onerror="this.closest('.ig-wipe-shot').classList.add('is-empty')">
+                  <img class="ig-wipe-img ig-wipe-overlay" data-wipe-overlay
+                       src="assets/media/story/robot_insert_flower.png"
+                       alt="Robot imitation: placing a flower into the vase"
+                       onerror="this.closest('.ig-wipe-shot').classList.add('is-empty')">
                   <div class="ig-shot-slot">
                     <i class="fas fa-hand"></i>
                     <div><b>Shot 1 — the demonstration</b></div>
-                    <div>Close, hands-only. One person stirs a pot on a plain surface. 6–10s, loopable.</div>
-                    <code>assets/media/story/01_human_stir.mp4</code>
+                    <div>A still of the human placing the flower, dissolving diagonally into the robot's own
+                      attempt at the same goal as you scroll.</div>
+                    <code>assets/media/story/human_insert_flower.png · robot_insert_flower.png</code>
                   </div>
                 </div>
               </div>
 
-              <!-- FRAME 1 -->
               <div class="story-frame" data-frame="1">
-                <div class="ig-shot">
-                  <span class="ig-shot-label is-robot">Imitator scene · L0</span>
-                  <video muted loop playsinline data-autoplay preload="metadata"
-                         src="assets/media/story/02_robot_replay.mp4"></video>
-                  <div class="ig-shot-slot">
-                    <i class="fas fa-robot"></i>
-                    <div><b>Shot 2 — the replay</b></div>
-                    <div>Same camera angle as shot 1, robot arm reproducing the stir in the identical scene.
-                      Matching the framing is what sells the point.</div>
-                    <code>assets/media/story/02_robot_replay.mp4</code>
-                  </div>
+                <div class="ig-shot ig-corner-wipe" data-corner-box>
+                  <video class="ig-corner-main" muted loop playsinline data-autoplay preload="metadata"
+                         src="assets/media/story/02_robot_replay.mp4"
+                         onerror="this.closest('.ig-corner-wipe').classList.add('is-empty')"></video>
                 </div>
               </div>
 
-              <!-- FRAME 2 -->
               <div class="story-frame" data-frame="2">
-                <div class="ig-shot">
-                  <span class="ig-shot-label is-sim">The gap widens · L1 → L2</span>
-                  <video muted loop playsinline data-autoplay preload="metadata"
-                         src="assets/media/story/03_scene_shift.mp4"></video>
-                  <div class="ig-shot-slot">
-                    <i class="fas fa-arrows-left-right"></i>
-                    <div><b>Shot 3 — the drift</b></div>
-                    <div>One locked-off take, three cuts: objects moved, then a different pot, then a different
-                      spoon. Same task throughout. 12–15s.</div>
-                    <code>assets/media/story/03_scene_shift.mp4</code>
+                <div class="ig-levelgrow" id="story-levelgrow" data-levelgrow aria-hidden="true">
+                  <div class="ig-levelgrow-human">
+                    <span class="ig-shot-label is-human">Demonstrator scene</span>
+                    <video class="ig-levelgrow-media" id="story-levelgrow-human-video"
+                           muted playsinline preload="metadata"
+                           onerror="this.closest('.ig-levelgrow-human').classList.add('is-empty')"></video>
                   </div>
+                  <div class="ig-levelgrow-levels" id="story-levelgrow-levels"></div>
                 </div>
               </div>
 
-              <!-- FRAME 3 -->
               <div class="story-frame" data-frame="3">
-                <div class="ig-shot">
-                  <span class="ig-shot-label is-robot">Failure at L3</span>
-                  <video muted loop playsinline data-autoplay preload="metadata"
-                         src="assets/media/story/04_l3_failure.mp4"></video>
-                  <div class="ig-shot-slot">
-                    <i class="fas fa-triangle-exclamation"></i>
-                    <div><b>Shot 4 — the wall</b></div>
-                    <div>The teapot is gone; there is a tap. The policy still reaches for where the teapot was.
-                      A real failure rollout, not a staged one.</div>
-                    <code>assets/media/story/04_l3_failure.mp4</code>
-                  </div>
-                </div>
-              </div>
-
-              <!-- FRAME 4 -->
-              <div class="story-frame" data-frame="4">
-                <div class="ig-shot">
-                  <span class="ig-shot-label">Imitator Arena</span>
-                  <video muted loop playsinline data-autoplay preload="metadata"
-                         src="assets/media/story/05_arena.mp4"></video>
-                  <div class="ig-shot-slot">
-                    <i class="fas fa-users-viewfinder"></i>
-                    <div><b>Shot 5 — the Arena</b></div>
-                    <div>Screen capture: reference clip on the left, two anonymous rollouts side by side,
-                      a judge scoring and clicking through. 10–12s.</div>
-                    <code>assets/media/story/05_arena.mp4</code>
-                  </div>
+                <div class="ig-story-reel-wrap">
+                  <div class="ig-story-reel" id="story-reel"></div>
                 </div>
               </div>
             </div>
-
-            <div class="story-rail" aria-hidden="true">
-              <span class="story-rail-seg" style="--seg:var(--fig-l0)"></span>
-              <span class="story-rail-seg" style="--seg:var(--fig-l1)"></span>
-              <span class="story-rail-seg" style="--seg:var(--fig-l2)"></span>
-              <span class="story-rail-seg" style="--seg:var(--fig-l3)"></span>
-            </div>
-            <p class="story-caption" id="story-caption"></p>
           </div>
 
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- ══════════════════════════════════════════════════════
-         3 · WHAT THIS PLATFORM IS
+         4 · OVERVIEW VIDEO
     ══════════════════════════════════════════════════════ -->
-    <div class="lp-band lp-band-gray" id="platform">
-      <div class="lp-inner">
-        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-cubes"></i>The platform</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Four things you can use today</h2>
-        <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
-          The paper is one snapshot. The benchmark keeps running: new models enter, the Arena keeps collecting
-          judgments, and the board moves.
-        </p>
-
-        <div class="plat" data-stagger="100">
-          <a class="plat-card" href="leaderboard.html" style="--tone:var(--fig-vla)">
-            <span class="plat-icon"><i class="fas fa-ranking-star"></i></span>
-            <h3>Leaderboard</h3>
-            <p>Every evaluated variant, scored in simulation, on hardware, and by human judges. Sortable, and
-               honest about where the three views disagree.</p>
-            <span class="plat-go">See the standings <i class="fas fa-arrow-right"></i></span>
-          </a>
-          <a class="plat-card" href="arena.html" style="--tone:var(--fig-skill)">
-            <span class="plat-icon"><i class="fas fa-pen-to-square"></i></span>
-            <h3>Arena</h3>
-            <p>A reference clip and two anonymous rollouts. Score each, pick a winner. Model identities stay
-               hidden until the comparison is submitted.</p>
-            <span class="plat-go">Judge a pair <i class="fas fa-arrow-right"></i></span>
-          </a>
-          <a class="plat-card" href="gallery.html" style="--tone:var(--fig-videova)">
-            <span class="plat-icon"><i class="fas fa-film"></i></span>
-            <h3>Gallery</h3>
-            <p>50+ task groups at all four levels, with the human demonstration, the real-robot rollout and the
-               simulated one lined up side by side.</p>
-            <span class="plat-go">Browse the tasks <i class="fas fa-arrow-right"></i></span>
-          </a>
-          <a class="plat-card" href="submit.html" style="--tone:var(--fig-purple)">
-            <span class="plat-icon"><i class="fas fa-upload"></i></span>
-            <h3>Submit a model</h3>
-            <p>Public harness, frozen splits, a bundle format. Run it, send the rollouts, and your policy is on
-               the board and in the Arena rotation.</p>
-            <span class="plat-go">Enter your policy <i class="fas fa-arrow-right"></i></span>
-          </a>
+    <div class="lp-band lp-band-white" id="overview">
+      <div class="lp-inner" style="text-align:center;">
+        <div class="ig-eyebrow" data-reveal="up" style="justify-content:center;"><i class="fas fa-play-circle"></i>Overview</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60" style="text-align:center;">Three minutes on the whole thing</h2>
+        <div class="ig-shot" style="margin-top:1.6rem;" data-reveal="scale" data-reveal-delay="140">
+          <video controls preload="metadata" poster="assets/media/demo_cover.jpg" src="assets/media/demo_video.mp4"></video>
+          <div class="ig-shot-slot">
+            <i class="fas fa-clapperboard"></i>
+            <div><b>Overview film</b></div>
+            <div>The 2-3 minute explainer: setup, the four levels, a real rollout, the Arena.</div>
+            <code>assets/media/demo_video.mp4</code>
+          </div>
         </div>
       </div>
     </div>
@@ -379,9 +306,9 @@
           inferring the demonstrated task. Learning from human video thus remains largely trajectory-level:
           models can replay motions in near-identical scenes, but still struggle to imitate what the demonstrator
           intends rather than merely what they do. We introduce <strong>The Imitator Game</strong>, a four-level
-          benchmark (L0–L3) that progressively widens the gap between the human demonstration and the robot's own
+          benchmark (L0-L3) that progressively widens the gap between the human demonstration and the robot's own
           scene, isolating where trajectory replay ceases to suffice and task understanding becomes necessary.
-          We pair it with <strong>IG-10K</strong>, the largest environment-aligned paired human–robot dataset to
+          We pair it with <strong>IG-10K</strong>, the largest environment-aligned paired human-robot dataset to
           date and the only one instantiated across all four levels in both real and simulated settings
           (20,000+ paired episodes, 50+ tasks, 6 domains), and <strong>Imitator Arena</strong>, an open platform
           for blind A/B human evaluation. Across nine state-of-the-art models, performance is stable from L0 to
@@ -389,27 +316,8 @@
           different object affordance — as the decisive barrier to intent-level imitation.
           Human-video-conditioned models outperform caption-conditioned ones, yet every model falls below 13%
           zero-shot success on unseen tasks; fine-tuning IG-10K-pretrained models with only 10 paired
-          human–robot demonstrations yields large gains that grow with pretraining scale.
+          human-robot demonstrations yields large gains that grow with pretraining scale.
         </p>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════
-         4 · OVERVIEW VIDEO
-    ══════════════════════════════════════════════════════ -->
-    <div class="lp-band lp-band-gray" id="overview">
-      <div class="lp-inner lp-inner-narrow" style="text-align:center;">
-        <div class="ig-eyebrow" data-reveal="up" style="justify-content:center;"><i class="fas fa-play-circle"></i>Overview</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60" style="text-align:center;">Three minutes on the whole thing</h2>
-        <div class="ig-shot" style="margin-top:1.6rem;" data-reveal="scale" data-reveal-delay="140">
-          <video controls preload="metadata" poster="assets/media/demo_cover.jpg" src="assets/media/demo_video.mp4"></video>
-          <div class="ig-shot-slot">
-            <i class="fas fa-clapperboard"></i>
-            <div><b>Overview film</b></div>
-            <div>The 2–3 minute explainer: setup, the four levels, a real rollout, the Arena.</div>
-            <code>assets/media/demo_video.mp4</code>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -419,98 +327,210 @@
     <div class="lp-band lp-band-white" id="levels">
       <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-layer-group"></i>The hierarchy</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">One task, four distances from the demonstration</h2>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">One task, four levels of imitation</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
           Every level asks for the same outcome. What changes is how much of the demonstrated trajectory still
-          applies. The number under each card is the real-world pretrain + fine-tune success at that level,
-          averaged over the four representative models.
+          applies. Pick a level below to see its reference footage and its real-world pretrain + fine-tune
+          success rate, averaged over the four representative models.
         </p>
 
-        <div class="ladder" data-stagger="120" id="level-ladder"><!-- built by ladder.js --></div>
+        <div class="lvl-widget" id="lvl-widget" data-reveal="up" style="--lvl-c:var(--fig-l0)">
+          <div class="lvl-tabs" role="tablist" aria-label="Choose a hierarchy level">
+            <button class="lvl-tab is-active" data-level="L0" style="--lvl-c:var(--fig-l0)" role="tab" aria-selected="true">
+              <span class="lvl-tab-id">L0</span>
+              <span class="lvl-tab-name">Scene-identical</span>
+              <span class="lvl-tab-dist" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </button>
+            <button class="lvl-tab" data-level="L1" style="--lvl-c:var(--fig-l1)" role="tab" aria-selected="false">
+              <span class="lvl-tab-id">L1</span>
+              <span class="lvl-tab-name">Spatial adaptation</span>
+              <span class="lvl-tab-dist" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </button>
+            <button class="lvl-tab" data-level="L2" style="--lvl-c:var(--fig-l2)" role="tab" aria-selected="false">
+              <span class="lvl-tab-id">L2</span>
+              <span class="lvl-tab-name">Visual generalization</span>
+              <span class="lvl-tab-dist" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </button>
+            <button class="lvl-tab" data-level="L3" style="--lvl-c:var(--fig-l3)" role="tab" aria-selected="false">
+              <span class="lvl-tab-id">L3</span>
+              <span class="lvl-tab-name">Intent-level transfer</span>
+              <span class="lvl-tab-dist" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </button>
+          </div>
 
-        <p class="paper-section-body" style="margin-top:1.5rem;" data-reveal="up">
-          The full clip set — human reference, real robot, and simulation, for every task and level —
-          is in the <a href="gallery.html">Gallery</a>.
-        </p>
+          <div class="lvl-stage">
+            <div class="lvl-stage-media">
+              <!-- Front: the ONE shared human-reference clip (same
+                   physical <video>/source across every level — see
+                   initHumanRef() in landing.js, never reloaded on a tab
+                   switch). Hover and hold to flip and see that level's
+                   own rollout sample on the back. -->
+              <div class="ig-flip lvl-shot" id="lvl-shot" data-flip-delay="380">
+                <span class="lvl-flip-hint"><i class="fas fa-hand-pointer" aria-hidden="true"></i>Hover to see the rollout sample</span>
+                <div class="ig-flip-inner">
+                  <div class="ig-flip-face ig-flip-front">
+                    <div class="ig-shot" id="lvl-shot-front">
+                      <span class="ig-shot-label is-human" id="lvl-shot-label-front">Human demonstration (shared reference)</span>
+                      <video id="lvl-video-front" muted loop playsinline data-autoplay preload="metadata"></video>
+                      <div class="ig-shot-slot">
+                        <i class="fas fa-video"></i>
+                        <div><b>Human demonstration</b></div>
+                        <code id="lvl-shot-code-front">assets/media/levels/human_ref.mp4</code>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ig-flip-face ig-flip-back">
+                    <div class="ig-shot" id="lvl-shot-back">
+                      <span class="ig-shot-label is-robot" id="lvl-shot-label-back">Rollout sample · L0</span>
+                      <video id="lvl-video-back" muted loop playsinline preload="none"></video>
+                      <div class="ig-shot-slot">
+                        <i class="fas fa-robot"></i>
+                        <div><b>Rollout sample</b></div>
+                        <code id="lvl-shot-code-back">assets/media/levels/l0_sample.mp4</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lvl-stage-info">
+              <span class="lvl-stage-badge" id="lvl-badge">L0</span>
+              <h3 class="lvl-stage-name" id="lvl-name">Scene-identical execution</h3>
+              <p class="lvl-stage-blurb" id="lvl-blurb">The imitator scene matches the demonstration. Replaying the trajectory is enough.</p>
+              <div class="lvl-stage-stat">
+                <span class="lvl-stage-stat-v" id="lvl-stat-v" data-count-to="0.42" data-count-decimals="2">0.00</span>
+                <span class="lvl-stage-stat-l" id="lvl-stat-l">real-world P+FT success at L0, averaged over 4 representative models</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- ══════════════════════════════════════════════════════
          6 · IG-10K
     ══════════════════════════════════════════════════════ -->
-    <div class="lp-band lp-band-gray" id="ig10k">
+    <div class="lp-band lp-band-white" id="ig10k">
       <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-database"></i>IG-10K</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Paired human–robot data, at all four levels</h2>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Paired human-robot data, simulation and real world</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
-          The largest environment-aligned paired human–robot dataset we know of, and the only one instantiated
-          across all four levels in both simulation and the real world.
+          The largest environment-aligned paired human-robot dataset we know of. Simulation and real world datasets fit in one unified format, policies will be trained and evaluated under the same interface.
+          Each episode is multi-view and richly annotated with 3D MANO hand pose, segmentation masks, and multi-abstraction language.
         </p>
 
         <div class="hero-metrics" style="max-width:none;margin-top:2rem;" data-stagger="90">
           <div><span class="hero-metric-v" data-count-to="20000" data-count-suffix="+">0</span>
                <span class="hero-metric-l">paired episodes</span></div>
+          <div><span class="hero-metric-v" data-count-to="50" data-count-suffix="+">0</span>
+               <span class="hero-metric-l">task suite</span></div>
           <div><span class="hero-metric-v" data-count-to="200" data-count-suffix="+">0</span>
-               <span class="hero-metric-l">task variants</span></div>
-          <div><span class="hero-metric-v" data-count-to="6">0</span>
-               <span class="hero-metric-l">domains</span></div>
-          <div><span class="hero-metric-v" data-count-to="2">0</span>
-               <span class="hero-metric-l">settings — simulation and hardware</span></div>
+               <span class="hero-metric-l">simulation environments</span></div>
+          <div><span class="hero-metric-v" data-count-to="4">0</span>
+               <span class="hero-metric-l">imitation levels</span></div>
         </div>
 
         <div class="hero-cta" style="justify-content:flex-start;margin-top:2rem;" data-reveal="up">
-          <a href="data.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-download"></i>&ensp;Get the dataset</a>
+          <a href="gallery.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-film"></i>&ensp;View task gallery</a>
+          <a href="data.html" class="pst-btn pst-btn-lg"><i class="fas fa-download"></i>&ensp;Get the dataset</a>
           <a href="docs/data-collection.html" class="pst-btn pst-btn-lg"><i class="fas fa-diagram-project"></i>&ensp;How it was collected</a>
         </div>
       </div>
     </div>
+
 
     <!-- ══════════════════════════════════════════════════════
          7 · RESULTS — live figures, not PNGs
     ══════════════════════════════════════════════════════ -->
     <div class="lp-band lp-band-white" id="results">
       <div class="lp-inner">
-        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-chart-simple"></i>Results</div>
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-chart-simple"></i>Evaluation</div>
         <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Experimental findings</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
           We evaluate 9 state-of-the-art models (15 trained variants) across simulation, real-world deployment,
-          and human Arena judgments — along three axes. The figures below are the paper's appendix figures,
-          drawn live: hover any point for the underlying number.
+          and human Arena judgments — along three axes. Ten manipulation tasks across L0-L3, total 40 task-level pairs was evaluated.
+        </p>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="120">
+          These ten tasks — 5 seen, 5 unseen — are the fixed protocol behind every model comparison on this site, in
+          both simulation and the real world. IG-10K itself has 50 tasks, and we encourage the community to evaluate
+          on the complete suite for a fuller picture of imitation ability. As a starting reference, we trained DP and
+          ACT on the entire IG-10K simulation corpus (all 50 tasks, 200 task-level variants) and evaluated them on
+          every task; object placement is randomized slightly in both training and evaluation scenes. See the
+          <a href="leaderboard.html#full-suite">full 50-task reference on the leaderboard</a>.
         </p>
 
-        <!-- Key findings -->
-        <div class="key-findings" data-stagger="110" style="margin-top:2rem;">
-          <div class="key-finding-card">
-            <div class="key-finding-q">Q1</div>
-            <div class="key-finding-content">
-              <h3>Video conditioning beats text</h3>
-              <p>Video-based methods lead on seen tasks. ACT/DINOv2 reaches <strong>SR = 0.81</strong> in
-                simulation; XSkill wins the real-world Arena with <strong>SR = 0.63, WR = 0.89</strong>.</p>
+        <div class="suite-grid" data-stagger="110">
+          <!-- Hover and hold to flip: back lists the five actual tasks,
+               each linking straight to its Gallery entry. -->
+          <div class="ig-flip suite-card" style="--tone:var(--fig-vla)" data-flip-delay="380">
+            <div class="ig-flip-inner">
+              <div class="ig-flip-face ig-flip-front">
+                <span class="suite-card-badge">5 tasks · trained on</span>
+                <h3>Seen — how faithfully, not just whether</h3>
+                <p>Long-horizon or dexterous behaviour the models were trained on: stirring with a thin spoon,
+                   folding a towel, hanging a mug on a rack, picking up a sheet of paper, and racking plates.
+                   Object placements are still perturbed at test time, so the question is fidelity — does the
+                   imitation hold up as the scene drifts from L0 to L3, not just at the layout it memorised.</p>
+                <span class="suite-card-hint"><i class="fas fa-hand-pointer" aria-hidden="true"></i>Hover to see the five tasks</span>
+              </div>
+              <div class="ig-flip-face ig-flip-back">
+                <span class="suite-card-badge">5 tasks · trained on</span>
+                <h3>The five seen tasks</h3>
+                <div class="suite-card-tasklist" id="suite-card-seen-list"></div>
+              </div>
             </div>
           </div>
-          <div class="key-finding-card">
-            <div class="key-finding-q">Q2</div>
-            <div class="key-finding-content">
-              <h3>Scale buys adaptation, not transfer</h3>
-              <p>Every model stays below <strong>13% zero-shot success</strong> on unseen tasks. Pretraining on
-                IG-10K unlocks few-shot gains instead — and those gains grow with corpus size.</p>
-            </div>
-          </div>
-          <div class="key-finding-card">
-            <div class="key-finding-q">Q3</div>
-            <div class="key-finding-content">
-              <h3>L3 is the barrier</h3>
-              <p>Performance is flat from L0 to L2 (~0.40 SR) and then <strong>falls to 0.29 at L3</strong>.
-                Functional substitution — the same intent through a different affordance — is unsolved.</p>
+          <div class="ig-flip suite-card" style="--tone:var(--fig-l3)" data-flip-delay="380">
+            <div class="ig-flip-inner">
+              <div class="ig-flip-face ig-flip-front">
+                <span class="suite-card-badge">5 tasks · never trained on</span>
+                <h3>Unseen — can a new skill come from the video alone</h3>
+                <p>Closer to atomic skills — single-arm and bimanual placement, pouring, and an articulated
+                   folding task — but their demonstrations, objects, and layouts never appear in pretraining.
+                   Evaluated three ways on the same task: zero-shot, from ten scratch demonstrations, and
+                   IG-10K-pretrained then fine-tuned on the same ten.</p>
+                <span class="suite-card-hint"><i class="fas fa-hand-pointer" aria-hidden="true"></i>Hover to see the five tasks</span>
+              </div>
+              <div class="ig-flip-face ig-flip-back">
+                <span class="suite-card-badge">5 tasks · never trained on</span>
+                <h3>The five unseen tasks</h3>
+                <div class="suite-card-tasklist" id="suite-card-unseen-list"></div>
+              </div>
             </div>
           </div>
         </div>
 
+
+        <!-- <div class="hero-metrics" style="max-width:none;margin-top:2.2rem;" data-stagger="90">
+          <div><span class="hero-metric-v" data-count-to="10">0</span>
+               <span class="hero-metric-l">manipulation tasks<br>evaluated this phase</span></div>
+          <div><span class="hero-metric-v" data-count-to="40">0</span>
+               <span class="hero-metric-l">task-level pairs,<br>per domain</span></div>
+          <div><span class="hero-metric-v" data-count-to="2">0</span>
+               <span class="hero-metric-l">domains in parallel —<br>simulation &amp; hardware</span></div>
+          <div><span class="hero-metric-v" data-count-to="50">0</span>
+               <span class="hero-metric-l">paired demos per task<br>in IG-10K pretraining</span></div>
+        </div> -->
+
+        <div class="suite-reel-wrap" data-reveal="up" data-reveal-delay="220">
+          <div class="suite-reel-label">All ten tasks, all four levels, continuously — hover a clip to pause</div>
+          <div class="ig-hero-reel task-reel" id="task-reel" aria-hidden="true"></div>
+        </div>
+
         <!-- Figure deck -->
         <div class="ig-figdeck" style="margin-top:2.4rem;" data-reveal="up">
-          <div class="ig-figdeck-nav" id="figdeck-nav"></div>
+          <div class="ig-figdeck-head">
+            <div class="ig-figdeck-nav" id="figdeck-nav"></div>
+            <div class="ig-figdeck-controls">
+              <button type="button" class="ig-figdeck-arrow" id="figdeck-prev" aria-label="Previous figure"><i class="fas fa-chevron-left"></i></button>
+              <span class="ig-figdeck-counter" id="figdeck-counter"></span>
+              <button type="button" class="ig-figdeck-arrow" id="figdeck-next" aria-label="Next figure"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="ig-figdeck-rail" id="figdeck-rail"></div>
 
-          <div class="ig-figdeck-panel is-active" data-fig="0">
+          <div class="ig-figdeck-panel is-active" data-fig="0" data-q="Q1">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Q1 · Fig. C1</span>
@@ -518,15 +538,12 @@
               </div>
               <div class="ig-chart" data-chart="paradigm"></div>
               <p class="ig-figure-caption">
-                <b>The paradigm landscape.</b> Every trained variant placed on the (seen-SR, P+FT-SR) plane.
-                The two video families cluster toward the upper right; the VLA family spreads along the diagonal,
-                strong after fine-tuning but uneven on seen tasks. Below, the Arena win rate per paradigm —
-                where video-skill methods lead at 0.64.
+                <b>The paradigm landscape.</b> Each trained variant on the(seen-SR, P+FT-SR) plane, automated channel; the video families cluster upper-right while the VLA family stretches along the diagonal.
               </p>
             </div>
           </div>
 
-          <div class="ig-figdeck-panel" data-fig="1">
+          <div class="ig-figdeck-panel" data-fig="1" data-q="Q1">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Q1 · Fig. C2</span>
@@ -536,12 +553,12 @@
               <p class="ig-figure-caption">
                 <b>Encoder ablation.</b> Within the video-conditioned family, DINOv2 and SigLIP2 are consistently
                 ahead of VideoMAE, in simulation and on hardware alike. The representation is a design choice
-                that shows up in the score, not a detail.
+                that shows up in the score.
               </p>
             </div>
           </div>
 
-          <div class="ig-figdeck-panel" data-fig="2">
+          <div class="ig-figdeck-panel" data-fig="2" data-q="Q2">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Q2 · Fig. C3</span>
@@ -549,14 +566,13 @@
               </div>
               <div class="ig-chart" data-chart="scaling"></div>
               <p class="ig-figure-caption">
-                <b>Corpus scaling.</b> Going from 15 to 45 pretraining tasks improves few-shot success almost
-                everywhere. Zero-shot is a different story: the video-conditioned models creep upward while
-                π₀.₅ stays flat at 0.04 no matter how much paired data it sees.
+                <b>Corpus scaling.</b> Simulation P+FT going from 15 to 45 pretraining tasks improves few-shot success almost
+                everywhere. Real-world zero-shot is a different story: the three video-conditioned models improve monotonically while the caption-conditioned π₀.₅ stays at the floor.
               </p>
             </div>
           </div>
 
-          <div class="ig-figdeck-panel" data-fig="3">
+          <div class="ig-figdeck-panel" data-fig="3" data-q="Q2">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Q2 · Fig. C4</span>
@@ -565,13 +581,13 @@
               <div class="ig-chart" data-chart="levelscale"></div>
               <p class="ig-figure-caption">
                 <b>Level × corpus size.</b> Under pretrain + fine-tune, success rises with corpus size at every
-                one of L0–L3, in both domains. Under zero-shot it does not move — the floor is a floor at all
+                one of L0-L3, both simulation and real world. Simulation zero-shot is around the floor at all
                 four levels.
               </p>
             </div>
           </div>
 
-          <div class="ig-figdeck-panel" data-fig="4">
+          <div class="ig-figdeck-panel" data-fig="4" data-q="Q3">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Q3 · Fig. C5</span>
@@ -579,14 +595,13 @@
               </div>
               <div class="ig-chart" data-chart="perlevel"></div>
               <p class="ig-figure-caption">
-                <b>The level profile.</b> Real-world pretrain + fine-tune success by level, with the human
-                imitation score on the right axis. Flat through L2, then the drop. XSkill falls furthest,
-                because it had furthest to fall.
+                <b>The level profile.</b> Real-world pretrain + fine-tune SR by level, with the human
+                imitation score on the right axis. With levels rise, the success rate drop, especially on L3, the intent-level transfer, which requires functional transfer.
               </p>
             </div>
           </div>
 
-          <div class="ig-figdeck-panel" data-fig="5">
+          <div class="ig-figdeck-panel" data-fig="5" data-q="Validity">
             <div class="ig-figure">
               <div class="ig-figure-head">
                 <span class="ig-figure-tag">Fig. C7</span>
@@ -594,10 +609,9 @@
               </div>
               <div class="ig-chart" data-chart="validity"></div>
               <p class="ig-figure-caption">
-                <b>Metric validity.</b> The automated success rate agrees with the Arena's human verdicts at
-                r = 0.956 across model × regime, and the sub-goal rate tracks the human imitation score just as
-                closely. Simulation and hardware agree on ordering but not on absolute numbers — which is why
-                the leaderboard keeps them apart.
+                <b>Metric validity.</b> All 15 trained variants × 4 transfer regimes — 60 points — plotted automated
+                SR against the Arena's human-judged SR on the same rollouts (r = 0.858 for SR and r = 0.861 for Q). Resolved by level on the right, the sub-goal rate tracks the human imitation
+                score just as closely.
               </p>
             </div>
           </div>
@@ -608,13 +622,17 @@
     <!-- ══════════════════════════════════════════════════════
          8 · LEADERBOARD PREVIEW
     ══════════════════════════════════════════════════════ -->
-    <div class="lp-band lp-band-gray" id="standings">
+    <div class="lp-band lp-band-white" id="standings">
       <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">The board, right now</h2>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">The leaderboard, right now</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
-          Top five by seen-task success in simulation. The full table also carries the Arena verdicts and the
-          per-level breakdown — where the ordering changes.
+          Top five by seen-task success in simulation. The full table also carries the Arena results. New models land on a rolling basis.
+        </p>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="120">
+          These standings, like the experimental findings above, are scored on the fixed 5-seen / 5-unseen, L0-L3
+          protocol. For a full-coverage reference across all 50 IG-10K tasks, see the
+          <a href="leaderboard.html#full-suite">full task-suite table</a> on the leaderboard page.
         </p>
 
         <div class="lbp" id="lb-preview" data-reveal="up" data-reveal-delay="140"></div>
@@ -627,19 +645,60 @@
     </div>
 
     <!-- ══════════════════════════════════════════════════════
+         3 · WHAT THIS PLATFORM IS
+    ══════════════════════════════════════════════════════ -->
+    <div class="lp-band lp-band-white" id="platform">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-cubes"></i>The platform</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">Four things you can use today</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="100">
+          The benchmark keeps running: new models enter, the Arena keeps collecting
+          judgments, and the board moves.
+        </p>
+
+        <div class="plat" data-stagger="100">
+          <a class="plat-card" href="leaderboard.html" style="--tone:var(--fig-vla)">
+            <span class="plat-icon"><i class="fas fa-ranking-star"></i></span>
+            <h3>Leaderboard</h3>
+            <p>Every variant evaluated in sim and real, will be judged with automated metrics and human. Sortable, and
+               honest about how models imitate.</p>
+            <span class="plat-go">See the standings <i class="fas fa-arrow-right"></i></span>
+          </a>
+          <a class="plat-card" href="arena.html" style="--tone:var(--fig-skill)">
+            <span class="plat-icon"><i class="fas fa-pen-to-square"></i></span>
+            <h3>Arena</h3>
+            <p>A reference clip and two anonymous rollouts will be presented. Just follow your heart, score each, and pick the real winner.</p>
+            <span class="plat-go">Judge a pair <i class="fas fa-arrow-right"></i></span>
+          </a>
+          <a class="plat-card" href="gallery.html" style="--tone:var(--fig-videova)">
+            <span class="plat-icon"><i class="fas fa-film"></i></span>
+            <h3>Gallery</h3>
+            <p>50+ task groups at all four levels, with the human demonstration, the real-robot rollout and the
+               simulated one lined up side by side.</p>
+            <span class="plat-go">Browse the tasks <i class="fas fa-arrow-right"></i></span>
+          </a>
+          <a class="plat-card" href="submit.html" style="--tone:var(--fig-purple)">
+            <span class="plat-icon"><i class="fas fa-upload"></i></span>
+            <h3>Submit</h3>
+            <p>We provide a simple and unified interface for creating new simulation environments and training policies. Submit your model and win the game.</p>
+            <span class="plat-go">Enter your policy <i class="fas fa-arrow-right"></i></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
          9 · ARENA CTA
     ══════════════════════════════════════════════════════ -->
     <div class="lp-band lp-band-accent" id="try">
       <div class="lp-inner" style="text-align:center;">
-        <div class="ig-eyebrow" data-reveal="up" style="justify-content:center;color:inherit;"><i class="fas fa-gamepad"></i>Your turn</div>
-        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60" style="text-align:center;">Judge the imitators yourself</h2>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60" style="text-align:center;">Join Imitator Game Community !</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="100" style="max-width:740px;margin-inline:auto;">
-          One human demonstration, two anonymous rollouts, one question: which of them understood the point?
-          Scores feed the Arena win rate on the leaderboard.
+          The Imitator Game is an open-source community for robot imitation from human video. Tasks, models, embodiments, assets, demonstrations and evaluation ideas are all welcome!
         </p>
         <div class="hero-cta" data-reveal="up" data-reveal-delay="160">
-          <a href="arena.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-gamepad"></i>&ensp;Open the Arena</a>
-          <a href="gallery.html" class="pst-btn pst-btn-lg"><i class="fas fa-film"></i>&ensp;Browse the tasks</a>
+          <a href="community.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-people-group"></i>&ensp;Join community</a>
+          <a href="docs/contribute.html" class="pst-btn pst-btn-lg"><i class="fas fa-code-branch"></i>&ensp;Contribution guide</a>
           <a href="submit.html" class="pst-btn pst-btn-lg"><i class="fas fa-upload"></i>&ensp;Submit a model</a>
         </div>
       </div>
@@ -649,17 +708,19 @@
          10 · BIBTEX
     ══════════════════════════════════════════════════════ -->
     <div class="lp-band lp-band-white" id="bibtex">
-      <div class="lp-inner lp-inner-narrow">
+      <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-quote-right"></i>Citation</div>
         <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="60">BibTeX</h2>
         <div class="bibtex-block" data-reveal="up" data-reveal-delay="100" style="position:relative;margin-top:1.2rem;">
           <button class="bibtex-copy-btn" id="bibtexCopyBtn" title="Copy BibTeX">Copy</button>
-          <pre class="bibtex-pre" id="bibtexContent">@unpublished{imitatorgame2026,
-  title  = {The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction},
-  author = {Zhou, Xunzhe and Cai, Yiyang and Wang, Fengyi and Ju, Ran and Ren, Hanxiang and
-            Liu, Ruizhe and Zhang, Yu and Luo, Qian and Chen, Feng and Zhou, Pei and
-            Ma, Yi and Yang, Yanchao},
-  year   = {2026}
+          <pre class="bibtex-pre" id="bibtexContent">@misc{zhou2026imitatorgamebenchmarkingrobot,
+      title={The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction}, 
+      author={Xunzhe Zhou and Yiyang Cai and Fengyi Wang and Ran Ju and Hanxiang Ren and Ruizhe Liu and Yu Zhang and Qian Luo and Feng Chen and Pei Zhou and Yi Ma and Yanchao Yang},
+      year={2026},
+      eprint={2608.22301},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2608.22301}, 
 }</pre>
         </div>
       </div>
@@ -670,7 +731,7 @@
   <footer class="lp-footer">
     <div class="lp-footer-inner">
       <span><img src="assets/media/logo.svg" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:.3em;border-radius:4px;">The Imitator Game</span>
-      <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+      <span>The Imitator Game Team @ 2026</span>
     </div>
   </footer>
 </div>
@@ -679,7 +740,9 @@
 <script src="assets/js/motion.js"></script>
 <script src="assets/js/figdata.js"></script>
 <script src="assets/js/charts.js"></script>
+<script src="assets/js/levels.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/manifest-data.js"></script>
 <script src="assets/js/landing.js"></script>
 </body>
 </html>

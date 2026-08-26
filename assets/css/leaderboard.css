@@ -40,6 +40,9 @@
 }
 .lb-tab:hover { color: var(--text); }
 .lb-tab.is-active { background: var(--on-bg); color: var(--primary); box-shadow: var(--shadow); }
+.lb-tab:focus-visible, .lb-regime-btn:focus-visible, .lb-chip:focus-visible, .lb-search:focus-visible {
+  outline: 2px solid var(--primary); outline-offset: 2px;
+}
 
 .lb-filters { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 .lb-chip {
@@ -121,3 +124,88 @@
   .lb-controls { flex-direction: column; align-items: stretch; }
   .lb-filters { justify-content: flex-start; }
 }
+
+/* ── Task chip grid ("This phase's suite") ───────────────── */
+.lb-task-chip-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.4rem;
+  margin-top: 0.4rem;
+}
+.lb-task-chip {
+  display: flex; flex-direction: column; gap: .3rem;
+  padding: 1rem 1.1rem;
+  background: var(--on-bg); border: 1px solid var(--border); border-left: 3px solid var(--border);
+  border-radius: var(--radius); text-decoration: none; color: var(--text);
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.lb-task-chip:hover { transform: translateY(-3px); box-shadow: var(--shadow); text-decoration: none; color: var(--text); }
+.lb-task-chip.is-seen   { border-left-color: var(--fig-vla); }
+.lb-task-chip.is-unseen { border-left-color: var(--fig-l3); }
+.lb-task-chip-id { font: 700 .92rem/1.3 'Google Sans', sans-serif; }
+.lb-task-chip-tag {
+  align-self: flex-start;
+  font: 700 .62rem/1 'Google Sans', sans-serif; letter-spacing: .06em; text-transform: uppercase;
+  padding: .12rem .45rem; border-radius: var(--radius-pill);
+}
+.lb-task-chip.is-seen   .lb-task-chip-tag { color: var(--fig-vla); background: color-mix(in srgb, var(--fig-vla) 14%, transparent); }
+.lb-task-chip.is-unseen .lb-task-chip-tag { color: var(--fig-l3);  background: color-mix(in srgb, var(--fig-l3) 14%, transparent); }
+.lb-task-chip-desc { font-size: .8rem; line-height: 1.5; color: var(--text-muted); }
+
+/* ── Full task-suite reference table (leaderboard.html #full-suite) ─
+   Deliberately its OWN table, not `.lb-table` — the shared board
+   table has column-position rules (first two columns left-aligned)
+   tuned for the rank/name board layout. Reusing that class on this
+   very differently-shaped 11-column table caused the DP/L0 column
+   and the "L1" sub-header to inherit that left-align rule instead of
+   the right-align every numeric column here needs. Keeping this
+   table on its own class means there is nothing to fight. ────────── */
+.ptr-shell { max-height: 640px; overflow: auto; position: relative; }
+.ptr-table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 720px; }
+
+.ptr-table thead { background: var(--surface); position: sticky; top: 0; z-index: 3; }
+.ptr-table th, .ptr-table td { padding: .5rem .65rem; text-align: right; white-space: nowrap; }
+
+/* Row 1 of the header (Task / DP / ACT / Mean) — Task spans both rows
+   and stays left; the three grouped labels are centered over the
+   sub-columns they head, rather than hugging the last sub-column
+   the way a plain text-align:right would leave them. */
+.ptr-table thead tr:first-child th { text-align: center; border-bottom: none; }
+.ptr-table thead tr:first-child th:first-child { text-align: left; }
+
+/* Row 2 of the header (L0…L3, L0…L3, DP, ACT) and every data column
+   line up with the numbers beneath them. */
+.ptr-table thead tr:last-child th { text-align: right; }
+
+.ptr-table th:first-child, .ptr-table td.ptr-task { text-align: left; white-space: normal; }
+.ptr-table tbody tr { border-top: 1px solid var(--border); }
+.ptr-table tbody tr:nth-child(even) { background: rgba(127,127,127,.07); }
+.ptr-mean { font-weight: 700; }
+
+/* Overall-average row — pinned to the bottom of the scroll shell so
+   it's visible however far down the 50 tasks you've scrolled. */
+.ptr-avg-row td {
+  position: sticky; bottom: 0; z-index: 2;
+  background: var(--surface); font-weight: 700;
+  border-top: 2px solid var(--border);
+}
+.ptr-avg-row td.ptr-task { font-weight: 700; }
+
+.ptr-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: .6rem 0 1.1rem; font-size: .85rem; opacity: .8; }
+
+.lbt-src {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .2rem .55rem; border-radius: var(--radius-pill);
+  font: 700 .68rem/1.4 'Google Sans', sans-serif; letter-spacing: .03em; text-transform: uppercase;
+}
+.lbt-src::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+.lbt-src-sim  { color: var(--fig-vla);  background: color-mix(in srgb, var(--fig-vla) 14%, transparent); }
+.lbt-src-sim::before  { background: var(--fig-vla); }
+.lbt-src-real { color: var(--fig-l3);   background: color-mix(in srgb, var(--fig-l3) 14%, transparent); }
+.lbt-src-real::before { background: var(--fig-l3); }
+ 
+/* ── Metric switcher (SR / Quality) — By-level board only,
+   same visual language as #lb-regime, sits directly below it ─ */
+#lb-metric.lb-regime { margin-top: .5rem; margin-bottom: .8rem; }
+.lb-regime-btn.is-disabled { opacity: .4; cursor: not-allowed; }
+.lb-regime-btn.is-disabled:hover { border-color: var(--border); color: var(--text-muted); }
+ 

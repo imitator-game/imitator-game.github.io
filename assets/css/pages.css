@@ -41,7 +41,7 @@ h1, h2, h3,
 
 /* ── Arena: bucket badge ────────────────────────────────────── */
 .arena-bucket-badge {
-  font-size: .8rem;
+  font-size: 1.0rem;
   font-weight: 600;
   padding: .35rem .7rem;
   border-radius: 999px;
@@ -81,4 +81,20 @@ h1, h2, h3,
 .arena-speed-btn.is-active {
   background: var(--primary);
   color: #fff;
+}
+
+.arena-badge-stack {
+  display: flex; flex-direction: column; align-items: flex-end; gap: .5rem;
+}
+.arena-testset-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem .75rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--fig-vla) 14%, transparent);
+  color: var(--fig-vla);
+  font-size: .82rem; font-weight: 700;
+  white-space: nowrap; cursor: help;
+}
+.arena-testset-note {
+  font-size: .82rem; line-height: 1.6; color: var(--text-muted, #6e6e73);
+  margin: -.5rem 0 1.2rem;
 }

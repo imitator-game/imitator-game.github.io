@@ -47,15 +47,32 @@
 }
 
 /* ── Story band ─────────────────────────────────────────────── */
-.story-band { position: relative; }
+/* No longer full-bleed. That earlier edge-to-edge version made the
+   stage read as an overly long, letterboxed strip once the height cap
+   (min(84vh,720px)) met a near-100vw-wide box. The whole band — copy
+   column + stage together — is now reined in to ~2/3 of that previous
+   full-bleed width and centred, so the footage keeps a sane aspect
+   instead of stretching to the browser edge. */
+.story-band { position: relative; background: var(--bg); overflow: clip; }
+.story-band .lp-inner-wide {
+  max-width: clamp(180px, 66vw, 1880px);
+  margin-inline: auto;
+  padding-right: clamp(1rem, 2vw, 2rem);
+}
 .story-grid {
   display: grid;
-  grid-template-columns: 1fr 1.05fr;
-  gap: 3.5rem;
+  grid-template-columns: minmax(260px, 38%) 1fr;
+  gap: clamp(1.2rem, 3vw, 2.4rem);
   align-items: start;
 }
 
-.story-copy { padding-block: 4rem; }
+.story-copy {
+  padding-block: 4rem;
+  padding-right: clamp(1.5rem, 4vw, 3.5rem);
+  padding-left: clamp(1.25rem, 3vw, 3rem);
+  position: relative; z-index: 3;
+  background: var(--bg);
+}
 
 .story-beat {
   min-height: 66vh;
@@ -100,53 +117,331 @@
 .story-beat-stat span { font-size: .82rem; color: var(--text-muted); }
 
 /* ── Pinned stage ───────────────────────────────────────────── */
+/* Centred in the viewport while pinned, not hugging the header. The
+   `top` offset is computed so the stage's own vertical centre lands on
+   the viewport's vertical centre — (100vh - stage height) / 2 — with a
+   `max()` floor so it never creeps up under the header on short screens.
+   Stacked vh → svh → dvh, same pattern as the hero band, so mobile
+   browsers with a shrinking/growing address bar don't shove this back
+   up towards the header mid-scroll. This is also what fixes the stage
+   appearing to start "too high": with a flat `top: 96px` it pinned right
+   under the header instead of level with the middle of the story copy. */
 .story-stage {
-  position: sticky; top: 96px;
-  height: min(76vh, 620px);
+  position: sticky;
+  /* No more edge bleed — the stage now just fills its own (narrower)
+     grid column. A max-width capped to a multiple of its own height
+     keeps it from reading as an ultra-wide strip: at the 720px height
+     cap, 2.15× height tops out around a cinematic ~2:1, comfortably
+     short of the old near-edge-to-edge stretch while still well past
+     plain 16:9 so the footage still reads big. */
+  height: min(84vh, 720px);
+  top: max(88px, calc((100vh - min(84vh, 720px)) / 2));
+  top: max(88px, calc((100svh - min(84vh, 720px)) / 2));
+  top: max(88px, calc((100dvh - min(84vh, 720px)) / 2));
+  width: 100%;
+  max-width: calc(min(84vh, 720px) * 2.15);
   display: flex; flex-direction: column; gap: .8rem;
 }
 
-.story-frames { position: relative; flex: 1; border-radius: var(--radius-lg); overflow: hidden; }
-.story-frame {
-  position: absolute; inset: 0;
-  opacity: 0; transform: scale(1.04);
-  transition: opacity 650ms var(--ease-out), transform 900ms var(--ease-out);
+.story-frames { position: relative; flex: 1; overflow: visible; }
+
+/* Blurred colour bleed behind the sharp media — the "premium" transition
+   the copy asked for: instead of a hard edge between white text column
+   and footage, a soft, blurred wash of the same frame reaches left into
+   the text column's margin and dissolves before it ever touches the
+   text itself. Driven by JS (--story-bg) set to the active frame's own
+   poster/first-frame image on every beat change, so the glow always
+   matches whatever is actually on stage. */
+.story-frames::before {
+  content: ""; position: absolute; z-index: 0;
+  inset: -14% -8% -14% -22%;
+  background-image: var(--story-bg, none);
+  background-size: cover; background-position: center;
+  filter: blur(58px) saturate(1.25);
+  opacity: var(--story-bg-op, 0);
+  transition: opacity 700ms var(--ease-out);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 32%, #000 58%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 32%, #000 58%, #000 100%);
   pointer-events: none;
 }
-.story-frame .ig-shot { height: 100%; aspect-ratio: auto; border-radius: var(--radius-lg); }
+@media (prefers-reduced-motion: reduce) { .story-frames::before { transition: none; } }
+
+.story-frame {
+  position: absolute; inset: 0; z-index: 1;
+  opacity: 0; transform: scale(1.045) translateY(10px);
+  filter: blur(4px);
+  transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out), filter 900ms var(--ease-out);
+  pointer-events: none;
+}
+/* No border, no card background — the footage floats directly on the
+   page instead of sitting in a bordered box. */
+.story-frame .ig-shot {
+  height: 100%; aspect-ratio: auto; border-radius: var(--radius-lg);
+  border: none; box-shadow: none; background: transparent;
+}
+
+/* Frame 3 (the evaluation reel) skips the shared entrance blur. The
+   reel's own tiles are undecoded <video> elements right up until they
+   scroll into view, which paint as solid black until their first frame
+   is ready; filter: blur() on this wrapper samples pixels from OUTSIDE
+   the reel's own edge-fade mask (the mask only clips the already-
+   rasterised result, but the blur filter's sampling region is computed
+   before that clip) and smears those black, not-yet-loaded pixels back
+   in along the mask's edge — most visible as a dark band down the left
+   side while this frame is entering. The reel already reads as "soft"
+   from its own mask, so it doesn't need the blur anyway; dropping it
+   here removes the smear instead of chasing it with more mask math.
+   Must come after the base .story-frame rule to win on specificity. */
+.story-frame[data-frame="3"] {
+  filter: none;
+  transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+}
+
+/* ── Frame 0: the human → robot diagonal wipe ────────────────────
+   Two stills (not video) stacked in the same box. The base layer
+   (human demonstration) always shows in full; the overlay (robot
+   attempt) sits on top and is revealed through a clip-path polygon
+   whose edge is a straight 45° line running from upper-right toward
+   lower-left. JS (initStory in motion.js) recomputes that polygon on
+   every scroll frame from the beat's own scroll progress, in real
+   pixels (not %), so the 45° angle is a true 45° regardless of the
+   box's aspect ratio — and because it's driven directly by scroll
+   position rather than a one-shot triggered animation, scrolling back
+   up naturally runs the wipe in reverse for free. */
+/* No boxed/black backing — the shot bleeds directly into the page.
+   Edges fade via the same mask technique frame 3's reel uses (soft
+   feather, not a hard rectangle), so it reads as footage floating on
+   the page rather than a photo sitting in a dark frame. */
+.ig-wipe-shot, .ig-corner-wipe {
+  background: transparent;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent);
+  mask-composite: intersect;
+}
+.ig-wipe-img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+}
+.ig-wipe-base { position: relative; z-index: 1; }
+/* The reveal is now a soft feathered dissolve along the same 45° axis,
+   not a razor-sharp clip-path edge: JS (updateWipe in motion.js) sets
+   mask-image to a two-stop gradient whose position tracks scroll
+   progress, so the robot layer bleeds into the human one over a ~16%
+   band instead of being sliced by a hard line. Opacity still fades in
+   fast at the very start so there's no flash of a fully-transparent
+   overlay before the mask has anything to show. */
+.ig-wipe-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, black 0%, black 100%);
+  mask-image: linear-gradient(135deg, transparent 0%, transparent 0%, black 0%, black 100%);
+  will-change: opacity, -webkit-mask-image, mask-image;
+  transition: opacity 140ms linear;
+}
+.ig-wipe-shot.is-empty .ig-wipe-img { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ig-wipe-overlay { transition: none; }
+}
 .story-stage.beat-0 .story-frame[data-frame="0"],
 .story-stage.beat-1 .story-frame[data-frame="1"],
 .story-stage.beat-2 .story-frame[data-frame="2"],
 .story-stage.beat-3 .story-frame[data-frame="3"],
 .story-stage.beat-4 .story-frame[data-frame="4"] {
-  opacity: 1; transform: none; pointer-events: auto;
+  opacity: 1; transform: none; filter: none; pointer-events: auto;
 }
 
-/* Progress rail: the four levels, filling as you read */
-.story-rail { display: flex; gap: .4rem; }
-.story-rail-seg {
-  flex: 1; height: 4px; border-radius: 2px; background: var(--border);
-  position: relative; overflow: hidden;
-}
-.story-rail-seg::after {
-  content: ""; position: absolute; inset: 0; background: var(--seg);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 620ms var(--ease-out);
-}
-.story-stage.beat-1 .story-rail-seg:nth-child(1)::after,
-.story-stage.beat-2 .story-rail-seg:nth-child(-n+2)::after,
-.story-stage.beat-3 .story-rail-seg:nth-child(-n+3)::after,
-.story-stage.beat-4 .story-rail-seg::after { transform: scaleX(1); }
-
-.story-caption {
-  font-size: .82rem; color: var(--text-muted); min-height: 2.6em; line-height: 1.5;
+@media (prefers-reduced-motion: reduce) {
+  .story-frame { transition: opacity 200ms linear; transform: none; filter: none; }
 }
 
 @media (max-width: 940px) {
+  .story-band .lp-inner-wide { max-width: var(--content-max, 1160px); }
   .story-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-  .story-stage { position: sticky; top: 68px; height: 46vh; }
+  .story-stage { position: sticky; top: 68px; height: 50vh; width: 100%; margin-right: 0; }
   .story-beat { min-height: auto; padding-block: 1.6rem; opacity: 1; }
-  .story-copy { padding-block: 1.5rem; }
+  .story-copy { padding-block: 1.5rem; padding-inline: 1.1rem; }
+  .story-frames::before { inset: -8% -4% -8% -10%; }
+}
+
+/* ── Frame 1: corner-shrink human → robot transition ─────────────
+   Deliberately different from frame 0's diagonal wipe: the robot video
+   is the main content from the start; a small human still sits over its
+   top-left corner (with real padding off the edge, not flush) and, as
+   you scroll through this beat, shrinks further and fades out — as if
+   the reference clip is being tucked away once the robot takes over.
+   Driven by the same continuous 0-1 scroll progress as the frame-0 wipe
+   (see updateCorner() in motion.js), so it also scrubs cleanly in
+   reverse when scrolling back up. */
+.ig-corner-main { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ig-corner-thumb {
+  position: absolute; left: 1.1rem; top: 1.1rem; z-index: 3;
+  width: 30%; max-width: 220px; aspect-ratio: 16/9;
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  border: 2px solid rgba(255,255,255,.85);
+  transform-origin: top left;
+  will-change: transform, opacity;
+}
+.ig-corner-thumb img, .ig-corner-thumb video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.ig-corner-wipe.is-empty .ig-corner-thumb { display: none; }
+
+/* ── Frame 2: the level-grow filmstrip ───────────────────────────
+   The human reference sits on the left the whole time this beat is on
+   screen; as you scroll through it, L0's own first frame joins on the
+   right, then L1, then L2, then L3 — one tile at a time — ending with
+   all four level stills lined up next to the reference before handing
+   off to the next beat. Continuous scroll progress drives which tiles
+   carry .is-shown (see updateLevelGrow() in motion.js); this file only
+   lays out the static grid. Stills, not looping video (per-frame only,
+   via the #t=0.1 media-fragment trick already used by the reels below),
+   and the exact same four clips as the Level Ladder / #lvl-widget
+   sections further down the page (assets/media/levels/). */
+/* Hub-and-spoke, not a four-up row: every clip here is genuinely 16:9,
+   and cramming four of them side by side into a container's full height
+   (the old `flex:1` row) squeezed each one down to a tall, badly-cropped
+   sliver. Instead: one hub tile on the left at its own native aspect
+   ratio, and the four levels stacked top-to-bottom on the right — each
+   free to be as wide as the column and as tall as 16:9 actually wants —
+   connected back to the hub by a simple drawn spine + branch, so it still
+   reads as "one thing branching into four" rather than two unrelated
+   columns. */
+.ig-levelgrow {
+  --lg-gap: clamp(1.4rem, 2.8vw, 2.2rem);
+  /* Same width budget the human reference and every level tile now
+     share, so "four levels" reads as four peers of the demonstrator,
+     not four tiles that happen to dwarf it. A 2x2 grid (below) at this
+     width comfortably clears the stage's own height cap. */
+  --lg-tile-w: clamp(180px, 32vw, 320px);
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; gap: var(--lg-gap);
+}
+.ig-levelgrow-human {
+  position: relative; flex: 0 0 clamp(320px, 64vw, 680px); min-width: 0;
+  aspect-ratio: 16 / 9; height: auto;
+  border-radius: var(--radius-lg); overflow: hidden; background: var(--surface);
+}
+.ig-levelgrow-human.is-empty .ig-levelgrow-media { display: none; }
+
+/* Four tiles at the same size as the human reference, in a 2x2 grid
+   rather than one tall column — a single column at this width would run
+   taller than the stage. */
+.ig-levelgrow-levels {
+  position: relative; flex: 0 0 auto; min-width: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  grid-auto-rows: max-content;
+  gap: .7rem;
+  padding-left: 1.7rem; /* room for the trunk + bracket below */
+}
+/* The bracket: a short vertical line spanning the grid's two rows. */
+.ig-levelgrow-levels::before {
+  content: ""; position: absolute; left: 0; top: 15%; bottom: 15%;
+  width: 2px; background: var(--border);
+}
+/* The trunk: reaches back through the gap toward the hub tile, so the
+   bracket visually continues from the demonstrator rather than starting
+   out of nowhere. */
+.ig-levelgrow-levels::after {
+  content: ""; position: absolute; left: calc(-1 * var(--lg-gap)); top: 50%;
+  width: var(--lg-gap); height: 2px; background: var(--border);
+}
+.ig-levelgrow-tile {
+  position: relative; width: var(--lg-tile-w); aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg); overflow: hidden; background: var(--surface);
+  border: 1px solid var(--border);
+  opacity: 0; transform: translateX(18px) scale(.96);
+  transition: opacity 560ms var(--ease-out), transform 560ms var(--ease-spring);
+  pointer-events: none;
+}
+.ig-levelgrow-tile.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+/* Only the left-column tiles (L0, L2) get a branch back to the bracket —
+   a right-column branch would have to cross straight through its
+   left-column neighbour. */
+.ig-levelgrow-tile::after {
+  content: ""; position: absolute; left: -1.7rem; top: 50%; width: 1.7rem; height: 2px;
+  background: var(--lv-c, var(--border));
+  opacity: 0; transition: opacity 420ms var(--ease-out) 140ms;
+}
+.ig-levelgrow-tile:nth-child(even)::after { display: none; }
+.ig-levelgrow-tile.is-shown::after { opacity: 1; }
+.ig-levelgrow-media { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ig-levelgrow-tile::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; z-index: 2;
+  background: var(--lv-c, var(--primary));
+}
+.ig-levelgrow-tag {
+  position: absolute; top: .5rem; left: .5rem; z-index: 2;
+  font: 700 .68rem/1 'Google Sans', system-ui, sans-serif; letter-spacing: .04em;
+  color: #fff; background: var(--lv-c, var(--primary));
+  padding: .18rem .5rem; border-radius: var(--radius-pill);
+}
+.ig-levelgrow-name {
+  position: absolute; left: .55rem; right: .55rem; bottom: .5rem; z-index: 2;
+  font: 600 .72rem/1.3 'Google Sans', system-ui, sans-serif; color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,.55);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ig-levelgrow-tile, .ig-levelgrow-tile::after { transition: opacity 200ms linear; transform: none; }
+}
+@media (max-width: 640px) {
+  /* No room for a hub-and-bracket diagram on a narrow screen — stack
+     straight down, hub on top, levels below as a full-width 2x2 grid,
+     no bracket/branches. */
+  .ig-levelgrow { flex-direction: column; gap: .7rem; }
+  .ig-levelgrow-human { flex-basis: auto; width: 100%; }
+  .ig-levelgrow-levels {
+    width: 100%; grid-template-columns: repeat(2, 1fr); padding-left: 0;
+  }
+  .ig-levelgrow-tile { width: 100%; }
+  .ig-levelgrow-levels::before, .ig-levelgrow-levels::after,
+  .ig-levelgrow-tile::after { display: none; }
+  .ig-levelgrow-name { font-size: .66rem; }
+}
+
+/* ── Frame 3: the evaluation reel — a dense, borderless multi-row
+   mosaic (no card, no frame) standing in for the single "L3 failure"
+   clip the old markup showed here; built in JS from many tasks across
+   the whole manifest (buildStoryReel). Smaller tiles than the hero
+   reel, and both the left/right AND top/bottom edges fade to nothing
+   instead of a hard rectangle, so it reads as footage bleeding off the
+   page rather than a boxed widget. */
+.ig-story-reel-wrap { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.ig-story-reel {
+  --reel-gap: 8px;
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: var(--reel-gap);
+  /* Narrower fully-transparent zone (starts closer to the true edge) but
+     more gradient stops across it, so the fade itself reads softer/more
+     "blurred" instead of a near-linear ramp that still looks like a cut. */
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,.4) 2%, #000 5%, #000 95%, rgba(0,0,0,.4) 98%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,.4) 4%, #000 9%, #000 91%, rgba(0,0,0,.4) 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,.4) 2%, #000 5%, #000 95%, rgba(0,0,0,.4) 98%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,.4) 4%, #000 9%, #000 91%, rgba(0,0,0,.4) 96%, transparent 100%);
+  mask-composite: intersect;
+}
+.ig-story-reel .ig-reel-tile { border-radius: 8px; border: none; box-shadow: 0 3px 10px rgba(0,0,0,.10); }
+/* The actual source of the "black edge": an empty <video> (no src yet)
+   paints solid black in most browsers, overriding the tile's own soft
+   gradient background — and right at the reel's fading left/right edges
+   there are always a few tiles that haven't scrolled into range to load
+   yet. Hiding the <video> box until it truly has a frame lets the tile's
+   own background show through the mask instead of black. */
+.ig-story-reel .ig-reel-tile video {
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+.ig-story-reel .ig-reel-tile video[src] { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .ig-story-reel .ig-reel-tile video { transition: none; }
 }
 
 /* ── Level ladder ───────────────────────────────────────────── */
@@ -186,37 +481,52 @@
   margin-top: 1.6rem;
 }
 .lbp-head {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  display: grid; grid-template-columns: 34px minmax(0,1.3fr) 88px 84px 84px 96px;
+  align-items: center; gap: .6rem;
   padding: .9rem 1.2rem; background: var(--surface); border-bottom: 1px solid var(--border);
-  font: 600 .84rem/1 'Google Sans', system-ui, sans-serif; color: var(--text-muted);
+  font: 600 .82rem/1 'Google Sans', system-ui, sans-serif; color: var(--text-muted);
 }
+.lbp-head span:not(:first-child):not(:nth-child(2)) { text-align: right; }
 .lbp-row {
-  display: grid; grid-template-columns: 34px 1fr 92px 92px;
-  align-items: center; gap: .7rem;
-  padding: .7rem 1.2rem; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 34px minmax(0,1.3fr) 88px 84px 84px 96px;
+  align-items: center; gap: .6rem;
+  padding: .75rem 1.2rem; border-bottom: 1px solid var(--border);
   transition: background var(--dur-fast) var(--ease-out);
 }
 .lbp-row:last-child { border-bottom: none; }
 .lbp-row:hover { background: var(--surface); }
 .lbp-rank { font: 700 .82rem/1 'Google Sans', system-ui, sans-serif; color: var(--text-muted); }
-.lbp-name { font-weight: 600; font-size: .92rem; display: flex; align-items: center; gap: .5rem; }
+.lbp-name { font-weight: 600; font-size: .92rem; display: flex; align-items: center; gap: .5rem; min-width: 0; }
 .lbp-name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tone); flex-shrink: 0; }
+.lbp-fam {
+  font: 600 .68rem/1 'Google Sans', system-ui, sans-serif; padding: .16rem .45rem;
+  border: 1px solid currentColor; border-radius: var(--radius-pill); opacity: .85; flex-shrink: 0;
+}
 .lbp-metric {
   position: relative; text-align: right;
   font-variant-numeric: tabular-nums; font-weight: 600; font-size: .9rem;
 }
-.lbp-metric small { display: block; font-size: .66rem; color: var(--text-muted); font-weight: 400; }
+.lbp-metric small { display: block; font-size: .64rem; color: var(--text-muted); font-weight: 400; white-space: nowrap; }
+.lbp-metric-muted { color: var(--text-muted); font-weight: 500; }
+.lbp-delta-pos { color: var(--fig-videova); }
+.lbp-delta-neg { color: var(--fig-zs); }
 .lbp-track {
   position: absolute; left: 0; right: 0; bottom: -3px; height: 3px;
   border-radius: 2px; background: var(--tone); opacity: .3;
-  transform: scaleX(var(--v, 0)); transform-origin: right;
+  transform: scaleX(0); transform-origin: left;
   transition: transform 900ms var(--ease-out);
 }
 .is-in .lbp-track { transform: scaleX(var(--v, 0)); }
 
-@media (max-width: 620px) {
-  .lbp-row { grid-template-columns: 28px 1fr 76px; }
+@media (max-width: 760px) {
+  .lbp-row, .lbp-head { grid-template-columns: 28px 1fr 76px 76px; }
+  .lbp-row > :nth-child(3), .lbp-head > :nth-child(3),
   .lbp-row > :last-child, .lbp-head > :last-child { display: none; }
+}
+@media (max-width: 480px) {
+  .lbp-row, .lbp-head { grid-template-columns: 24px 1fr 70px; }
+  .lbp-row > :nth-child(4), .lbp-head > :nth-child(4) { display: none; }
+  .lbp-fam { display: none; }
 }
 
 /* ── Platform cards (what this site is, not just what the paper says) ── */

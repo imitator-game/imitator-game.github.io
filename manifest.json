@@ -11,7 +11,7 @@
     },
     "L2": {
       "name": "New Object Appearance",
-      "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically."
+      "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically."
     },
     "L3": {
       "name": "New Object Function",
@@ -66,7 +66,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Mix soup in a bowl using a utensil",
           "human_video": "videos/gallery/human/human_H1_L2.mp4",
           "sim_task_id": "L2_TwoRobotStirSpoon-v1",
@@ -110,7 +110,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting books away",
           "human_video": "videos/gallery/human/human_H2_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceBookBookcase-v1",
@@ -154,7 +154,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting away clothes",
           "human_video": "videos/gallery/human/human_H3_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceClothBasket-v1",
@@ -198,7 +198,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting away the remote control",
           "human_video": "videos/gallery/human/human_H4_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickRemoteControl-v1",
@@ -242,7 +242,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Filing magazines away",
           "human_video": "videos/gallery/human/human_H5_zed2i_ep0.mp4",
           "sim_task_id": "L2_TwoRobotPlaceMagazineFolder-v1",
@@ -286,7 +286,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting the shower gel back where it belongs",
           "human_video": "videos/gallery/human/human_H6_zed2i_ep0.mp4",
           "sim_task_id": "L2_TwoRobotPickWash-v1",
@@ -330,7 +330,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Arranging fruits by category",
           "human_video": "videos/gallery/human/human_H7_zed2i_ep0.mp4",
           "sim_task_id": "L2_TwoRobotPickAppleBasket-v1",
@@ -374,7 +374,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Organizing fruits by type",
           "human_video": "videos/gallery/human/human_H8_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickAppleBananaToBaskets-v1",
@@ -418,7 +418,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Measuring the fruit’s weight",
           "human_video": "videos/gallery/human/human_H9_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickAppleToScale-v1",
@@ -462,7 +462,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Restocking chips",
           "human_video": "videos/gallery/human/human_H10_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceChipsRack-v1",
@@ -506,7 +506,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Arranging items neatly",
           "human_video": "videos/gallery/human/human_H11_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceCommodityRack-v1",
@@ -550,7 +550,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Packing multiple fruits",
           "human_video": "videos/gallery/human/human_H12_zed2i_ep0.mp4",
           "sim_task_id": "L2_TwoRobotPlaceFruitBox-v1",
@@ -594,7 +594,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Identify the product by scanning its barcode",
           "human_video": "videos/gallery/human/human_H13_L2.mp4",
           "sim_task_id": "L2_TwoRobotScanMilkBox-v1",
@@ -638,7 +638,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting plates away",
           "human_video": "videos/gallery/human/human_H14_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlacePlateRack-v1",
@@ -682,7 +682,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Slicing carrots",
           "human_video": "videos/gallery/human/human_H15_L2.mp4",
           "sim_task_id": "L2_TwoRobotCutFruit-v1",
@@ -726,7 +726,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Transfer sliced produce onto a serving plate",
           "human_video": "videos/gallery/human/human_H16_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickFruitsToPlate-v1",
@@ -770,7 +770,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Saucing the fries",
           "human_video": "videos/gallery/human/human_H17_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourKetchupFries-v1",
@@ -814,7 +814,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Cleaning the pot",
           "human_video": "videos/gallery/human/human_H18_L2.mp4",
           "sim_task_id": "L2_TwoRobotWipePot-v1",
@@ -858,7 +858,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Removing stains from the desktop",
           "human_video": "videos/gallery/human/human_H19_L2.mp4",
           "sim_task_id": "L2_TwoRobotCleanDesk-v1",
@@ -902,7 +902,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Transfer water into the cup",
           "human_video": "videos/gallery/human/human_H20_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourKettle-v1",
@@ -946,7 +946,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Disposing of remaining food scraps",
           "human_video": "videos/gallery/human/human_H21_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickFood-v1",
@@ -990,7 +990,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Moving food between bowls",
           "human_video": "videos/gallery/human/human_H22_L2.mp4",
           "sim_task_id": "L2_TwoRobotTransFood-v1",
@@ -1034,7 +1034,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Measuring ingredients by weight",
           "human_video": "videos/gallery/human/human_H23_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceFoodScale-v1",
@@ -1078,7 +1078,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Arranging paperwork",
           "human_video": "videos/gallery/human/human_H24_L2.mp4",
           "sim_task_id": "L2_TwoRobotPressStapler-v1",
@@ -1118,7 +1118,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "",
           "human_video": "videos/gallery/human/human_H25_L2.mp4",
           "robot_video": "videos/gallery/robot/robot_H25_L2_zed2i_ep0.mp4"
@@ -1158,7 +1158,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Sorting items into containers",
           "human_video": "videos/gallery/human/human_H26_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickTennisBallGolfBall-v1",
@@ -1202,7 +1202,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Scanning and recognizing a product barcode",
           "human_video": "videos/gallery/human/human_H27_L2.mp4",
           "sim_task_id": "L2_TwoRobotScanPillBottle-v1",
@@ -1246,7 +1246,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting shoes away",
           "human_video": "videos/gallery/human/human_H28_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceShoeBox-v1",
@@ -1290,7 +1290,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Unsealing the box",
           "human_video": "videos/gallery/human/human_H29_L2.mp4",
           "sim_task_id": "L2_TwoRobotOpenBox-v1",
@@ -1333,7 +1333,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Assembling the cardboard box by folding",
           "human_video": "videos/gallery/human/human_H30_zed2i_ep0.mp4",
           "sim_task_id": "L2_TwoRobotFoldBox-v1",
@@ -1377,7 +1377,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Organizing medications",
           "human_video": "videos/gallery/human/human_H31_L2.mp4",
           "sim_task_id": "L2_TwoRobotPickPillToRegions-v1",
@@ -1421,7 +1421,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Organize paperwork into a folder",
           "human_video": "videos/gallery/human/human_H32_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceFileFolder-v1",
@@ -1465,7 +1465,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Dispensing liquid medicine into a cup",
           "human_video": "videos/gallery/human/human_H33_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourLiquidCup-v1",
@@ -1508,7 +1508,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting pills away",
           "human_video": "videos/gallery/human/human_H34_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlacePillBox-v1",
@@ -1552,7 +1552,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Setting down a calligraphy brush",
           "human_video": "videos/gallery/human/human_H35_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceBrushRest-v1",
@@ -1596,7 +1596,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Arranging cups onto a tray",
           "human_video": "videos/gallery/human/human_H36_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceCupPlate-v1",
@@ -1635,7 +1635,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "",
           "human_video": "videos/gallery/human/human_H37_L2.mp4",
           "robot_video": "videos/gallery/robot/robot_H37_L2_zed2i_ep0.mp4"
@@ -1671,7 +1671,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "",
           "human_video": "videos/gallery/human/human_H38_L2.mp4",
           "robot_video": "videos/gallery/robot/robot_H38_L2_zed2i_ep0.mp4"
@@ -1704,7 +1704,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Transfer one liquid reagent by pouring",
           "human_video": "videos/gallery/human/human_H39_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourLiquidMug-v1",
@@ -1747,7 +1747,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Measuring the mass of solid items",
           "human_video": "videos/gallery/human/human_H40_L2.mp4",
           "sim_task_id": "L2_TwoRobotPutCubeOnScale-v1",
@@ -1791,7 +1791,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Solution filtration",
           "human_video": "videos/gallery/human/human_H41_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourCup-v1",
@@ -1835,7 +1835,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Washing the cup",
           "human_video": "videos/gallery/human/human_H42_L2.mp4",
           "sim_task_id": "L2_TwoRobotCleanCup-v1",
@@ -1879,7 +1879,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Unscrewing a bottle top",
           "human_video": "videos/gallery/human/human_H43_L2.mp4",
           "sim_task_id": "L2_TwoRobotOpenLiquidCap-v1",
@@ -1922,7 +1922,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Pulverizing solid ingredients",
           "human_video": "videos/gallery/human/human_H44_L2.mp4",
           "sim_task_id": "L2_TwoRobotGrindFood-v1",
@@ -1966,7 +1966,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Strain a liquid",
           "human_video": "videos/gallery/human/human_H45_L2.mp4",
           "sim_task_id": "L2_TwoRobotPourLiquidFilter-v1",
@@ -2010,7 +2010,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Packing food",
           "human_video": "videos/gallery/human/human_H46_L2.mp4",
           "sim_task_id": "L2_TwoRobotPutBox-v1",
@@ -2054,7 +2054,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Arrange the table setting",
           "human_video": "videos/gallery/human/human_H47_L2.mp4",
           "sim_task_id": "L2_TwoRobotKnifeBowlFork-v1",
@@ -2098,7 +2098,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Lift the lid to inspect what is inside",
           "human_video": "videos/gallery/human/human_H48_L2.mp4",
           "sim_task_id": "L2_TwoRobotLiftLidFromSkillet-v1",
@@ -2142,7 +2142,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Place a folded towel into a basket",
           "human_video": "videos/gallery/human/human_H49_L2.mp4",
           "sim_task_id": "L2_TwoRobotFoldTowel-v1",
@@ -2186,7 +2186,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Activating the juicer control button",
           "human_video": "videos/gallery/human/human_H50_L2.mp4",
           "sim_task_id": "L2_TwoRobotPressJuicer-v1",
@@ -2230,7 +2230,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Putting the burger into the tray",
           "human_video": "videos/gallery/human/human_H56_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceBurgerTray-v1",
@@ -2274,7 +2274,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Cup hanging task",
           "human_video": "videos/gallery/human/human_H57_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceMugRack-v1",
@@ -2318,7 +2318,7 @@
         },
         "L2": {
           "name": "New Object Appearance",
-          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+          "desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
           "gallery_desc": "Securing the wooden block in place",
           "human_video": "videos/gallery/human/human_H58_L2.mp4",
           "sim_task_id": "L2_TwoRobotPlaceScrewdriver-v1",
@@ -3906,7 +3906,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Read the drink’s barcode using the scanner ; A black-orange code scanner is positioned on the right side of the table, and pink peach juice is located on the left side of the table ; (a) Right arm goes to the black-orange code scanner, (b) Right arm grips the black-orange code scanner, (c) Left arm goes to the pink peach juice, (d) Left arm grips the pink peach juice, (e) Bring both arms together to scan.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H13_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H13/L2/0.mp4",
@@ -3988,7 +3988,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Load the plate onto the plate rack; plate rack sits at the center of the table, gray plate, pink plate and white plate are positioned on the plate rack, yellow plate is located on the right side of the table; (a) Right arm goes to the yellow plate’s location, (b) Right arm grips the yellow plate, (c) Right arm carries the yellow plate to a position over the plate rack, (d) Right arm sets the yellow plate into the plate rack, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H14_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H14/L2/0.mp4",
@@ -4076,7 +4076,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Use the spoon to mix the soup in the bowl ; On the tabletop, a red mug sits to the right, a gray small bowl is centered, and a yellow spoon is inside the red mug ; (a) The right arm positions itself over the red mug that holds the yellow spoon, (b) The right arm grips the yellow spoon, (c) The right arm shifts to above the gray bowl filled with soup, (d) With the yellow spoon, stir the water in the gray bowl counterclockwise three revolutions, (e) Return the yellow spoon to its original place, (f) The left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H1_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H1/L2/0.mp4",
@@ -4160,7 +4160,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Transfer water into the cup; the blue cup is positioned on the left side of the table, and the orange kettle is positioned on the right side of the table; (a) The right arm goes to the location of the orange kettle, (b) The right arm grips the orange kettle, (c) With the orange kettle held, the right arm moves it over the blue cup, (d) The right arm tips the orange kettle to pour water into the blue cup, (e) The left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H20_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H20/L2/0.mp4",
@@ -4240,7 +4240,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Dispose of the kitchen refuse; gray trash can is centered on the table, grapes are located on the table’s left side, banana is positioned on the table’s right side; (a) The right arm goes to the banana, (b) The right arm grips the banana, (c) With the banana held, the right arm moves over the gray trash can, (d) The right arm releases the banana into the gray trash can, (e) The left arm goes to the grapes, (f) The left arm grips the grapes, (g) The left arm releases the grapes into the gray trash can.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H21_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H21/L2/0.mp4",
@@ -4319,7 +4319,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Taping the carton shut; yellow tape attached to the side of the carton, carton positioned at the center of the table, tape dispenser located on the right side of the table; (a) Right arm goes to the yellow tape’s location, (b) Right arm grips the end of the yellow tape, (c) Close the carton using the tape, (d) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H30_zed2i_ep0.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H30/L2/0.mp4",
@@ -4403,7 +4403,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Organize and stack medical paperwork; blue folder positioned to the left side of the table, documents resting on the brown cardboard box on the right side of the table; (a) Left arm goes to where the blue folder is, (b) Left arm opens the blue folder, (c) Right arm goes to where the documents are on the brown cardboard box, (d) Right arm takes hold of the documents, (e) Right arm carries the documents over the blue folder, (f) Right arm inserts the documents into the blue folder.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H32_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H32/L2/0.mp4",
@@ -4491,7 +4491,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Fold the towel, then stow it inside the basket; beige storage box slanted in the center of the table, golden towel positioned on the left side of the table; (a) Right arm reaches toward the edge of the golden towel, (b) Right arm grips the edge of the golden towel, (c) Fold the towel in half, (d) Right arm goes to the folded section of the towel, (e) Right arm grasps the folded section of the towel, (f) Right arm keeps hold of the folded section and moves over the beige storage box, (g) Right arm sets the towel into the beige storage box, (h) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H49_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H49/L2/0.mp4",
@@ -4575,7 +4575,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Put the remote control into its designated remote-control basket; off-white basket positioned at the center of the table, black TV remote control located on the right side of the table; (a) Right arm hovers over the black TV remote control, (b) Right arm grips the black remote control, (c) Right arm carries the black remote control over the off-white basket, (d) Right arm sets the black remote control down into the off-white basket, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H4_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H4/L2/0.mp4",
@@ -4659,7 +4659,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Suspend the handled water cup from the cup holder ; beige log cup holder sits at the center of the table, and pink mug is positioned on the right side of the table ; (a) Right arm goes toward the pink mug, (b) Right arm grips the side wall of the pink mug, (c) With the pink mug in hand, Right arm carries it to the second layer bracket of the beige log cup holder, (d) Right arm lines up the mug handle with the second layer bracket of the log cup holder and hooks it on, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H57_L2.mp4",
         "rollouts": {
           "e73": "videos/arena/e73/human_H57/L2/0.mp4",
@@ -5531,7 +5531,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Read the drink’s barcode using the scanner ; A black-orange code scanner is positioned on the right side of the table, and pink peach juice is located on the left side of the table ; (a) Right arm goes to the black-orange code scanner, (b) Right arm grips the black-orange code scanner, (c) Left arm goes to the pink peach juice, (d) Left arm grips the pink peach juice, (e) Bring both arms together to scan.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H13_L2.mp4",
         "rollouts": {
           "e97": "videos/arena/e97/human_H13/L2/0.mp4",
@@ -5583,7 +5583,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Transfer water into the cup; the blue cup is positioned on the left side of the table, and the orange kettle is positioned on the right side of the table; (a) The right arm goes to the location of the orange kettle, (b) The right arm grips the orange kettle, (c) With the orange kettle held, the right arm moves it over the blue cup, (d) The right arm tips the orange kettle to pour water into the blue cup, (e) The left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H20_L2.mp4",
         "rollouts": {
           "e97": "videos/arena/e97/human_H20/L2/0.mp4",
@@ -5622,7 +5622,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Dispose of the kitchen refuse; gray trash can is centered on the table, grapes are located on the table’s left side, banana is positioned on the table’s right side; (a) The right arm goes to the banana, (b) The right arm grips the banana, (c) With the banana held, the right arm moves over the gray trash can, (d) The right arm releases the banana into the gray trash can, (e) The left arm goes to the grapes, (f) The left arm grips the grapes, (g) The left arm releases the grapes into the gray trash can.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H21_L2.mp4",
         "rollouts": {
           "e97": "videos/arena/e97/human_H21/L2/0.mp4",
@@ -5674,7 +5674,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Taping the carton shut; yellow tape attached to the side of the carton, carton positioned at the center of the table, tape dispenser located on the right side of the table; (a) Right arm goes to the yellow tape’s location, (b) Right arm grips the end of the yellow tape, (c) Close the carton using the tape, (d) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H30_zed2i_ep0.mp4",
         "rollouts": {
           "e97": "videos/arena/e97/human_H30/L2/0.mp4",
@@ -5726,7 +5726,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Put the remote control into its designated remote-control basket; off-white basket positioned at the center of the table, black TV remote control located on the right side of the table; (a) Right arm hovers over the black TV remote control, (b) Right arm grips the black remote control, (c) Right arm carries the black remote control over the off-white basket, (d) Right arm sets the black remote control down into the off-white basket, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H4_L2.mp4",
         "rollouts": {
           "e97": "videos/arena/e97/human_H4/L2/0.mp4",
@@ -7678,7 +7678,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Read the drink’s barcode using the scanner ; A black-orange code scanner is positioned on the right side of the table, and pink peach juice is located on the left side of the table ; (a) Right arm goes to the black-orange code scanner, (b) Right arm grips the black-orange code scanner, (c) Left arm goes to the pink peach juice, (d) Left arm grips the pink peach juice, (e) Bring both arms together to scan.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H13_L2.mp4",
         "rollouts": {
           "e74": "videos/arena/e74/human_H13/L2/0.mp4",
@@ -7766,7 +7766,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Transfer water into the cup; the blue cup is positioned on the left side of the table, and the orange kettle is positioned on the right side of the table; (a) The right arm goes to the location of the orange kettle, (b) The right arm grips the orange kettle, (c) With the orange kettle held, the right arm moves it over the blue cup, (d) The right arm tips the orange kettle to pour water into the blue cup, (e) The left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H20_L2.mp4",
         "rollouts": {
           "e74": "videos/arena/e74/human_H20/L2/0.mp4",
@@ -7854,7 +7854,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Dispose of the kitchen refuse; gray trash can is centered on the table, grapes are located on the table’s left side, banana is positioned on the table’s right side; (a) The right arm goes to the banana, (b) The right arm grips the banana, (c) With the banana held, the right arm moves over the gray trash can, (d) The right arm releases the banana into the gray trash can, (e) The left arm goes to the grapes, (f) The left arm grips the grapes, (g) The left arm releases the grapes into the gray trash can.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H21_L2.mp4",
         "rollouts": {
           "e74": "videos/arena/e74/human_H21/L2/0.mp4",
@@ -7941,7 +7941,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Taping the carton shut; yellow tape attached to the side of the carton, carton positioned at the center of the table, tape dispenser located on the right side of the table; (a) Right arm goes to the yellow tape’s location, (b) Right arm grips the end of the yellow tape, (c) Close the carton using the tape, (d) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H30_zed2i_ep0.mp4",
         "rollouts": {
           "e74": "videos/arena/e74/human_H30/L2/0.mp4",
@@ -8029,7 +8029,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Put the remote control into its designated remote-control basket; off-white basket positioned at the center of the table, black TV remote control located on the right side of the table; (a) Right arm hovers over the black TV remote control, (b) Right arm grips the black remote control, (c) Right arm carries the black remote control over the off-white basket, (d) Right arm sets the black remote control down into the off-white basket, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H4_L2.mp4",
         "rollouts": {
           "e74": "videos/arena/e74/human_H4/L2/0.mp4",
@@ -8108,7 +8108,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Read the drink’s barcode using the scanner ; A black-orange code scanner is positioned on the right side of the table, and pink peach juice is located on the left side of the table ; (a) Right arm goes to the black-orange code scanner, (b) Right arm grips the black-orange code scanner, (c) Left arm goes to the pink peach juice, (d) Left arm grips the pink peach juice, (e) Bring both arms together to scan.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H13_L2.mp4",
         "rollouts": {
           "e79": "videos/arena/e79/human_H13/L2/0.mp4",
@@ -8176,7 +8176,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Transfer water into the cup; the blue cup is positioned on the left side of the table, and the orange kettle is positioned on the right side of the table; (a) The right arm goes to the location of the orange kettle, (b) The right arm grips the orange kettle, (c) With the orange kettle held, the right arm moves it over the blue cup, (d) The right arm tips the orange kettle to pour water into the blue cup, (e) The left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H20_L2.mp4",
         "rollouts": {
           "e79": "videos/arena/e79/human_H20/L2/0.mp4",
@@ -8243,7 +8243,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Dispose of the kitchen refuse; gray trash can is centered on the table, grapes are located on the table’s left side, banana is positioned on the table’s right side; (a) The right arm goes to the banana, (b) The right arm grips the banana, (c) With the banana held, the right arm moves over the gray trash can, (d) The right arm releases the banana into the gray trash can, (e) The left arm goes to the grapes, (f) The left arm grips the grapes, (g) The left arm releases the grapes into the gray trash can.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H21_L2.mp4",
         "rollouts": {
           "e79": "videos/arena/e79/human_H21/L2/0.mp4",
@@ -8311,7 +8311,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Taping the carton shut; yellow tape attached to the side of the carton, carton positioned at the center of the table, tape dispenser located on the right side of the table; (a) Right arm goes to the yellow tape’s location, (b) Right arm grips the end of the yellow tape, (c) Close the carton using the tape, (d) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H30_zed2i_ep0.mp4",
         "rollouts": {
           "e79": "videos/arena/e79/human_H30/L2/0.mp4",
@@ -8362,7 +8362,7 @@
         "level": "L2",
         "episode": 0,
         "human_desc": "Put the remote control into its designated remote-control basket; off-white basket positioned at the center of the table, black TV remote control located on the right side of the table; (a) Right arm hovers over the black TV remote control, (b) Right arm grips the black remote control, (c) Right arm carries the black remote control over the off-white basket, (d) Right arm sets the black remote control down into the off-white basket, (e) Left arm stays still.",
-        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalise visually and physically.",
+        "task_desc": "Objects differ in material, shape, or color (and potentially mass/friction). The robot must generalize visually and physically.",
         "human_video": "videos/gallery/human/human_H4_L2.mp4",
         "rollouts": {
           "e79": "videos/arena/e79/human_H4/L2/0.mp4",

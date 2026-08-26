@@ -159,7 +159,7 @@
     // y = x reference: above it, fine-tuning on 10 demos beat the seen-task ceiling
     g.appendChild(el("line", { x1: x(0), y1: y(0), x2: x(.9), y2: y(.9) },
       "stroke:var(--fig-axis);stroke-width:1;stroke-dasharray:5 5;opacity:.5"));
-    g.appendChild(text(x(.80), y(.86), "P+FT = Seen", "ig-t-note", { "text-anchor": "end" }));
+    // g.appendChild(text(x(.80), y(.86), "P+FT = Seen", "ig-t-note", { "text-anchor": "end" }));
 
     IG.sim.forEach(function (r, i) {
       var c = fam(r.fam);
@@ -175,12 +175,12 @@
     });
 
     // The two leaders get a name, the rest stay clean
-    [["ACT/DINOv2", 10, -12], ["π₀.₅", 10, 16]].forEach(function (a) {
-      var r = IG.sim.filter(function (d) { return d.model === a[0]; })[0];
-      var t = text(x(r.seen) + a[1], y(r.pft) + a[2], r.model, "ig-t-note");
-      t.classList.add("ig-anim"); t.dataset.delay = 900;
-      g.appendChild(t);
-    });
+    // [["ACT/DINOv2", 10, -12], ["π₀.₅", 10, 16]].forEach(function (a) {
+    //   var r = IG.sim.filter(function (d) { return d.model === a[0]; })[0];
+    //   var t = text(x(r.seen) + a[1], y(r.pft) + a[2], r.model, "ig-t-note");
+    //   t.classList.add("ig-anim"); t.dataset.delay = 900;
+    //   g.appendChild(t);
+    // });
 
     // Family win-rate strip
     var by = H - 46;
@@ -193,7 +193,7 @@
         "fill:" + fam(f.fam) + ";transform-box:fill-box;transform-origin:left center");
       fill.classList.add("ig-anim", "ig-bar-x"); fill.dataset.delay = 700 + i * 110;
       hoverable(fill, host, "<b>" + IG.famShort(f.fam) + "</b><i>Arena win rate</i> " + pct(f.arenaWR) +
-        "<br><i>Seen SR</i> " + f.mean.toFixed(2) + " (" + f.lo.toFixed(2) + "–" + f.hi.toFixed(2) + ")");
+        "<br><i>Seen SR</i> " + f.mean.toFixed(2) + " (" + f.lo.toFixed(2) + "-" + f.hi.toFixed(2) + ")");
       g.appendChild(fill);
       g.appendChild(text(bx, by + 30, IG.famShort(f.fam) + " · " + pct(f.arenaWR), "ig-t-tick"));
     });
@@ -343,9 +343,6 @@
     s.appendChild(g); host.appendChild(s);
     var note = document.createElement("p");
     note.className = "ig-chart-note";
-    note.innerHTML = "P+FT success improves with corpus size for <b>" + IG.figC3.improvedOf[0] + " of " +
-      IG.figC3.improvedOf[1] + "</b> model–domain pairs. The three video-conditioned models also pick up " +
-      "zero-shot ability as the corpus grows; the language-conditioned π₀.₅ stays pinned at 0.04.";
     host.appendChild(note);
   }
 
@@ -474,63 +471,138 @@
   /* ============================================================
      C7 · Does the automated metric agree with the humans?
      ============================================================ */
-  function validity(host) {
-    var W = 720, H = 400;
-    var s = svg(W, H), g = el("g");
-    var box = { l: 58, r: 356, t: 40, b: H - 66 };
-    var x = lin(0, .7, box.l + 10, box.r - 10), y = lin(0, .7, box.b, box.t);
-    box.y = y;
+  /* Panel (b) needs its own dashed/hollow marker family — the matplotlib
+     figure marks the Arena (human) series with white-filled markers of the
+     same shape as their automated counterpart, so the eye reads "same
+     quantity, other channel" without a second legend. */
+  function hollowMarker(shape, cx, cy, r, stroke) {
+    var style = "fill:var(--on-bg);stroke:" + stroke + ";stroke-width:2";
+    if (shape === "square") return el("rect", { x: cx - r, y: cy - r, width: 2 * r, height: 2 * r, rx: 1.5 }, style);
+    if (shape === "triangleDown") {
+      var p = [[cx, cy + r * 1.15], [cx + r * 1.1, cy - r * .8], [cx - r * 1.1, cy - r * .8]];
+      return el("polygon", { points: p.map(function (a) { return a.join(","); }).join(" ") }, style);
+    }
+    return el("circle", { cx: cx, cy: cy, r: r }, style);
+  }
 
-    g.appendChild(text(box.l - 40, 20, "Automated success vs. human judgment", "ig-t-axis"));
-    frame(g, box, [0, .2, .4, .6], pct);
-    [0, .2, .4, .6].forEach(function (t) {
-      g.appendChild(text(x(t), box.b + 18, pct(t), "ig-t-tick", { "text-anchor": "middle" }));
+  var SETTING_COLOR = { Seen: "var(--fig-seen)", ZS: "var(--fig-zs)", Scr: "var(--fig-scr)", "P+FT": "var(--fig-pft)" };
+  var SETTING_ORDER = ["Seen", "ZS", "Scr", "P+FT"];
+
+  function validity(host) {
+    var W = 940, H = 460;
+    var s = svg(W, H), g = el("g");
+    var gap = 56;
+    var boxA = { l: 56, r: W / 2 - gap / 2, t: 46, b: H - 96 };
+    var xa = lin(0, .9, boxA.l + 10, boxA.r - 6), ya = lin(0, .95, boxA.b, boxA.t);
+    boxA.y = ya;
+
+    // ── panel (a): automated vs. human, EVERY trained variant × regime ──
+    // (matches fig_validity()'s sim.groupby(["variant","setting"]) joined
+    // to arena.groupby(["variant","setting"]) — 15 variants × 4 regimes.)
+    g.appendChild(text(boxA.l, 20, "(a)  Automated and Arena channels agree", "ig-t-panel"));
+    frame(g, boxA, [0, .2, .4, .6, .8], pct);
+    [0, .2, .4, .6, .8].forEach(function (t) {
+      g.appendChild(text(xa(t), boxA.b + 18, pct(t), "ig-t-tick", { "text-anchor": "middle" }));
     });
-    g.appendChild(el("line", { x1: x(0), y1: y(0), x2: x(.7), y2: y(.7) },
+    g.appendChild(el("line", { x1: xa(0), y1: ya(0), x2: xa(.9), y2: ya(.9) },
       "stroke:var(--fig-axis);stroke-width:1;stroke-dasharray:5 5;opacity:.55"));
-    g.appendChild(text((box.l + box.r) / 2, box.b + 42, "Automated SR", "ig-t-axis", { "text-anchor": "middle" }));
+    g.appendChild(text((boxA.l + boxA.r) / 2, boxA.b + 40, "SR (simulation, automated)", "ig-t-axis", { "text-anchor": "middle" }));
+    g.appendChild(text(boxA.l - 40, (boxA.t + boxA.b) / 2, "SR_human (simulation, Arena)", "ig-t-axis",
+      { "text-anchor": "middle", transform: "rotate(-90)", x: -(boxA.t + boxA.b) / 2, y: boxA.l - 40 }));
 
     IG.figC7.agreement.forEach(function (p, i) {
-      var c = marker(p.fam, x(p.x), y(p.y), 6, "fill:" + fam(p.fam) + ";fill-opacity:.8;stroke:var(--on-bg);stroke-width:1.4");
-      c.classList.add("ig-anim", "ig-dot"); c.dataset.delay = i * 50;
-      hoverable(c, host, "<b>" + p.model + "</b><i>Automated</i> " + pct(p.x) + "<br><i>Human</i> " + pct(p.y));
+      var col = SETTING_COLOR[p.setting] || "var(--fig-grey)";
+      var c = el("circle", { cx: xa(p.x), cy: ya(p.y), r: 5.5 }, "fill:" + col + ";fill-opacity:.85;stroke:var(--on-bg);stroke-width:1.2");
+      c.classList.add("ig-anim", "ig-dot"); c.dataset.delay = i * 16;
+      hoverable(c, host, "<b>" + p.model + " · " + p.setting + "</b><i>Automated SR</i> " + pct(p.x) +
+        "<br><i>Human SR</i> " + pct(p.y) + "<br><i>Sub-SR</i> " + pct(p.subx) + " · <i>Q</i> " + p.q.toFixed(2));
       g.appendChild(c);
     });
-    var rl = text(box.l + 14, box.t + 16, "r = 0.956", "ig-t-strong");
-    rl.classList.add("ig-anim"); rl.dataset.delay = 800; g.appendChild(rl);
+    // var rl = text(boxA.l + 14, boxA.t + 20, "r = 0.956", "ig-t-strong");
+    // rl.classList.add("ig-anim"); rl.dataset.delay = 900; g.appendChild(rl);
+    // var nl = text(boxA.l + 14, boxA.t + 36, "n = 60  (15 variants × 4 regimes)", "ig-t-note");
+    // nl.classList.add("ig-anim"); nl.dataset.delay = 950; g.appendChild(nl);
 
-    // Correlation bars
-    var p2 = { l: 400, r: W - 20, t: 40, b: H - 66 };
-    g.appendChild(text(p2.l - 12, 20, "Pearson r between metric pairs", "ig-t-axis"));
-    var bx = lin(0, 1, p2.l + 112, p2.r - 34);
-    var rows = IG.figC7.correlations;
-    var rh = (p2.b - p2.t) / rows.length;
-    [0, .5, 1].forEach(function (t) {
-      g.appendChild(el("line", { x1: bx(t), x2: bx(t), y1: p2.t, y2: p2.b }, "stroke:var(--fig-grid);stroke-width:1"));
-      g.appendChild(text(bx(t), p2.b + 18, t.toFixed(1), "ig-t-tick", { "text-anchor": "middle" }));
+    // ── panel (b): same rollouts, both channels, resolved by level ──
+    var boxB = { l: W / 2 + gap / 2 + 4, r: W - 66, t: 46, b: H - 96 };
+    var xb = lin(0, 3, boxB.l + 26, boxB.r - 26);
+    var yb = lin(.3, .85, boxB.b, boxB.t); boxB.y = yb;
+    var yq = lin(4, 10, boxB.b, boxB.t);
+
+    g.appendChild(text(boxB.l, 20, "(b)  Simulation: same rollouts, both channels, by level", "ig-t-panel"));
+    frame(g, boxB, [.3, .45, .6, .75], pct);
+    [4, 6, 8, 10].forEach(function (q) {
+      g.appendChild(text(boxB.r + 10, yq(q) + 4, q, "ig-t-tick ig-t-right"));
     });
-    rows.forEach(function (r, i) {
-      var cy = p2.t + i * rh + rh / 2;
-      var col = r.r > .9 ? "var(--fig-videova)" : r.r > .7 ? "var(--fig-vla)" : "var(--fig-zs)";
-      var rect = el("rect", { x: bx(0), y: cy - rh * .26, width: bx(r.r) - bx(0), height: rh * .52, rx: 3 },
-        "fill:" + col + ";transform-box:fill-box;transform-origin:left center");
-      rect.classList.add("ig-anim", "ig-bar-x"); rect.dataset.delay = 500 + i * 70;
-      hoverable(rect, host, "<b>" + r.label + "</b><i>" + r.scope + "</i> r = " + r.r.toFixed(3));
-      g.appendChild(rect);
-      g.appendChild(text(bx(0) - 8, cy + 1, r.label, "ig-t-tick", { "text-anchor": "end" }));
-      g.appendChild(text(bx(0) - 8, cy + 12, r.scope, "ig-t-note", { "text-anchor": "end" }));
-      var v = text(bx(r.r) + 6, cy + 4, r.r.toFixed(2), "ig-t-val");
-      v.classList.add("ig-anim"); v.dataset.delay = 800 + i * 70;
-      g.appendChild(v);
+    g.appendChild(text(boxB.r + 46, (boxB.t + boxB.b) / 2, "imitation score (Sub-SR / Q̄)", "ig-t-axis",
+      { "text-anchor": "middle", transform: "rotate(90)", x: (boxB.t + boxB.b) / 2, y: -(boxB.r + 46) }));
+
+    // L3 tint — the same "functional substitution" band used in Fig. C5,
+    // so the two figures read as one continuing argument, not two designs.
+    var bandX = xb(2.5);
+    g.appendChild(el("rect", { x: bandX, y: boxB.t, width: boxB.r - bandX, height: boxB.b - boxB.t },
+      "fill:var(--fig-l3);opacity:.09"));
+
+    LEVELS.forEach(function (lv, i) {
+      g.appendChild(text(xb(i), boxB.b + 22, lv, "ig-t-tick ig-t-strong", { "text-anchor": "middle" }));
     });
+
+    var SR = IG.figC5.simSeenAll;                 // verified
+    var SRh = IG.figC7.arenaSeenByLevel.SRhuman;   // verified
+    var SubSR = IG.figC5.simSeenSubAll;            // verified
+    var Qbar = IG.figC7.arenaSeenByLevel.Qbar;     // verified
+
+    function seriesLine(vals, scaleFn, color, dashed, delay) {
+      var pts = vals.map(function (v, i) { return [xb(i), scaleFn(v)]; });
+      var path = el("polyline", { points: pts.map(function (p) { return p.join(","); }).join(" ") },
+        "fill:none;stroke:" + color + ";stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round" +
+        (dashed ? ";stroke-dasharray:6 5" : ""));
+      g.appendChild(drawLine(path, delay));
+      return pts;
+    }
+    function seriesDots(pts, shape, hollow, color, delay, label, vals) {
+      pts.forEach(function (p, i) {
+        var c = hollow ? hollowMarker(shape, p[0], p[1], 5, color)
+                        : (shape === "square" ? el("rect", { x: p[0] - 5, y: p[1] - 5, width: 10, height: 10, rx: 1.5 },
+                            "fill:" + color + ";stroke:var(--on-bg);stroke-width:1.4")
+                          : shape === "triangle" ? (function () {
+                              var tp = [[p[0], p[1] - 6], [p[0] + 5.7, p[1] + 4.2], [p[0] - 5.7, p[1] + 4.2]];
+                              return el("polygon", { points: tp.map(function (a) { return a.join(","); }).join(" ") },
+                                "fill:" + color + ";stroke:var(--on-bg);stroke-width:1.4");
+                            })()
+                          : el("circle", { cx: p[0], cy: p[1], r: 5 }, "fill:" + color + ";stroke:var(--on-bg);stroke-width:1.4"));
+        c.classList.add("ig-anim", "ig-dot"); c.dataset.delay = delay + i * 55;
+        hoverable(c, host, "<b>" + label + " · " + LEVELS[i] + "</b>" + vals[i]);
+        g.appendChild(c);
+      });
+    }
+
+    var pSR = seriesLine(SR, yb, "var(--fig-vla)", false, 200);
+    seriesDots(pSR, "dot", false, "var(--fig-vla)", 400, "SR (automated)", SR.map(pct));
+
+    var pSRh = seriesLine(SRh, yb, "var(--fig-vla)", true, 350);
+    seriesDots(pSRh, "square", true, "var(--fig-vla)", 550, "SR_human (Arena)", SRh.map(pct));
+
+    var pSub = seriesLine(SubSR, function (v) { return yq(v * 10); }, "var(--fig-skill)", false, 500);
+    seriesDots(pSub, "triangle", false, "var(--fig-skill)", 700, "Sub-SR ×10 (automated)", SubSR.map(pct));
+
+    var pQ = seriesLine(Qbar, yq, "var(--fig-skill)", true, 650);
+    seriesDots(pQ, "triangleDown", true, "var(--fig-skill)", 850, "Q̄ (Arena)", Qbar.map(function (v) { return v.toFixed(2); }));
 
     s.appendChild(g); host.appendChild(s);
+
+    host.appendChild(legend(
+      SETTING_ORDER.map(function (k) { return { label: k, color: SETTING_COLOR[k] }; })
+    ));
+    host.appendChild(legend([
+      { label: "SR (automated)", color: "var(--fig-vla)" },
+      { label: "SR_human (Arena)", color: "var(--fig-vla)", shape: "dash" },
+      { label: "Sub-SR ×10 (automated)", color: "var(--fig-skill)" },
+      { label: "Q̄ (Arena, right axis)", color: "var(--fig-skill)", shape: "dash" }
+    ]));
+
     var note = document.createElement("p");
     note.className = "ig-chart-note";
-    note.innerHTML = "The automated simulation metric tracks the Arena's human verdicts closely at the level of " +
-      "model × regime (r = 0.956), and still holds once level is resolved (r = 0.867). Simulation and hardware " +
-      "agree on the ordering across regimes (r = 0.742) but not within a single regime (r = 0.365) — which is why " +
-      "the benchmark reports both.";
     host.appendChild(note);
   }
 
@@ -591,7 +663,11 @@
     draw(host);
     whenRevealed(host, function () {
       if (!laidOut(host)) return;
-      if (fresh) animateIn(host); else replay(host);
+      var panel = host.closest(".ig-figdeck-panel");
+      var panelDelay = panel && !REDUCED ? 420 : 0;
+      setTimeout(function () {
+        if (fresh) animateIn(host); else replay(host);
+      }, panelDelay);
     });
   }
 
@@ -611,6 +687,11 @@
       });
     });
     panels.forEach(function (p) { mo.observe(p, { attributes: true, attributeFilter: ["class"] }); });
+    // The first panel is active in the HTML before landing.js creates the
+    // tab rail, so it will not emit a class mutation. Queue it explicitly.
+    requestAnimationFrame(function () {
+      document.querySelectorAll(".ig-figdeck-panel.is-active .ig-chart[data-chart]").forEach(build);
+    });
   }
 
   function init() {

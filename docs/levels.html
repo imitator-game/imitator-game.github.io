@@ -3,21 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Four Levels L0–L3 — The Imitator Game Docs</title>
+  <title>The Four Levels L0-L3 — The Imitator Game Docs</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" type="image/png" href="../assets/media/logo.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=20260815-dark-palette-3">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/pages.css">
+  <link rel="stylesheet" href="../assets/css/motion.css?v=20260824-motion">
   <link rel="stylesheet" href="../assets/css/docs.css?v=20260815-doc-sidebar-2">
   <script>
+    /* Scroll-position fix — see ../index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+    /* No-flash theme boot — same contract as index.html / leaderboard.html:
+       first visit follows the OS; after that the visitor's own choice wins
+       and survives reloads via the shared "ig-theme" key. */
     (function () {
-      const t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var m = "system";
+      try { var v = localStorage.getItem("ig-theme"); if (v === "light" || v === "dark" || v === "system") m = v; } catch (e) {}
+      var t = m === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : m;
       document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-mode", m);
     })();
   </script>
 </head>
 <body>
+<div class="ig-scroll-progress"></div>
 <div class="pst-page">
 
   <!-- HEADER -->
@@ -31,14 +44,15 @@
       </a>
       <nav class="pst-header-nav">
         <a href="../index.html"><i class="fas fa-home"></i>Home</a>
+        <a href="../leaderboard.html"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="guide.html" class="active"><i class="fas fa-book"></i>Docs</a>
+        <a href="../community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../data.html"><i class="fas fa-database"></i>Data</a>
         <a href="../arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="../gallery.html"><i class="fas fa-film"></i>Gallery</a>
-        <a href="index.html" class="active"><i class="fas fa-book-open"></i>Docs</a>
-        <a href="../docs/contribute.html#community"><i class="fas fa-people-group"></i>Community</a>
+        <a href="../submit.html"><i class="fas fa-upload"></i>Submit</a>
       </nav>
-      <div class="pst-header-end">
-        <button class="theme-toggle" id="theme-toggle-btn" title="Toggle dark mode">☾ Dark</button>
-      </div>
+      <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
   </header>
 
@@ -48,10 +62,10 @@
       <div class="doc-header">
         <div>
           <div class="doc-eyebrow"><i class="fas fa-layer-group"></i>Get started</div>
-          <h1 class="doc-title">The four levels L0–L3</h1>
+          <h1 class="doc-title">The four levels L0-L3</h1>
           <p class="doc-subtitle">
             Each task is instantiated at four levels of progressive mismatch between the human
-            demonstration and the robot's scene — from exact replay (L0) to intent-level affordance
+            demonstration and the robot's scene — from exact replay (L0) to functional
             substitution (L3).
           </p>
         </div>
@@ -62,7 +76,7 @@
         <aside class="doc-sidebar" aria-label="Documentation navigation">
           <div class="doc-sidebar-title">Docs</div>
           <div class="doc-sidebar-group"><span class="doc-sidebar-group-label">Get started</span>
-            <a href="index.html"><i class="fas fa-book-open"></i>Documentation home</a>
+            <a href="guide.html"><i class="fas fa-book-open"></i>Documentation home</a>
             <a href="getting-started.html"><i class="fas fa-download"></i>Installation</a>
             <a href="quickstart.html"><i class="fas fa-bolt"></i>Quickstart</a>
             <a href="levels.html" class="active"><i class="fas fa-layer-group"></i>The four levels</a>
@@ -83,7 +97,7 @@
 
           <h2 id="semantics">Benchmark semantics</h2>
           <p>
-            The level is a property of a <em>demonstration–execution pair</em>, not an input supplied to
+            The level is a property of a <em>demonstration-execution pair</em>, not an input supplied to
             a policy. Goal predicates are used for simulator-side evaluation only. The table below
             summarizes what changes at each level and which fidelity the robot is expected to preserve.
           </p>
@@ -125,7 +139,7 @@
             </tbody>
           </table>
 
-          <h2 id="levels-detail">Level details</h2>
+          <!-- <h2 id="levels-detail">Level details</h2>
 
           <h3><span class="level-badge l0">L0</span>&ensp;Trajectory imitation</h3>
           <p>
@@ -157,9 +171,9 @@
             The policy must infer the underlying intent and re-purpose a different affordance to achieve
             the same goal. L3 has a separate registered environment class because its objects, success
             conditions, and motion-planning solution differ structurally from the base task.
-          </p>
+          </p> -->
 
-          <div class="callout callout-info">
+          <!-- <div class="callout callout-info">
             <div class="callout-icon"><i class="fas fa-circle-info"></i></div>
             <div class="callout-body">
               <div class="callout-title">Concrete example</div>
@@ -171,7 +185,7 @@
                 same intent by mixing matcha powder instead.
               </p>
             </div>
-          </div>
+          </div> -->
 
           <h2 id="env-ids">Environment IDs</h2>
           <p>
@@ -193,10 +207,10 @@
           </table>
 
           <p>
-            The complete alias mapping is stored in
+            The complete task mapping is stored in
             <code>examples/baselines/lerobot_dataset/task_mapping.json</code>. Every task is a matched
             set of four components: one base environment, one standalone L3 environment, one base and
-            one L3 motion-planning solution, and four aliases in the dataset task mapping.
+            one L3 motion-planning solution, and index in the dataset task mapping.
           </p>
 
           <h2 id="l2-mirror">L2 left-right mirroring</h2>
@@ -271,7 +285,9 @@
   </footer>
 
 </div>
+<script src="../assets/js/theme.js"></script>
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 <script>
 (function () {
   var headings = Array.prototype.slice.call(document.querySelectorAll('.doc-prose h2[id]'));

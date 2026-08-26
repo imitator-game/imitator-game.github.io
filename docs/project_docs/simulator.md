@@ -561,7 +561,7 @@ The environment owns scene construction, episode initialization, success predica
 New tasks contributed to the community must follow the same contract. Start
 from the templates:
 
-- **Environments (L0–L3)**: [`envs/tasks/_template/`](envs/tasks/_template/README.md)
+- **Environments (L0-L3)**: [`envs/tasks/_template/`](envs/tasks/_template/README.md)
   provides a base `TwoRobotTemplateTask-v1` (L0/L1/L2) class, a standalone
   `TwoRobotTemplateTaskL3-v1` class, and the object-loading helpers for the
   YCB / RoboTwin / PartNet / sketchfab asset namespaces.

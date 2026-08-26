@@ -6,4 +6,4 @@ Official web page for The Imitator Game.
 - Documentation: https://imitator-game.github.io/docs/index.html
 - Dataset: https://imitator-game.github.io/data.html
 - Arena: https://imitator-game.github.io/arena.html
-- Paper: not yet available on arXiv
+- Paper: https://arxiv.org/abs/2608.22301

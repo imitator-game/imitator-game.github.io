@@ -257,7 +257,7 @@ function onSubmit() {
     return;
   }
   SESSION_COUNT += 1;
-  toast("Recorded for this session only (not saved). Loading next…");
+  toast("Your vote is recorded! Loading next…");
   next();
 }
 

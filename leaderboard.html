@@ -14,6 +14,11 @@
   <link rel="stylesheet" href="assets/css/charts.css?v=20260824-motion">
   <link rel="stylesheet" href="assets/css/leaderboard.css?v=20260824-motion">
   <script>
+    /* Scroll-position fix — see index.html for the full explanation.
+       Must run first, before the browser applies its own scroll
+       restoration for this document. */
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
+    window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
     /* No-flash theme boot — mirrors theme.js, must stay in <head>. */
     (function () {
       var m = "system";
@@ -37,10 +42,12 @@
       <nav class="pst-header-nav">
         <a href="index.html"><i class="fas fa-home"></i>Home</a>
         <a href="leaderboard.html" class="active"><i class="fas fa-ranking-star"></i>Leaderboard</a>
+        <a href="docs/guide.html"><i class="fas fa-book"></i>Docs</a>
+        <a href="community.html"><i class="fas fa-people-group"></i>Community</a>
+        <a href="data.html"><i class="fas fa-database"></i>Data</a>
         <a href="arena.html"><i class="fas fa-pen-to-square"></i>Arena</a>
         <a href="gallery.html"><i class="fas fa-film"></i>Gallery</a>
         <a href="submit.html"><i class="fas fa-upload"></i>Submit</a>
-        <a href="docs/index.html"><i class="fas fa-book-open"></i>Docs</a>
       </nav>
       <div class="pst-header-end"><div id="theme-switch"></div></div>
     </div>
@@ -57,9 +64,8 @@
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
         <h1 class="lb-title" data-split="45" data-reveal>Who imitates best?</h1>
         <p class="lb-sub" data-reveal="up" data-reveal-delay="200">
-          Nine models, fifteen trained variants, scored three ways: an automated metric in simulation,
-          trials on a dual-arm platform, and blind human comparisons in the Arena. Sort any column.
-          The gaps between the three views are the interesting part.
+          Nine models, fifteen variants, scored in 40 evaluation tasks in two ways: an automated metric in simulation,
+          and blind human comparisons in the Arena for both simulation and real world.
         </p>
 
         <div class="lb-stats" data-stagger="80">
@@ -72,11 +78,18 @@
           <div class="lb-stat"><span class="lb-stat-v tone-l3" data-count-to="0.29" data-count-decimals="2">0.00</span>
             <span class="lb-stat-l">Average success at L3</span></div>
         </div>
+
+        
+        <div class="lb-controls" data-reveal="up" style="margin-top:4.0rem;">
+          <div class="lb-sub" data-reveal="up" data-reveal-delay="200">
+            <div class="ig-marquee"><div class="ig-marquee-track" id="model-ticker"></div></div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ── Controls ────────────────────────────────────────── -->
-    <div class="lb-controls" data-reveal="up">
+    <div class="lb-controls" data-reveal="up" style="margin-top:2.0rem;">
       <div class="lb-tabs" role="tablist">
         <button class="lb-tab is-active" data-board="sim">Simulation</button>
         <button class="lb-tab" data-board="real">Real-world Arena</button>
@@ -98,6 +111,11 @@
         <button class="lb-regime-btn" data-regime="pft">Pretrain + fine-tune</button>
       </div>
 
+      <div id="lb-metric" class="lb-regime" style="display:none;">
+        <button class="lb-regime-btn is-active" data-metric="sr">Success rate</button>
+        <button class="lb-regime-btn" data-metric="q">Quality (0-10)</button>
+      </div>
+
       <p class="lb-note" id="lb-note"></p>
 
       <div class="lb-table-shell">
@@ -108,33 +126,73 @@
       </div>
 
       <p class="lb-note" style="margin-top:1rem;">
-        Metrics are defined in the <a href="docs/index.html">documentation</a>. Simulation reports success rate and
-        sub-goal success rate over 10 tasks × 4 levels; the real-world board reports human verdicts from the
-        <a href="arena.html">Arena</a> rubric. Numbers here match the paper tables exactly.
+        This board — and every other model comparison on the site — is scored on a fixed protocol: <b>5 seen and
+        5 unseen tasks</b>, each at all four imitation levels, in both simulation and the real world. IG-10K's full
+        task suite is larger; see <a href="#full-suite">the 50-task reference below</a> for how far that goes.
       </p>
     </div>
 
     <!-- ── What the table hides ─────────────────────────────── -->
-    <div class="lp-band lp-band-gray">
+    <div class="lp-band lp-band-white">
       <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-chart-line"></i>Behind the ranking</div>
         <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="80">A leaderboard is a summary. Here is the shape.</h2>
         <p class="paper-section-body" data-reveal="up" data-reveal-delay="140">
-          Ranking by seen-task success rewards trajectory fidelity. Ranking by L3 success rewards something else
-          entirely — and the two orders disagree. Hover any point for the underlying numbers.
+          Ranking by seen-task success rewards trajectory fidelity. Hover any point for the underlying numbers.
         </p>
 
         <div class="ig-figure" data-reveal="up" data-reveal-delay="200" style="margin-top:1.6rem;">
           <div class="ig-figure-head">
             <span class="ig-figure-tag">Fig. C5</span>
-            <h3 class="ig-figure-title">Success and human score across L0–L3</h3>
+            <h3 class="ig-figure-title">Success and human score across L0-L3</h3>
           </div>
-          <div class="ig-chart" data-chart="perlevel"></div>
-          <p class="ig-figure-caption">
+           <div class="ig-chart" id="lb-chart" data-chart="perlevel"></div>
+           <p class="ig-figure-caption" id="lb-chart-caption">
             <b>Real-world pretrain + fine-tune, by level.</b> Success holds roughly flat from L0 to L2 and then falls
             at L3, and the human imitation score falls with it. XSkill has the steepest fall — it is the strongest
             model through L2 and lands level with the rest at L3.
           </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Full task-suite reference ──────────────────────── -->
+    <div class="lp-band lp-band-gray" id="full-suite">
+      <div class="lp-inner">
+        <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-table-cells-large"></i>Beyond the 10-task board</div>
+        <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="80">Full task-suite reference (50 tasks)</h2>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="140">
+          Every comparison on this site — the board above, the Arena, and the paper's headline numbers — is scored
+          on the same fixed protocol: <b>5 seen and 5 unseen tasks</b>, each evaluated at all four imitation levels
+          (L0-L3), in both simulation and the real world. IG-10K itself, however, ships with <b>50 manipulation tasks</b>,
+          and we encourage the community to go further: train and evaluate on the
+          complete task suite for a fuller picture of imitation ability, not just the ten tasks used for ranking.
+        </p>
+        <p class="paper-section-body" data-reveal="up" data-reveal-delay="180">
+          As a starting point, we trained <b>DP</b> and <b>ACT</b> (DINOv2 encoder) on the <b>entire IG-10K simulation
+          corpus</b> — all 50 tasks, 50 demonstrations each, 200 task-level variants — and evaluated both on every task
+          at every level. As with the main board, object placement is perturbed by a small random amount in both the
+          training and evaluation scenes, so success still requires robust imitation rather than fixed-layout replay.
+        </p>
+
+        <div class="lb-table-shell ptr-shell" data-reveal="up" data-reveal-delay="240">
+          <table class="ptr-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Task</th>
+                <th colspan="4">DP</th>
+                <th colspan="4">ACT</th>
+                <th colspan="2">Mean</th>
+              </tr>
+              <tr>
+                <th>L0</th><th>L1</th><th>L2</th><th>L3</th>
+                <th>L0</th><th>L1</th><th>L2</th><th>L3</th>
+                <th>DP</th><th>ACT</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+          </table>
         </div>
       </div>
     </div>
@@ -144,8 +202,7 @@
       <div class="lb-submit-card" data-reveal="up">
         <div>
           <h3>Put your model on this board</h3>
-          <p>Run the public evaluation harness, submit the rollout bundle, and we replay it in the Arena.
-             Verified entries are added with the corpus size and training regime you used.</p>
+          <p>One dataset format, one model interface, templated tasks and robots — any policy that takes in human video as prompt can be easily adapted to the unified training / evaluation protocol. Join us and submit your model to win the Imitator Game!</p>
         </div>
         <a href="submit.html" class="pst-btn pst-btn-primary pst-btn-lg"><i class="fas fa-upload"></i>&ensp;Submit a model</a>
       </div>
@@ -155,14 +212,19 @@
 
   <footer class="lp-footer"><div class="lp-footer-inner">
     <span>The Imitator Game</span>
-    <span><a href="https://zhouxunzhe.github.io/" target="_blank" rel="noopener">Xunzhe Zhou</a> · 2026</span>
+    <span>The Imitator Game Team @ 2026</span>
   </div></footer>
 </div>
 
 <script src="assets/js/theme.js"></script>
+<script src="assets/js/site.js"></script>
 <script src="assets/js/motion.js"></script>
 <script src="assets/js/figdata.js"></script>
+<script src="assets/js/manifest-data.js"></script>
 <script src="assets/js/charts.js"></script>
+<script src="assets/js/full-task-suite-data.js"></script>
+<script src="assets/js/full-task-suite.js"></script>
 <script src="assets/js/leaderboard.js"></script>
+<script src="assets/js/landing.js"></script>
 </body>
 </html>

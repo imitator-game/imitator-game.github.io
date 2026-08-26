@@ -14,6 +14,40 @@ function esc(s) {
   }[c]));
 }
 
+/* ── Floating showcase reel — a handful of random tasks, playing video
+   (not just a still), same borderless/floating treatment as the grid
+   cards below, 16:9 preserved throughout since every source clip
+   already is 16:9. Purely decorative: re-shuffled on every load. ──── */
+function renderShowcase() {
+  const host = document.getElementById("gallery-showcase");
+  if (!host) return;
+  const tasks = MANIFEST.tasks || {};
+  const ids = Object.keys(tasks);
+  if (!ids.length) { host.style.display = "none"; return; }
+
+  for (let i = ids.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+  }
+  const picked = ids.slice(0, Math.min(10, ids.length));
+
+  const tiles = picked.map((id) => {
+    const t = tasks[id];
+    const lv = (t.levels && (t.levels.L0 || t.levels.L1 || t.levels.L2 || t.levels.L3)) || {};
+    const clip = t.human_video || lv.human_video || lv.robot_video || lv.sim_video;
+    if (!clip) return "";
+    return `
+      <a class="ig-reel-tile tone-human gallery-showcase-tile" href="#task=${encodeURIComponent(id)}" style="--h:150px;--w:266px">
+        ${IGMedia.video(mediaUrl(MANIFEST, clip), { autoplay: true, className: "" })}
+        <span class="ig-reel-fallback"><i class="fas fa-film"></i></span>
+      </a>`;
+  }).filter(Boolean);
+  if (!tiles.length) { host.style.display = "none"; return; }
+
+  host.innerHTML = `<div class="ig-hero-reel-row" data-dir="left" style="--dur:64s">${tiles.join("")}${tiles.join("")}</div>`;
+  observeVideos(host);
+}
+
 /* ── Grid view ─────────────────────────────────────────────── */
 function renderGrid() {
   const tasks = MANIFEST.tasks || {};
@@ -38,32 +72,31 @@ function renderGrid() {
     ).join("");
     const nLv = Object.keys(present).length;
     const search = `${(t.display_name || tg)} ${(t.task_intent || "")}`.toLowerCase();
+    const previewLv = present.L0 || present.L1 || present.L2 || present.L3 || {};
+    const previewClip = t.human_video || previewLv.human_video;
+    const mediaHtml = previewClip
+      ? IGMedia.video(mediaUrl(MANIFEST, previewClip), { autoplay: true, className: "" })
+      : "";
     return `
       <a href="#task=${encodeURIComponent(tg)}" class="gallery-card" data-name="${esc(search)}">
-        <div class="gallery-card-levels">${dots}</div>
-        <div class="gallery-card-title">${esc(t.display_name || tg)}</div>
-        <div class="gallery-card-desc">${esc(t.task_intent || "")}</div>
-        <div class="gallery-card-footer">
-          <span class="gallery-card-meta">${nLv} level${nLv !== 1 ? "s" : ""}</span>
-          <span class="gallery-card-arrow">→</span>
+        <div class="gallery-card-media${previewClip ? "" : " is-empty"}">
+          ${mediaHtml}
+          <span class="gallery-card-fallback"><i class="fas fa-film"></i></span>
+        </div>
+        <div class="gallery-card-body">
+          <div class="gallery-card-levels">${dots}</div>
+          <div class="gallery-card-title">${esc(t.display_name || tg)}</div>
+          <div class="gallery-card-desc">${esc(t.task_intent || "")}</div>
+          <div class="gallery-card-footer">
+            <span class="gallery-card-meta">${nLv} level${nLv !== 1 ? "s" : ""}</span>
+            <span class="gallery-card-arrow">→</span>
+          </div>
         </div>
       </a>`;
   }).join("");
 
-  stagger(grid.children, 45);
   updateCount(groups.length);
-}
-
-/* Cards and task panels are injected after motion.js has already scanned the
-   page, so tag them and re-run the observer. No-op without motion.js, which
-   keeps the content visible rather than stuck at opacity 0. */
-function stagger(nodes, step) {
-  if (!window.IGMotion) return;
-  Array.prototype.forEach.call(nodes, function (n, i) {
-    n.setAttribute("data-reveal", "up");
-    n.dataset.revealDelay = String(Math.min(i, 14) * (step || 45));
-  });
-  window.IGMotion.reveal();
+  observeVideos(grid);
 }
 
 function updateCount(n) {
@@ -150,7 +183,6 @@ function renderTask(tg) {
     </div>
     ${cards}`;
 
-  stagger(taskView.querySelectorAll(".pst-card"), 90);
   observeVideos(taskView);
   window.scrollTo(0, 0);
 }
@@ -191,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadManifest()
     .then((m) => {
       MANIFEST = m;
+      renderShowcase();
       renderGrid();
       document.getElementById("gallery-search")
         .addEventListener("input", (e) => filterGallery(e.target.value));

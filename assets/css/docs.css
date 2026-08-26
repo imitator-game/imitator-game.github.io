@@ -9,9 +9,53 @@
 body {
   font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
+
+/* Docs use the same reveal vocabulary as the landing and leaderboard pages. */
+.doc-header, .doc-card-grid, .download-grid, .community-grid, .doc-feature-grid, .doc-pager {
+  --doc-stagger: 80ms;
+}
+.doc-card, .download-card, .community-card, .doc-feature, .doc-pager-link {
+  transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+.doc-card:hover, .download-card:hover, .community-card:hover, .doc-feature:hover, .doc-pager-link:hover {
+  transform: translateY(-4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .doc-card, .download-card, .community-card, .doc-feature, .doc-pager-link { transition: none; }
+}
 h1, h2, h3, h4, .doc-title, .doc-section-title, .page-title {
   font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
+
+/* ── Doc sub-page hero band ───────────────────────────────────
+   Every guide page (getting-started, quickstart, levels, baselines,
+   create-task, data-collection, domain-randomization, contribute) now
+   opens in the same gradient lp-band-hero used on docs/guide.html,
+   leaderboard.html, arena.html, gallery.html, community.html and
+   submit.html, instead of the old plain bordered box — so the whole
+   docs section reads as the same product as the rest of the site. */
+/* Centered like every other page's hero (submit's .sub-hero, leaderboard's
+   .lb-hero, the homepage's inline text-align:center) — this was the one
+   layout family still using the flex/space-between "dashboard" header
+   instead of a stacked, centered marketing hero. */
+.doc-hero .doc-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  max-width: 740px;
+  margin-inline: auto;
+}
+.doc-hero .doc-header > div { width: 100%; }
+.doc-hero .doc-subtitle { max-width: 640px; margin-inline: auto; }
+.doc-hero .hero-cta { justify-content: center; margin-top: 1.4rem; }
+/* Shared by every docs page's content wrapper below the hero — was only
+   ever defined locally on docs/guide.html, so the 8 guide sub-pages never
+   actually received this spacing. Centralised here so all of them do. */
+.docs-body { padding-top: 2.6rem; padding-bottom: 1rem; }
 
 /* ── Page header area ──────────────────────────────────────── */
 .doc-header {
@@ -450,12 +494,62 @@ h1, h2, h3, h4, .doc-title, .doc-section-title, .page-title {
 .download-card .code-block pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
 .download-notes { max-width: 900px; margin-top: 3rem; }
 .community-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-.community-card { background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
-.community-card h3 { margin: .5rem 0 .35rem; }
-.community-card p { color: var(--text-muted); font-size: .9rem; }
-.community-card .discord-btn { display: inline-flex; align-items: center; gap: .45rem; margin-top: .75rem; }
-.wechat-qr { display: block; width: min(180px, 100%); margin: .75rem auto .5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-.wechat-qr-caption { text-align: center; color: var(--text-muted); font-size: .85rem; }
+.community-card { background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.community-card h3 { margin: .2rem 0 .35rem; }
+.community-card p { color: var(--text-muted); font-size: .9rem; max-width: 32ch; }
+/* Discord keeps its own brand colour (#5865F2) rather than the site's blue,
+   so the badge and button read as "Discord" at a glance, matching the
+   weight of the WeChat card's QR image instead of sitting as a small
+   text-only afterthought next to it. */
+.community-card .doc-feature-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 18px; margin: 0 0 .9rem;
+  background: color-mix(in srgb, #5865F2 14%, transparent); color: #5865F2;
+  font-size: 1.7rem;
+}
+.community-card .discord-btn {
+  display: inline-flex; align-items: center; gap: .5rem; margin-top: 1rem;
+  background: #5865F2; border-color: #5865F2; color: #fff;
+}
+.community-card .discord-btn:hover { background: #4752C4; border-color: #4752C4; }
+/* The whole card, not just the QR image, needs lifting above its
+   siblings: the card itself becomes a stacking context on hover (via
+   the shared translateY transform above), and without its own z-index
+   it still paints in plain DOM order — so a later sibling card was
+   rendering over this card's own background/border, cutting it off
+   mid-shape. */
+.community-card:has(.wechat-qr:hover){position:relative;z-index:60;}
+/* Real WeChat QR exports are ~1050x1725 -- a tall 0.61 ratio, not a square --
+   so the box matches that ratio instead of squashing/letterboxing it. */
+.wechat-qr {
+  display: block; width: min(150px, 100%); aspect-ratio: 1050/1725; height: auto;
+  object-fit: cover; box-sizing: border-box; margin: .3rem auto .6rem;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+  cursor: zoom-in;
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s cubic-bezier(.4,0,.2,1);
+}
+.wechat-qr:hover, .wechat-qr:focus-visible {
+  transform: scale(2.4);
+  box-shadow: 0 20px 46px rgba(0,0,0,.28);
+  position: relative;
+  z-index: 50;
+}
+/* Fade this card's own icon/title/text out while its QR is zoomed, so
+   nothing behind the enlarged image can ever peek past its edges -- the
+   growth is centred on the image itself and doesn't reliably reach as far
+   as the header sitting above it in the same card. */
+.community-card:has(.wechat-qr:hover) .doc-feature-icon,
+.community-card:has(.wechat-qr:hover) h3,
+.community-card:has(.wechat-qr:hover) p,
+.community-card:has(.wechat-qr:hover) .wechat-qr-caption {
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.wechat-qr-caption { text-align: center; color: var(--text-muted); font-size: .85rem; margin-top: auto; padding-top: .3rem; transition: opacity .15s ease; }
+
+@media (max-width: 620px) {
+  .community-grid { grid-template-columns: 1fr; }
+}
 
 /* ── Prev / Next footer nav ────────────────────────────────── */
 .doc-pager {

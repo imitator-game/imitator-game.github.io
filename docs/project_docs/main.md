@@ -1,6 +1,6 @@
 # The Imitator Game
 
-## [[Website](https://imitator-game.github.io/index.html)]  |  [[Document](https://imitator-game.github.io/docs/index.html)]  |  [[Paper]()]  |  [[IG-10K Dataset](https://imitator-game.github.io/data.html)]  |  [[Community](https://imitator-game.github.io/docs/contribute.html#community)]
+## [[Website](https://imitator-game.github.io/index.html)]  |  [[Document](https://imitator-game.github.io/docs/index.html)]  |  [[Paper](https://arxiv.org/abs/2608.22301)]  |  [[IG-10K Dataset](https://imitator-game.github.io/data.html)]  |  [[Community](https://imitator-game.github.io/docs/contribute.html#community)]
 
 ![teaser](docs/media/cover.png)
 
@@ -20,7 +20,7 @@ participate and contribute to the community. Contributions will be acknowledged 
 
 Everyone can contribute to this project by submitting **tasks / models / embodiments** that support the Imitator-Game **data-collection / training / evaluation** framework. Please follow the design templates and contribute via pull request: 
 
-- Contribute new Imitator tasks (L0–L3) designed with the task template under [mani_skill/envs/tasks/_template/](mani_skill/envs/tasks/_template/) (together with the motion-planning solutions);
+- Contribute new Imitator tasks (L0-L3) designed with the task template under [mani_skill/envs/tasks/_template/](mani_skill/envs/tasks/_template/) (together with the motion-planning solutions);
 - contribute new imitation-learning models built on the baseline template under [examples/baselines/_template/](examples/baselines/_template/) (together with evaluation interface);
 - contribute new robots with robot template under [mani_skill/agents/robots/_template/](mani_skill/agents/robots/_template/).
 
@@ -145,11 +145,14 @@ python -m examples.baselines.model.eval_model_imitator \
 ## Citation
 
 ```bibtex
-@misc{
-  the_imitator_game,
-  title={The Imitator Game: Evaluating Robot Imitation from Human Demonstration Videos},
-  url={https://imitator-game.github.io/},
-  year={2026}
+@misc{zhou2026imitatorgamebenchmarkingrobot,
+      title={The Imitator Game: Benchmarking Robot Imitative Ability Beyond Action Prediction}, 
+      author={Xunzhe Zhou and Yiyang Cai and Fengyi Wang and Ran Ju and Hanxiang Ren and Ruizhe Liu and Yu Zhang and Qian Luo and Feng Chen and Pei Zhou and Yi Ma and Yanchao Yang},
+      year={2026},
+      eprint={2608.22301},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2608.22301}, 
 }
 ```
 

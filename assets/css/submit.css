@@ -4,7 +4,10 @@
    submission form.
    ============================================================ */
 
-.sub-hero { padding: 4.5rem 2rem 3.5rem; text-align: center; }
+/* The hero sits inside a .lp-inner (padded 5rem 2rem by style.css's shared
+   band layout), so it must not re-pad itself — that was doubling the hero's
+   vertical whitespace once the bands became shared. Only the centring stays. */
+.sub-hero { text-align: center; }
 .sub-title {
   font: 700 clamp(2rem, 4vw, 2.8rem)/1.15 'Google Sans', system-ui, sans-serif;
   letter-spacing: -.03em; margin: .4rem 0 1.1rem;
@@ -89,6 +92,8 @@
 .sub-actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: .4rem; }
 .sub-hint { font-size: .82rem; color: var(--text-muted); min-height: 1.4em; margin: 0; }
 
+/* Single-column fallback below the mobile breakpoint: the three-select row
+   collapses so nothing overflows the padded band on narrow screens. */
 @media (max-width: 640px) {
-  .sub-hero { padding: 3rem 1.25rem 2.5rem; }
+  .sub-row { grid-template-columns: 1fr; }
 }

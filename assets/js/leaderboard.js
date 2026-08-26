@@ -11,11 +11,10 @@
    Family chips and the search box filter every board. Column
    headers are clickable to sort (click again to flip direction).
    The "By level" board additionally shows a regime switcher
-   (#lb-regime); only "seen" and "pft" have per-row breakdown data
-   today (see figdata.js's audit note) — "zs" falls back to a
-   single all-variant row from figC4, and "scr" has no per-level
-   data published yet and renders an explanatory note instead of
-   an empty guess.
+   (#lb-regime): "seen" resolves from simulation, all 15 trained
+   variants (figC5). "zs", "scr" and "pft" each resolve from the
+   real world, the same 4 representative models (figdata.js's
+   IG.perLevelZS / IG.perLevelScr / IG.perLevel).
    ============================================================ */
 (function () {
   if (!window.IG) return;
@@ -28,10 +27,13 @@
   function pct(v) { return (v == null || isNaN(v)) ? "—" : Math.round(v * 100) + "%"; }
   function num1(v) { return (v == null || isNaN(v)) ? "—" : v.toFixed(1); }
 
+  var SRC_LABEL = { sim: "Sim", real: "Real" };
+
   /* ── Column definitions per board ────────────────────────── */
   var SIM_COLS = [
     { key: "model",   label: "Model",       type: "name",  sortable: false },
     { key: "fam",     label: "Paradigm",    type: "fam",   sortable: false },
+    { key: "src",     label: "Source",      type: "src",   sortable: false },
     { key: "seen",    label: "Seen SR",     type: "pct" },
     { key: "seenSub", label: "Seen Sub-SR", type: "pct" },
     { key: "zs",      label: "Zero-shot SR",type: "pct" },
@@ -42,29 +44,46 @@
   var REAL_COLS = [
     { key: "model",  label: "Model",    type: "name", sortable: false },
     { key: "fam",    label: "Paradigm", type: "fam",  sortable: false },
+    { key: "src",    label: "Source",   type: "src",  sortable: false },
     { key: "seenSR", label: "Seen SR",  type: "pct" },
     { key: "seenQ",  label: "Seen Q̄",   type: "num1" },
     { key: "seenWR", label: "Seen WR",  type: "pct" },
+    { key: "zsSR",   label: "ZS SR",    type: "pct" },
+    { key: "zsQ",    label: "ZS Q̄",     type: "num1" },
+    { key: "zsWR",   label: "ZS WR",    type: "pct" },
+    { key: "scrSR",  label: "Scr SR",   type: "pct" },
+    { key: "scrQ",   label: "Scr Q̄",    type: "num1" },
+    { key: "scrWR",  label: "Scr WR",   type: "pct" },
     { key: "pftSR",  label: "P+FT SR",  type: "pct" },
     { key: "pftQ",   label: "P+FT Q̄",   type: "num1" },
     { key: "pftWR",  label: "P+FT WR",  type: "pct" }
   ];
-  var LEVEL_COLS = [
-    { key: "name", label: "Model / paradigm", type: "name", sortable: false },
-    { key: "L0",   label: "L0", type: "pct" },
-    { key: "L1",   label: "L1", type: "pct" },
-    { key: "L2",   label: "L2", type: "pct" },
-    { key: "L3",   label: "L3", type: "pct" }
-  ];
+  function levelCols(metric) {
+    var type = metric === "q" ? "num1" : "pct";
+    var suffix = metric === "q" ? " Q̄" : "";
+    return [
+      { key: "name", label: "Model / paradigm", type: "name", sortable: false },
+      { key: "src",  label: "Source", type: "src", sortable: false },
+      { key: "L0",   label: "L0" + suffix, type: type },
+      { key: "L1",   label: "L1" + suffix, type: type },
+      { key: "L2",   label: "L2" + suffix, type: type },
+      { key: "L3",   label: "L3" + suffix, type: type }
+    ];
+  }
 
   var REGIME_LABEL = {
     seen: "Seen tasks", zs: "Zero-shot", scr: "From scratch", pft: "Pretrain + fine-tune"
   };
+  /* Which environment each "By level" regime is judged in — drives both
+     the per-row Source column and the metric-switcher's availability
+     (sim only ever reports SR, so Quality is disabled while regime=seen). */
+  var REGIME_SRC = { seen: "sim", zs: "real", scr: "real", pft: "real" };
 
   /* ── State ────────────────────────────────────────────────── */
   var state = {
     board: "sim",
     regime: "seen",
+    metric: "sr",          // "sr" | "q" — By-level board only
     sortKey: "seen",
     sortDir: -1,           // -1 = desc, 1 = asc
     search: "",
@@ -77,57 +96,89 @@
     level: { key: "L0",     dir: -1 }
   };
 
+  /* Each board's companion figure — same live SVG builders and accent
+     palette as the homepage's figure deck (see landing.js FIG_ACCENT), so
+     switching boards here reads as the same object switching context, not
+     a different chart bolted on. tag/title/accent replace the ig-figure
+     head text that used to be hardcoded to "Fig. C5" regardless of board. */
+  var BOARD_CHART = {
+    sim: {
+      chart: "paradigm", tag: "Fig. C1", accent: "var(--fig-vla)",
+      title: "Which imitation interface is strongest?",
+      caption: "<b>Simulation landscape.</b> Every trained variant on the (seen-SR, P+FT-SR) plane, preserving the family markers and automated success-rate axes."
+    },
+    real: {
+      chart: "perlevel", tag: "Fig. C5", accent: "var(--fig-l3)",
+      title: "Where does the hierarchy become hard?",
+      caption: "<b>Real-world level profile.</b> Success slightly drops through L2, then falls at L3, and the human imitation score falls with it."
+    },
+    level: {
+      chart: "levelscale", tag: "Fig. C4", accent: "var(--fig-l2)",
+      title: "Does scale help at every level?",
+      caption: "<b>Level × corpus scale.</b> Under pretrain + fine-tune, success rises with corpus size at every level; under zero-shot the floor doesn't move."
+    }
+  };
+
   /* ── Row builders ─────────────────────────────────────────── */
   function simRows() {
     return IG.sim.map(function (r) {
-      return { model: r.model, fam: r.fam, seen: r.seen, seenSub: r.seenSub,
+      return { model: r.model, fam: r.fam, src: "sim", seen: r.seen, seenSub: r.seenSub,
                zs: r.zs, scr: r.scr, pft: r.pft, delta: r.delta };
     });
   }
   function realRows() {
     return IG.real.map(function (r) {
-      return { model: r.model, fam: r.fam, seenSR: r.seen.sr, seenQ: r.seen.q, seenWR: r.seen.wr,
-               pftSR: r.pft.sr, pftQ: r.pft.q, pftWR: r.pft.wr };
+      return {
+        model: r.model, fam: r.fam, src: "real",
+        seenSR: r.seen.sr, seenQ: r.seen.q, seenWR: r.seen.wr,
+        zsSR:   r.zs.sr,   zsQ:   r.zs.q,   zsWR:   r.zs.wr,
+        scrSR:  r.scr.sr,  scrQ:  r.scr.q,  scrWR:  r.scr.wr,
+        pftSR:  r.pft.sr,  pftQ:  r.pft.q,  pftWR:  r.pft.wr
+      };
     });
   }
-  function levelRows(regime) {
+  function levelRows(regime, metric) {
+    var src = REGIME_SRC[regime] || "real";
+    var m = metric === "q" ? "q" : "sr";
+
     if (regime === "seen") {
+      // Simulation only ever reports SR (automated success rate) — no
+      // human quality score exists for this regime, so Quality falls
+      // back to the SR series here rather than showing empty cells.
       var byFam = IG.figC5.simSeenByFamily;
-      var rows = [{ name: "All 15 variants", fam: null, tone: "var(--fig-grey)",
+      var rows = [{ name: "All 15 variants", fam: null, src: src, tone: "var(--fig-grey)",
                     L0: IG.figC5.simSeenAll[0], L1: IG.figC5.simSeenAll[1],
                     L2: IG.figC5.simSeenAll[2], L3: IG.figC5.simSeenAll[3] }];
       ["VLA", "Skill", "VideoVA"].forEach(function (f) {
         var v = byFam[f];
-        rows.push({ name: IG.famShort(f), fam: f, tone: IG.famColor(f), L0: v[0], L1: v[1], L2: v[2], L3: v[3] });
+        rows.push({ name: IG.famShort(f), fam: f, src: src, tone: IG.famColor(f), L0: v[0], L1: v[1], L2: v[2], L3: v[3] });
       });
-      return { rows: rows, note: "Simulation, seen tasks, automated metric — verified against the paper's appendix." };
+      return { rows: rows, note: "Simulation, seen tasks, automated metric — verified against the paper's appendix. Simulation has no human Quality score, so the Quality view falls back to SR for this regime." };
     }
-    if (regime === "pft") {
-      var rows2 = IG.perLevel.rows.map(function (r) {
-        return { name: r.model, fam: r.fam, tone: IG.famColor(r.fam), L0: r.sr[0], L1: r.sr[1], L2: r.sr[2], L3: r.sr[3] };
-      });
-      rows2.push({ name: "Average", fam: null, tone: "var(--fig-grey)",
-                   L0: IG.perLevel.average.sr[0], L1: IG.perLevel.average.sr[1],
-                   L2: IG.perLevel.average.sr[2], L3: IG.perLevel.average.sr[3] });
-      return { rows: rows2, note: "Real world, pretrain + fine-tune, Arena-judged — this is the drop the paper calls out at L3." };
-    }
-    if (regime === "zs") {
-      var p = IG.figC4.panels.filter(function (x) { return x.key === "sim-zs"; })[0];
-      if (!p) return { rows: [], note: "" };
-      var i = IG.figC4.scales.length - 1; // 45-task corpus
-      var row = { name: "All 15 variants (45-task corpus)", fam: null, tone: "var(--fig-grey)",
-                  L0: p.series.L0[i], L1: p.series.L1[i], L2: p.series.L2[i], L3: p.series.L3[i] };
-      return { rows: [row], note: "Simulation, zero-shot, automated metric — per-model breakdown by level isn't published yet, so this is the all-variant average." };
-    }
-    // scr: no per-level breakdown exists anywhere in the released numbers.
-    return { rows: [], note: "Per-level breakdown for the from-scratch regime isn't published yet." };
+
+    var SOURCE = { pft: IG.perLevel, zs: IG.perLevelZS, scr: IG.perLevelScr }[regime];
+    if (!SOURCE) return { rows: [], note: "" };
+    var rows2 = SOURCE.rows.map(function (r) {
+      var series = r[m];
+      return { name: r.model, fam: r.fam, src: src, tone: IG.famColor(r.fam), L0: series[0], L1: series[1], L2: series[2], L3: series[3] };
+    });
+    var avgSeries = SOURCE.average[m];
+    rows2.push({ name: "Average", fam: null, src: src, tone: "var(--fig-grey)",
+                 L0: avgSeries[0], L1: avgSeries[1], L2: avgSeries[2], L3: avgSeries[3] });
+
+    var NOTE = {
+      pft: "Real world, pretrain + fine-tune, Arena-judged — this is the drop the paper calls out at L3.",
+      zs:  "Real world, zero-shot, Arena-judged — the same 4 representative models as the P+FT breakdown, given no pretraining or fine-tuning on the target task.",
+      scr: "Real world, trained from scratch on the target task only, Arena-judged — the same 4 representative models as the P+FT breakdown."
+    }[regime];
+    return { rows: rows2, note: NOTE + (m === "q" ? " Showing the 0-10 human Quality score." : " Showing success rate (SR).") };
   }
 
   function flatten() {
     if (state.board === "sim") return { rows: simRows(), cols: SIM_COLS };
     if (state.board === "real") return { rows: realRows(), cols: REAL_COLS };
-    var lv = levelRows(state.regime);
-    return { rows: lv.rows, cols: LEVEL_COLS, note: lv.note };
+    var lv = levelRows(state.regime, state.metric);
+    return { rows: lv.rows, cols: levelCols(state.regime === "seen" ? "sr" : state.metric), note: lv.note };
   }
 
   /* ── Filter + sort ────────────────────────────────────────── */
@@ -159,6 +210,10 @@
     }
     if (col.type === "fam") {
       return '<span class="lbt-fam" style="color:' + IG.famColor(row.fam) + '">' + esc(IG.famShort(row.fam)) + "</span>";
+    }
+    if (col.type === "src") {
+      var s = row.src || "sim";
+      return '<span class="lbt-src lbt-src-' + s + '">' + esc(SRC_LABEL[s] || s) + "</span>";
     }
     if (col.type === "pct") {
       var v = row[col.key];
@@ -203,12 +258,33 @@
     }
 
     if (note) note.textContent = data.note || defaultNote();
+    updateMetricBar();
   }
 
   function defaultNote() {
     if (state.board === "sim") return "15 trained variants across 3 paradigms, automated metric. The ranking by Seen SR and by P+FT SR are not the same list — try sorting by each.";
-    if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison.";
+    if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison. All four regimes (Seen, Zero-shot, From-scratch, Pretrain+fine-tune) are shown side by side.";
     return "";
+  }
+
+  /* Show/enable the SR-vs-Quality metric switcher only on the level board,
+     and disable "Quality" while regime=seen (simulation has no Q score). */
+  function updateMetricBar() {
+    var bar = document.getElementById("lb-metric");
+    if (!bar) return;
+    var onLevel = state.board === "level";
+    bar.style.display = onLevel ? "" : "none";
+    if (!onLevel) return;
+    var qBtn = bar.querySelector('[data-metric="q"]');
+    var simRegime = state.regime === "seen";
+    if (qBtn) {
+      qBtn.disabled = simRegime;
+      qBtn.classList.toggle("is-disabled", simRegime);
+      qBtn.title = simRegime ? "Simulation (seen) has no human Quality score — showing SR." : "";
+    }
+    bar.querySelectorAll("[data-metric]").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.metric === state.metric);
+    });
   }
 
   /* ── Controls wiring ──────────────────────────────────────── */
@@ -219,14 +295,39 @@
     document.querySelectorAll(".lb-tab").forEach(function (b) { b.classList.toggle("is-active", b.dataset.board === board); });
     var regimeBar = document.getElementById("lb-regime");
     if (regimeBar) regimeBar.style.display = board === "level" ? "" : "none";
+    updateBoardChart(board);
     render();
+  }
+
+  function updateBoardChart(board) {
+    var host = document.getElementById("lb-chart");
+    var caption = document.getElementById("lb-chart-caption");
+    var config = BOARD_CHART[board];
+    if (!host || !config) return;
+    var card = host.closest(".ig-figure");
+    var tagEl = card ? card.querySelector(".ig-figure-tag") : null;
+    var titleEl = card ? card.querySelector(".ig-figure-title") : null;
+    if (tagEl) { tagEl.textContent = config.tag; tagEl.style.color = config.accent; tagEl.style.background = "color-mix(in srgb, " + config.accent + " 16%, transparent)"; }
+    if (titleEl) titleEl.textContent = config.title;
+    host.dataset.chart = config.chart;
+    host.removeAttribute("data-drawn");
+    host.innerHTML = "";
+    if (caption) caption.innerHTML = config.caption;
+    if (window.IGCharts) window.IGCharts.build(host);
   }
 
   function switchRegime(regime) {
     state.regime = regime;
+    if (regime === "seen") state.metric = "sr"; // no Q score in sim — force back to SR
     var d = BOARD_DEFAULT_SORT.level;
     state.sortKey = d.key; state.sortDir = d.dir;
     document.querySelectorAll(".lb-regime-btn").forEach(function (b) { b.classList.toggle("is-active", b.dataset.regime === regime); });
+    render();
+  }
+
+  function switchMetric(metric) {
+    if (metric === "q" && state.regime === "seen") return; // guarded, see updateMetricBar
+    state.metric = metric;
     render();
   }
 
@@ -237,6 +338,12 @@
     document.querySelectorAll(".lb-regime-btn").forEach(function (b) {
       b.addEventListener("click", function () { switchRegime(b.dataset.regime); });
     });
+    var metricBar = document.getElementById("lb-metric");
+    if (metricBar) {
+      metricBar.querySelectorAll("[data-metric]").forEach(function (b) {
+        b.addEventListener("click", function () { switchMetric(b.dataset.metric); });
+      });
+    }
     document.querySelectorAll(".lb-chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
         var f = chip.dataset.fam;
@@ -265,6 +372,9 @@
     wire();
     var regimeBar = document.getElementById("lb-regime");
     if (regimeBar) regimeBar.style.display = "none";
+    var metricBar = document.getElementById("lb-metric");
+    if (metricBar) metricBar.style.display = "none";
+    updateBoardChart(state.board);
     render();
   });
 })();

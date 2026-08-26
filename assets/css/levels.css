@@ -1,0 +1,89 @@
+/* ============================================================
+   levels.css — index.html only. The interactive L0-L3 selector
+   in "The hierarchy" section (#levels), built by levels.js.
+   Reuses the site's existing tokens (--fig-l0..l3, --radius*,
+   --shadow*, --on-bg/--surface/--border, Google Sans/Noto Sans) —
+   no new palette, this is one more room in the same house.
+   ============================================================ */
+
+.lvl-widget { margin-top: 2rem; }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.lvl-tabs {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: .6rem; margin-bottom: 1.1rem;
+}
+.lvl-tab {
+  position: relative;
+  display: flex; flex-direction: column; align-items: flex-start; gap: .55rem;
+  padding: 1rem 1.1rem .9rem; text-align: left;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border); background: var(--on-bg); color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.lvl-tab:hover { transform: translateY(-2px); border-color: var(--lvl-c); }
+.lvl-tab:focus-visible { outline: 2px solid var(--lvl-c); outline-offset: 2px; }
+.lvl-tab.is-active { border-color: var(--lvl-c); box-shadow: 0 0 0 1px var(--lvl-c) inset, var(--shadow); }
+
+.lvl-tab-id {
+  font: 700 1rem/1 'Google Sans', sans-serif; letter-spacing: -.01em;
+  color: var(--lvl-c);
+}
+.lvl-tab-name {
+  font: 600 .82rem/1.3 'Google Sans', sans-serif; color: var(--text);
+}
+.lvl-tab.is-active .lvl-tab-name { color: var(--text); }
+
+/* Distance-from-demonstration indicator: 4 cells, filled up to this
+   level's own index. This is a real ordinal fact about the level
+   (how far its scene has drifted from the demo), not decoration. */
+.lvl-tab-dist { display: flex; gap: 3px; width: 100%; }
+.lvl-tab-dist i {
+  flex: 1; height: 4px; border-radius: 2px; background: var(--border);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.lvl-tab-dist i.is-filled { background: var(--lvl-c); }
+
+@media (max-width: 640px) {
+  .lvl-tabs { grid-template-columns: repeat(4, minmax(120px, 1fr)); overflow-x: auto; padding-bottom: .2rem; }
+}
+
+/* ── Stage: reference video + level detail, side by side ────── */
+.lvl-stage {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: stretch;
+  background: var(--on-bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 1.5rem; box-shadow: var(--shadow);
+}
+@media (max-width: 860px) {
+  .lvl-stage { grid-template-columns: 1fr; }
+}
+
+.lvl-stage-media .ig-shot { aspect-ratio: 4 / 3; }
+
+.lvl-stage-info { display: flex; flex-direction: column; padding: .3rem .2rem; }
+.lvl-stage-badge {
+  align-self: flex-start;
+  font: 700 .78rem/1 'Google Sans', sans-serif; letter-spacing: .04em;
+  color: #fff; background: var(--lvl-c);
+  padding: .3rem .65rem; border-radius: var(--radius-pill);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.lvl-stage-name {
+  font: 700 1.35rem/1.25 'Google Sans', sans-serif; margin: .8rem 0 .5rem;
+}
+.lvl-stage-blurb { font-size: .94rem; line-height: 1.65; color: var(--text-muted); margin: 0; }
+
+.lvl-stage-stat {
+  margin-top: auto; padding-top: 1.3rem; margin-top: 1.3rem;
+  border-top: 1px solid var(--border);
+}
+.lvl-stage-stat-v {
+  display: block; font: 700 2.1rem/1 'Google Sans', sans-serif; letter-spacing: -.02em;
+  color: var(--lvl-c); transition: color var(--dur-fast) var(--ease-out);
+}
+.lvl-stage-stat-l { display: block; font-size: .8rem; color: var(--text-muted); margin-top: .4rem; line-height: 1.5; max-width: 34ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lvl-tab, .lvl-tab-dist i, .lvl-stage-badge, .lvl-stage-stat-v { transition: none; }
+}
