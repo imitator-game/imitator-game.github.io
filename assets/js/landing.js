@@ -479,7 +479,7 @@
   // removes. Tiles queue up and are served a few at a time; the next one
   // starts the moment a slot frees up, so nothing is ever skipped, just
   // spread out over a few hundred ms instead of hitting all at once.
-  var POSTER_FRAME_MAX_CONCURRENT = 3;
+  var POSTER_FRAME_MAX_CONCURRENT = 20;
   var posterFrameActive = 0;
   var posterFrameQueue = [];
 
