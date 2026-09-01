@@ -105,7 +105,7 @@ function render(pick) {
   badge.className = "arena-bucket-badge " + bucket;
   badge.textContent = BUCKET_LABEL[bucket] || bucket;
 
-  const humanUrl = mediaUrl(MANIFEST, item.human_video);
+  const humanUrl = mediaUrl(MANIFEST, MANIFEST.tasks[item.task_group].levels.L0.human_video);
   const aUrl = mediaUrl(MANIFEST, item.rollouts[expA]);
   const bUrl = mediaUrl(MANIFEST, item.rollouts[expB]);
 

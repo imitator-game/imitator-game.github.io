@@ -1158,7 +1158,7 @@ select.pst-form-control {
   .quick-links { flex-direction: column; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .stat-grid, .stats-grid { grid-template-columns: 1fr 1fr; }
   .level-guide-grid { grid-template-columns: 1fr; }
   .pst-content-wrapper { padding: 0 1rem; }

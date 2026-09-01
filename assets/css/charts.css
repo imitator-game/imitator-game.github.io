@@ -210,6 +210,9 @@
 
 @media (max-width: 760px) {
   .ig-figure { padding: 1.2rem 1.1rem; }
-  .ig-figdeck-nav { display: flex; overflow-x: auto; flex-wrap: nowrap; padding: .3rem; }
+  .ig-figdeck-nav {
+    display: flex; flex: none; width: 100%; max-width: 100%; box-sizing: border-box;
+    overflow-x: auto; flex-wrap: nowrap; padding: .3rem;
+  }
   .ig-figdeck-tab { flex-shrink: 0; }
 }
