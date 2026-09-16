@@ -48,7 +48,21 @@ body.landing-page .pst-header-nav { display: flex !important; }
   font-family: 'Google Sans', sans-serif; letter-spacing: .02em;
 }
 .venue-badge i { font-size: .8rem; }
+.venue-badge-accepted {
+  padding: .55rem 1.05rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--primary) 24%, transparent);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.venue-badge-accepted i { font-size: .95rem; }
 .anon-note     { font-size: .8rem; color: var(--text-muted); font-style: italic; }
+
+@media (max-width: 640px) {
+  .venue-badge-accepted { text-align: center; line-height: 1.35; }
+}
 
 /* ── Section band system ─────────────────────────────────────── */
 /* Strips the default pst-main vertical padding; each band owns its spacing */
