@@ -94,6 +94,7 @@
         <button class="lb-tab is-active" data-board="sim">Simulation</button>
         <button class="lb-tab" data-board="real">Real-world Arena</button>
         <button class="lb-tab" data-board="level">By level</button>
+        <button class="lb-tab" data-board="task">By task</button>
       </div>
       <div class="lb-filters">
         <span class="lb-chip" data-fam="VLA" style="--chip:var(--fig-vla)">VLA</span>
@@ -116,6 +117,22 @@
         <button class="lb-regime-btn" data-metric="q">Quality (0-10)</button>
       </div>
 
+      <div id="lb-level" class="lb-regime" style="display:none;">
+        <button class="lb-regime-btn is-active" data-lvl="all">All levels</button>
+        <button class="lb-regime-btn" data-lvl="L0">L0</button>
+        <button class="lb-regime-btn" data-lvl="L1">L1</button>
+        <button class="lb-regime-btn" data-lvl="L2">L2</button>
+        <button class="lb-regime-btn" data-lvl="L3">L3</button>
+      </div>
+
+      <div id="lb-scale" class="lb-regime" style="display:none;">
+        <span class="lb-scale-label">Pretraining scale</span>
+        <button class="lb-regime-btn is-active" data-scale="mean">Mean (15·30·45)</button>
+        <button class="lb-regime-btn" data-scale="15">15</button>
+        <button class="lb-regime-btn" data-scale="30">30</button>
+        <button class="lb-regime-btn" data-scale="45">45</button>
+      </div>
+
       <p class="lb-note" id="lb-note"></p>
 
       <div class="lb-table-shell">
@@ -133,7 +150,7 @@
     </div>
 
     <!-- ── What the table hides ─────────────────────────────── -->
-    <div class="lp-band lp-band-white">
+    <!-- <div class="lp-band lp-band-white">
       <div class="lp-inner">
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-chart-line"></i>Behind the ranking</div>
         <h2 class="paper-section-title" data-reveal="up" data-reveal-delay="80">A leaderboard is a summary. Here is the shape.</h2>
@@ -154,7 +171,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- ── Full task-suite reference ──────────────────────── -->
     <div class="lp-band lp-band-gray" id="full-suite">
@@ -222,6 +239,7 @@
 <script src="assets/js/figdata.js"></script>
 <script src="assets/js/manifest-data.js"></script>
 <script src="assets/js/charts.js"></script>
+<script src="assets/js/sim-detail-data.js"></script>
 <script src="assets/js/full-task-suite-data.js"></script>
 <script src="assets/js/full-task-suite.js"></script>
 <script src="assets/js/leaderboard.js"></script>

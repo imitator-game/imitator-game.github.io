@@ -1,12 +1,18 @@
 /* ============================================================
    leaderboard.js — leaderboard.html only.
 
-   Three boards sharing one table shell:
+   Four boards sharing one table shell:
      sim   — 15 trained simulation variants, automated metrics
      real  — 4 representative real-world models, Arena-judged
      level — resolved by hierarchy level (L0-L3); this is the one
              where "sorted by Seen SR" and "sorted by L3" genuinely
              disagree, which is the point of shipping it at all.
+     task  — fine-grained per-task × per-model simulation reference
+             (10 tasks × 15 models), from sim-detail-data.js.
+             Regimes: Seen / Zero-shot / From-scratch / P+FT.
+             From-scratch uses the SINGLE flat result (per
+             (task,level) cell = min over the scales present),
+             matching all_summary.json's unseen_scratch_flat.
 
    Family chips and the search box filter every board. Column
    headers are clickable to sort (click again to flip direction).
@@ -15,6 +21,8 @@
    variants (figC5). "zs", "scr" and "pft" each resolve from the
    real world, the same 4 representative models (figdata.js's
    IG.perLevelZS / IG.perLevelScr / IG.perLevel).
+   The "By task" board reuses #lb-regime for its four simulation
+   regimes and adds a level selector (#lb-level).
    ============================================================ */
 (function () {
   if (!window.IG) return;
@@ -84,6 +92,8 @@
     board: "sim",
     regime: "seen",
     metric: "sr",          // "sr" | "q" — By-level board only
+    lvl: "all",            // "all" | "L0".."L3" — By-task board only
+    scale: "mean",         // "mean" | "15" | "30" | "45" — By-task board; scratch has no scale
     sortKey: "seen",
     sortDir: -1,           // -1 = desc, 1 = asc
     search: "",
@@ -93,7 +103,8 @@
   var BOARD_DEFAULT_SORT = {
     sim:   { key: "seen",   dir: -1 },
     real:  { key: "seenWR", dir: -1 },
-    level: { key: "L0",     dir: -1 }
+    level: { key: "L0",     dir: -1 },
+    task:  { key: "__idx",  dir: 1 }    // By-task keeps natural seen→unseen order
   };
 
   /* Each board's companion figure — same live SVG builders and accent
@@ -116,6 +127,11 @@
       chart: "levelscale", tag: "Fig. C4", accent: "var(--fig-l2)",
       title: "Does scale help at every level?",
       caption: "<b>Level × corpus scale.</b> Under pretrain + fine-tune, success rises with corpus size at every level; under zero-shot the floor doesn't move."
+    },
+    task: {
+      chart: "taskgrid", tag: "Fig. C8", accent: "var(--fig-videova)",
+      title: "Per-task × per-model success",
+      caption: "<b>Fine-grained simulation reference.</b> Each cell is one model on one task (mean over levels, or a single selected level). The rows and columns carry the same numbers as the table — hover for the exact SR."
     }
   };
 
@@ -177,8 +193,105 @@
   function flatten() {
     if (state.board === "sim") return { rows: simRows(), cols: SIM_COLS };
     if (state.board === "real") return { rows: realRows(), cols: REAL_COLS };
+    if (state.board === "task") return taskRows();
     var lv = levelRows(state.regime, state.metric);
     return { rows: lv.rows, cols: levelCols(state.regime === "seen" ? "sr" : state.metric), note: lv.note };
+  }
+
+  /* ── By-task board ────────────────────────────────────────────
+     Rows  : the 10 evaluation tasks (5 seen, 5 unseen)
+     Cols  : 15 models grouped by paradigm (group header span)
+     Cells : SR or Sub-SR for the selected regime + level + scale
+     Regimes (all simulation):
+       seen — seen tasks
+       zs   — zero-shot on unseen tasks
+       scr  — from scratch on unseen tasks, SINGLE flat result only.
+              The scale selector is disabled here: scratch is one
+              flavour (all_summary.json's unseen_scratch_flat basis —
+              per (task,level) cell = MIN over scales present).
+       pft  — pretrain + fine-tune on unseen tasks
+     seen/zs/pft are shown at their fine-grained pretraining scale
+     (15 / 30 / 45) or as the per-cell mean across the three.
+     ============================================================ */
+  function taskRows() {
+    var D = window.SIM_DETAIL;
+    if (!D) return { rows: [], cols: [{ key: "name", label: "Task", type: "name", sortable: false }], note: "Per-task data not loaded (sim-detail-data.js)." };
+
+    var mi = state.metric === "sub" ? 1 : 0;           // 0 = SR, 1 = SubSR
+    var reg = state.regime;                            // seen | zs | scr | pft
+    var isScr = reg === "scr";
+    /* seen/zs/pft → per-scale blocks keyed by scale; scr → flat block */
+    var block = isScr ? (D.scr || {}) : ((D[reg] || {})[state.scale] || (D[reg] || {}).mean || {});
+
+    /* Model columns, grouped by paradigm for the two-row header.
+       Family chips (state.famOff) hide whole paradigm groups. */
+    var groups = [];
+    D.models.forEach(function (m) {
+      if (state.famOff[m.fam]) return;
+      var last = groups[groups.length - 1];
+      if (!last || last.fam !== m.fam) {
+        last = { fam: m.fam, keys: [] };
+        groups.push(last);
+      }
+      last.keys.push(m.key);
+    });
+    var cols = [
+      { key: "task", label: "Task", type: "taskname", sortable: false }
+    ];
+    groups.forEach(function (g) {
+      g.keys.forEach(function (k) {
+        cols.push({ key: k, label: D.models.filter(function (m) { return m.key === k; })[0].short,
+                    fam: g.fam, type: "pct", sortable: false });
+      });
+    });
+
+    function val(taskKey, levelKey, mkey) {
+      var cell = (block[taskKey] || {})[levelKey];
+      if (!cell) return null;
+      var hit = cell[mkey];
+      return hit ? hit[mi] : null;
+    }
+    function taskVal(taskKey, mkey) {
+      if (state.lvl !== "all") return val(taskKey, state.lvl, mkey);
+      var acc = [], L;
+      for (L = 0; L < 4; L++) {
+        var v = val(taskKey, "L" + L, mkey);
+        if (v != null) acc.push(v);
+      }
+      return acc.length ? acc.reduce(function (a, b) { return a + b; }, 0) / acc.length : null;
+    }
+
+    var rows = D.tasks.map(function (t, i) {
+      var r = { task: t.key, model: t.short, __idx: i, seen: t.seen, fam: null, src: "sim", sortKey: t.key };
+      D.models.forEach(function (m) { r[m.key] = taskVal(t.key, m.key); });
+      return r;
+    });
+
+    /* Average row — mean of the non-null cells per model, plus a note */
+    var avg = { task: "", model: "Average", __idx: 999, seen: false, fam: null, src: "sim", isAvg: true, sortKey: "~" };
+    D.models.forEach(function (m) {
+      var vals = rows.map(function (r) { return r[m.key]; }).filter(function (v) { return v != null; });
+      avg[m.key] = vals.length ? vals.reduce(function (a, b) { return a + b; }, 0) / vals.length : null;
+    });
+
+    var NOTE = {
+      seen: "Simulation, seen tasks.",
+      zs:   "Simulation, zero-shot on the five unseen tasks.",
+      scr:  "Simulation, trained from scratch on the unseen tasks — the SINGLE flat result (per (task, level) cell, the minimum across the scales present), identical to all_summary.json's unseen_scratch_flat.",
+      pft:  "Simulation, pretrain + fine-tune on the five unseen tasks."
+    }[state.regime] || "";
+    var lvlNote = state.lvl === "all"
+      ? " Showing each task as the mean over L0-L3."
+      : " Showing " + state.lvl + " only.";
+    var metNote = state.metric === "sub" ? " Showing sub-task success rate (Sub-SR)." : " Showing success rate (SR).";
+    var scaleNote = isScr ? " From-scratch has no pretraining scale — one flat result."
+      : (state.scale === "mean"
+          ? " Cells average over the {15,30,45} pretraining scales."
+          : " Showing the " + state.scale + "-task pretraining scale only.");
+
+    return { rows: rows.concat([avg]), cols: cols, groups: groups,
+             note: NOTE + lvlNote + scaleNote + " " + metNote,
+             scaleDisabled: isScr };
   }
 
   /* ── Filter + sort ────────────────────────────────────────── */
@@ -208,6 +321,11 @@
       return '<span class="lbt-name"><span class="lbt-dot" style="background:' + tone + '"></span>' +
         esc(row.model || row.name) + "</span>";
     }
+    if (col.type === "taskname") {
+      var badge = row.isAvg ? "" :
+        (row.seen ? '<span class="lbt-task-tag is-seen">Seen</span>' : '<span class="lbt-task-tag">Unseen</span>');
+      return '<span class="lbt-name lbt-taskname">' + esc(row.model) + badge + "</span>";
+    }
     if (col.type === "fam") {
       return '<span class="lbt-fam" style="color:' + IG.famColor(row.fam) + '">' + esc(IG.famShort(row.fam)) + "</span>";
     }
@@ -219,7 +337,7 @@
       var v = row[col.key];
       if (v == null) return '<span class="lbt-num">—</span>';
       return '<span class="lbt-num"><span class="lbt-bar"><span class="lbt-bar-fill" style="width:' +
-        Math.max(2, Math.round(v * 100)) + '%;background:' + (row.tone || IG.famColor(row.fam)) +
+        Math.max(2, Math.round(v * 100)) + '%;background:' + (row.tone || IG.famColor(col.fam || row.fam)) +
         '"></span></span>' + pct(v) + "</span>";
     }
     if (col.type === "num1") return '<span class="lbt-num">' + num1(row[col.key]) + "</span>";
@@ -231,6 +349,44 @@
     return "";
   }
 
+  function headerHTML(cols, groups) {
+    if (!groups || !groups.length) {
+      return "<tr>" + '<th class="lbt-rank-h">#</th>' + cols.map(function (c) {
+        var active = c.key === state.sortKey;
+        var cls = "lbt-th" + (c.sortable === false ? "" : " lbt-th-btn") + (active ? " is-active" : "");
+        var arrow = active ? (state.sortDir === -1 ? " ↓" : " ↑") : "";
+        return '<th class="' + cls + '" data-key="' + c.key + '" data-sortable="' + (c.sortable !== false) + '">' +
+          esc(c.label) + arrow + "</th>";
+      }).join("") + "</tr>";
+    }
+    /* Two-row header for the By-task board: paradigm group spans
+       over the model columns, model short-names in the second row. */
+    var g = groups[0];
+    var gData = groups.map(function (grp) {
+      return { fam: grp.fam, keys: grp.keys,
+               label: IG.famShort(grp.fam),
+               color: IG.famColor(grp.fam) };
+    });
+    var row1 = '<th class="lbt-rank-h" rowspan="2">#</th>' +
+      '<th class="lbt-th lbt-group-task" rowspan="2">' + esc("Task") + "</th>";
+    gData.forEach(function (grp) {
+      row1 += '<th class="lbt-th lbt-group" colspan="' + grp.keys.length + '" style="color:' + grp.color + '">' +
+        esc(grp.label) + "</th>";
+    });
+    /* Row 2 holds ONLY the model short-names — the # and Task cells above
+       span both rows, so adding placeholder cells here would shift the
+       model columns away from the body columns below them. */
+    var row2 = "";
+    gData.forEach(function (grp) {
+      grp.keys.forEach(function (k) {
+        var short = (window.SIM_DETAIL.models.filter(function (m) { return m.key === k; })[0] || {}).short || k;
+        row2 += '<th class="lbt-th lbt-model-h" style="color:' + grp.color + '" data-key="' + k + '" data-sortable="false">' +
+          esc(short) + "</th>";
+      });
+    });
+    return "<tr>" + row1 + "</tr><tr>" + row2 + "</tr>";
+  }
+
   function render() {
     var data = flatten();
     var rows = applySort(applyFilters(data.rows));
@@ -240,22 +396,20 @@
     var note = document.getElementById("lb-note");
     if (!thead || !tbody) return;
 
-    thead.innerHTML = "<tr><th class=\"lbt-rank-h\">#</th>" + data.cols.map(function (c) {
-      var active = c.key === state.sortKey;
-      var cls = "lbt-th" + (c.sortable === false ? "" : " lbt-th-btn") + (active ? " is-active" : "");
-      var arrow = active ? (state.sortDir === -1 ? " ↓" : " ↑") : "";
-      return '<th class="' + cls + '" data-key="' + c.key + '" data-sortable="' + (c.sortable !== false) + '">' +
-        esc(c.label) + arrow + "</th>";
-    }).join("") + "</tr>";
+    thead.innerHTML = headerHTML(data.cols, data.groups);
 
+    var nCols = data.cols.length + 1;
     if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="' + (data.cols.length + 1) + '" class="lbt-empty">No entries match the current filters.</td></tr>';
-    } else {
-      tbody.innerHTML = rows.map(function (r, i) {
-        return "<tr>" + '<td class="lbt-rank">' + (i + 1) + "</td>" +
-          data.cols.map(function (c) { return "<td>" + cellHTML(r, c) + "</td>"; }).join("") + "</tr>";
-      }).join("");
+      tbody.innerHTML = '<tr><td colspan="' + nCols + '" class="lbt-empty">No entries match the current filters.</td></tr>';
+      return;
     }
+
+    var frag = rows.map(function (r, i) {
+      var cls = r.isAvg ? ' class="lbt-avg-row"' : "";
+      return "<tr" + cls + ">" + '<td class="lbt-rank">' + (r.isAvg ? "—" : (i + 1)) + "</td>" +
+        data.cols.map(function (c) { return "<td>" + cellHTML(r, c) + "</td>"; }).join("") + "</tr>";
+    }).join("");
+    tbody.innerHTML = frag;
 
     if (note) note.textContent = data.note || defaultNote();
     updateMetricBar();
@@ -267,17 +421,36 @@
     return "";
   }
 
-  /* Show/enable the SR-vs-Quality metric switcher only on the level board,
-     and disable "Quality" while regime=seen (simulation has no Q score). */
+  /* Show/enable the SR-vs-Quality metric switcher only on the level/task boards,
+     and disable "Quality" while regime=seen (simulation has no Q score).
+     On the task board the second button becomes Sub-SR instead of Quality. */
   function updateMetricBar() {
     var bar = document.getElementById("lb-metric");
     if (!bar) return;
     var onLevel = state.board === "level";
-    bar.style.display = onLevel ? "" : "none";
-    if (!onLevel) return;
+    var onTask = state.board === "task";
+    bar.style.display = (onLevel || onTask) ? "" : "none";
+    if (!onLevel && !onTask) return;
+
     var qBtn = bar.querySelector('[data-metric="q"]');
-    var simRegime = state.regime === "seen";
-    if (qBtn) {
+    var srBtn = bar.querySelector('[data-metric="sr"]');
+    if (onTask) {
+      /* Relabel the second button as Sub-SR (data-metric="sub") */
+      if (qBtn) {
+        qBtn.dataset.metric = "sub";
+        qBtn.textContent = "Sub-SR";
+        qBtn.disabled = false;
+        qBtn.classList.remove("is-disabled");
+        qBtn.title = "";
+      }
+      if (srBtn) {
+        srBtn.dataset.metric = "sr";
+        srBtn.textContent = "Success rate";
+      }
+    } else if (qBtn) {
+      qBtn.dataset.metric = "q";
+      qBtn.textContent = "Quality (0-10)";
+      var simRegime = state.regime === "seen";
       qBtn.disabled = simRegime;
       qBtn.classList.toggle("is-disabled", simRegime);
       qBtn.title = simRegime ? "Simulation (seen) has no human Quality score — showing SR." : "";
@@ -294,7 +467,13 @@
     state.sortKey = d.key; state.sortDir = d.dir;
     document.querySelectorAll(".lb-tab").forEach(function (b) { b.classList.toggle("is-active", b.dataset.board === board); });
     var regimeBar = document.getElementById("lb-regime");
-    if (regimeBar) regimeBar.style.display = board === "level" ? "" : "none";
+    if (regimeBar) regimeBar.style.display = (board === "level" || board === "task") ? "" : "none";
+    var levelBar = document.getElementById("lb-level");
+    if (levelBar) levelBar.style.display = board === "task" ? "" : "none";
+    var scaleBar = document.getElementById("lb-scale");
+    if (scaleBar) scaleBar.style.display = board === "task" ? "" : "none";
+    if (board === "task" && ["q", "sub"].indexOf(state.metric) === -1) state.metric = "sr";
+    if (board !== "task" && state.metric === "sub") state.metric = "sr";
     updateBoardChart(board);
     render();
   }
@@ -310,32 +489,90 @@
     if (tagEl) { tagEl.textContent = config.tag; tagEl.style.color = config.accent; tagEl.style.background = "color-mix(in srgb, " + config.accent + " 16%, transparent)"; }
     if (titleEl) titleEl.textContent = config.title;
     host.dataset.chart = config.chart;
+    if (board === "task") {
+      host.dataset.regime = state.regime;
+      host.dataset.lvl = state.lvl;
+      host.dataset.metric = state.metric;
+      host.dataset.scale = state.regime === "scr" ? "flat" : state.scale;
+    } else {
+      delete host.dataset.regime; delete host.dataset.lvl; delete host.dataset.metric; delete host.dataset.scale;
+    }
     host.removeAttribute("data-drawn");
     host.innerHTML = "";
     if (caption) caption.innerHTML = config.caption;
     if (window.IGCharts) window.IGCharts.build(host);
   }
 
+  /* Rebuild just the board chart (no tag/title/caption reset) — used when
+     the task board's regime / metric / level / scale change. */
+  function redrawBoardChart() {
+    var host = document.getElementById("lb-chart");
+    if (!host || state.board !== "task") return;
+    host.dataset.regime = state.regime;
+    host.dataset.lvl = state.lvl;
+    host.dataset.metric = state.metric;
+    host.dataset.scale = state.regime === "scr" ? "flat" : state.scale;
+    host.removeAttribute("data-drawn");
+    host.innerHTML = "";
+    if (window.IGCharts) window.IGCharts.build(host);
+  }
+
   function switchRegime(regime) {
     state.regime = regime;
-    if (regime === "seen") state.metric = "sr"; // no Q score in sim — force back to SR
-    var d = BOARD_DEFAULT_SORT.level;
+    if (regime === "seen" && state.board === "level") state.metric = "sr"; // no Q score in sim — force back to SR
+    var d = BOARD_DEFAULT_SORT[state.board] || BOARD_DEFAULT_SORT.level;
     state.sortKey = d.key; state.sortDir = d.dir;
     document.querySelectorAll(".lb-regime-btn").forEach(function (b) { b.classList.toggle("is-active", b.dataset.regime === regime); });
+    /* On the By-task board, scratch has no pretraining scale — disable the
+       scale selector (and snap it back to "mean" for the next regime). */
+    var scaleBar = document.getElementById("lb-scale");
+    if (scaleBar && state.board === "task") {
+      var isScr = regime === "scr";
+      scaleBar.querySelectorAll(".lb-regime-btn").forEach(function (b) {
+        b.disabled = isScr;
+        b.classList.toggle("is-disabled", isScr);
+      });
+      if (isScr) {
+        state.scale = "mean";
+        scaleBar.querySelectorAll('[data-scale]').forEach(function (b) { b.classList.toggle("is-active", b.dataset.scale === "mean"); });
+      }
+    }
     render();
+    redrawBoardChart();
   }
 
   function switchMetric(metric) {
-    if (metric === "q" && state.regime === "seen") return; // guarded, see updateMetricBar
+    if (metric === "q" && state.regime === "seen" && state.board === "level") return; // guarded, see updateMetricBar
     state.metric = metric;
+    if (state.board === "task") {
+      // The By-task "quality" button is really Sub-SR now — normalise the state
+      if (metric === "q") state.metric = "sub";
+      if (metric === "sub") state.metric = "sub";
+    }
     render();
+    redrawBoardChart();
+  }
+
+  function switchLvl(lvl) {
+    state.lvl = lvl;
+    document.querySelectorAll("#lb-level .lb-regime-btn").forEach(function (b) { b.classList.toggle("is-active", b.dataset.lvl === lvl); });
+    render();
+    redrawBoardChart();
+  }
+
+  function switchScale(scale) {
+    if (scale === "mean") state.scale = "mean";
+    else state.scale = scale;
+    document.querySelectorAll("#lb-scale .lb-regime-btn").forEach(function (b) { b.classList.toggle("is-active", b.dataset.scale === state.scale); });
+    render();
+    redrawBoardChart();
   }
 
   function wire() {
     document.querySelectorAll(".lb-tab").forEach(function (b) {
       b.addEventListener("click", function () { switchBoard(b.dataset.board); });
     });
-    document.querySelectorAll(".lb-regime-btn").forEach(function (b) {
+    document.querySelectorAll("#lb-regime .lb-regime-btn").forEach(function (b) {
       b.addEventListener("click", function () { switchRegime(b.dataset.regime); });
     });
     var metricBar = document.getElementById("lb-metric");
@@ -344,6 +581,12 @@
         b.addEventListener("click", function () { switchMetric(b.dataset.metric); });
       });
     }
+    document.querySelectorAll("#lb-level .lb-regime-btn").forEach(function (b) {
+      b.addEventListener("click", function () { switchLvl(b.dataset.lvl); });
+    });
+    document.querySelectorAll("#lb-scale .lb-regime-btn").forEach(function (b) {
+      b.addEventListener("click", function () { switchScale(b.dataset.scale); });
+    });
     document.querySelectorAll(".lb-chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
         var f = chip.dataset.fam;
@@ -374,6 +617,10 @@
     if (regimeBar) regimeBar.style.display = "none";
     var metricBar = document.getElementById("lb-metric");
     if (metricBar) metricBar.style.display = "none";
+    var levelBar = document.getElementById("lb-level");
+    if (levelBar) levelBar.style.display = "none";
+    var scaleBar = document.getElementById("lb-scale");
+    if (scaleBar) scaleBar.style.display = "none";
     updateBoardChart(state.board);
     render();
   });

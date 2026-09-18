@@ -606,9 +606,113 @@
     host.appendChild(note);
   }
 
+  /* ============================================================
+     By-task heatmap (leaderboard "By task" board).
+     Reads window.SIM_DETAIL + host.dataset.{regime,lvl,metric}.
+     Rows = the 10 tasks (5 seen, 5 unseen), columns = the 15
+     models grouped by paradigm; cell fill intensity = SR (or
+     Sub-SR), hovering shows the exact number.
+     ============================================================ */
+  function taskgrid(host) {
+    var D = window.SIM_DETAIL;
+    if (!D) { host.innerHTML = '<p class="ig-chart-note">Per-task data not loaded (sim-detail-data.js).</p>'; return; }
+
+    var regime = host.dataset.regime || "seen";
+    var lvl = host.dataset.lvl || "all";
+    var mi = host.dataset.metric === "sub" ? 1 : 0;
+    var scale = host.dataset.scale || "mean";
+    var isScr = regime === "scr";
+    var block = isScr ? (D.scr || {}) : ((D[regime] || {})[scale] || (D[regime] || {}).mean || {});
+
+    function cellVal(taskKey, levelKey, mkey) {
+      var cell = (block[taskKey] || {})[levelKey];
+      if (!cell) return null;
+      var hit = cell[mkey];
+      return hit ? hit[mi] : null;
+    }
+    function taskVal(taskKey, mkey) {
+      if (lvl !== "all") return cellVal(taskKey, lvl, mkey);
+      var acc = [], L;
+      for (L = 0; L < 4; L++) {
+        var v = cellVal(taskKey, "L" + L, mkey);
+        if (v != null) acc.push(v);
+      }
+      return acc.length ? acc.reduce(function (a, b) { return a + b; }, 0) / acc.length : null;
+    }
+
+    var W = 940, H = 12 + D.tasks.length * 40 + 66;   // room for 3 paradigm col groups + axis
+    var s = svg(W, H), g = el("g");
+
+    /* Column slabs per paradigm */
+    var slabs = [], cur = null;
+    D.models.forEach(function (m) {
+      if (!cur || cur.fam !== m.fam) { cur = { fam: m.fam, keys: [] }; slabs.push(cur); }
+      cur.keys.push(m.key);
+    });
+    var colW = (W - 200) / D.models.length;           // 200px reserved for task labels
+    var rowH = 40;
+    var x0 = 196, y0 = 14;
+
+    // Paradigm group headers
+    var cx = x0;
+    slabs.forEach(function (sl) {
+      var w = sl.keys.length * colW;
+      g.appendChild(text(cx + w / 2, 32, IG.famShort(sl.fam), "ig-t-tick ig-t-strong",
+        { "text-anchor": "middle", style: "fill:" + fam(sl.fam) }));
+      g.appendChild(el("line", { x1: cx, x2: cx + w, y1: 44, y2: 44 }, "stroke:var(--fig-grid);stroke-width:1"));
+      cx += w;
+    });
+
+    // Model short names (rotated, tight)
+    D.models.forEach(function (m, mi2) {
+      var mx = x0 + (mi2 + .5) * colW;
+      var t = text(mx, H - 6, m.short, "ig-t-note", { "text-anchor": "end", transform: "rotate(-32 " + mx + " " + (H - 6) + ")" });
+      t.setAttribute("style", "fill:" + fam(m.fam) + ";font-size:10px");
+      g.appendChild(t);
+    });
+
+    // Task rows — seen group first, then unseen; fill = SR intensity
+    var ordered = D.tasks.slice().sort(function (a, b) { return (a.seen === b.seen ? 0 : (a.seen ? -1 : 1)); });
+    ordered.forEach(function (t, ri) {
+      var ry = y0 + 44 + ri * rowH;
+      g.appendChild(text(190, ry + rowH / 2 + 4, t.short, "ig-t-note",
+        { "text-anchor": "end", style: t.seen ? "fill:var(--fig-vla);font-weight:600" : "fill:var(--fig-l3)" }));
+      D.models.forEach(function (m, ci) {
+        var v = taskVal(t.key, m.key);
+        var mx = x0 + ci * colW;
+        var r = el("rect", { x: mx + 1.5, y: ry + 3, width: colW - 3, height: rowH - 6, rx: 3 });
+        if (v == null) {
+          r.setAttribute("style", "fill:var(--surface);stroke:var(--border);stroke-width:1");
+        } else {
+          var a = fam(m.fam);
+          r.setAttribute("style", "fill:" + a + ";opacity:" + (0.08 + 0.92 * v).toFixed(2) +
+            ";stroke:" + a + ";stroke-opacity:.35;stroke-width:1");
+        }
+        r.classList.add("ig-anim", "ig-cell"); r.dataset.delay = 150 + ri * 26 + ci * 8;
+        if (v != null) {
+          hoverable(r, host, "<b>" + t.short + " · " + m.short + "</b><i>" +
+            (mi === 1 ? "Sub-SR" : "SR") + "</i> " + (v * 100).toFixed(1) + "%" +
+            (lvl !== "all" ? "<br><i>level</i> " + lvl : ""));
+        }
+        g.appendChild(r);
+      });
+    });
+
+    var note = document.createElement("p");
+    note.className = "ig-chart-note";
+    note.textContent = (lvl !== "all" ? "Level " + lvl + " only — " : "Mean over L0–L3 — ") +
+      (isScr ? "single from-scratch result (unseen_scratch_flat)" :
+        (scale === "mean" ? "averaged over the 15/30/45 pretraining scales" : scale + "-task pretraining scale")) +
+      " · cell opacity scales with SR.";
+    host.appendChild(s);
+    s.appendChild(g);
+    host.appendChild(note);
+  }
+
   /* ── registry + lazy draw ──────────────────────────────────── */
   var CHARTS = { paradigm: paradigm, encoder: encoder, scaling: scaling,
-                 levelscale: levelscale, perlevel: perlevel, validity: validity };
+                 levelscale: levelscale, perlevel: perlevel, validity: validity,
+                 taskgrid: taskgrid };
 
   /* Is the host actually laid out? Charts inside an inactive figdeck panel
      are display:none, so a draw-in there animates into nothing. */

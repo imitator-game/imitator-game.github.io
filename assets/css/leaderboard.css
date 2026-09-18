@@ -87,6 +87,7 @@
 .lb-table th:nth-child(2), .lb-table td:nth-child(2) { text-align: left; }
 .lb-table tbody tr { border-top: 1px solid var(--border); transition: background var(--dur-fast) var(--ease-out); }
 .lb-table tbody tr:hover { background: var(--surface); }
+.lb-table tbody tr.lbt-avg-row:hover { background: var(--surface); }
 
 .lbt-rank-h, .lbt-rank { color: var(--text-muted); font-weight: 700; width: 2.4rem; }
 .lbt-th { font: 700 .74rem/1 'Google Sans', sans-serif; letter-spacing: .03em; text-transform: uppercase; color: var(--text-muted); }
@@ -98,6 +99,34 @@
 .lbt-name { display: inline-flex; align-items: center; gap: .55rem; font-weight: 600; color: var(--text); }
 .lbt-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .lbt-fam { font: 600 .78rem/1 'Google Sans', sans-serif; }
+
+/* ── By-task board (fourth tab) ────────────────────────────────
+   Grouped two-row header (paradigm spans over model columns),
+   task-name cells with seen/unseen badges, pinned average row. */
+.lbt-group-task { text-align: left !important; }
+.lbt-group { text-align: center !important; font-size: .8rem; }
+.lbt-model-h { font-size: .66rem !important; letter-spacing: 0 !important; font-weight: 600; }
+.lbt-taskname { gap: .5rem; }
+.lbt-task-tag {
+  font: 700 .56rem/1 'Google Sans', sans-serif; letter-spacing: .05em; text-transform: uppercase;
+  padding: .14rem .5rem; border-radius: var(--radius-pill);
+  color: var(--fig-l3); background: color-mix(in srgb, var(--fig-l3) 13%, transparent);
+  flex-shrink: 0;
+}
+.lbt-task-tag.is-seen { color: var(--fig-vla); background: color-mix(in srgb, var(--fig-vla) 13%, transparent); }
+.lbt-avg-row td { font-weight: 700; border-top: 2px solid var(--border); background: var(--surface); }
+.lbt-avg-row .lbt-num { font-weight: 700; }
+
+/* Heatmap cells (taskgrid chart) */
+.ig-cell {
+  transform-box: fill-box; transform-origin: center;
+  transform: scale(0);
+  transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-spring);
+}
+.ig-cell.is-drawn { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .ig-cell { transition: none !important; transform: none; }
+}
 
 .lbt-num { display: inline-flex; align-items: center; gap: .5rem; font-variant-numeric: tabular-nums; font-weight: 600; }
 .lbt-bar { position: relative; width: 44px; height: 5px; border-radius: 3px; background: var(--surface); overflow: hidden; flex-shrink: 0; }
@@ -208,4 +237,9 @@
 #lb-metric.lb-regime { margin-top: .5rem; margin-bottom: .8rem; }
 .lb-regime-btn.is-disabled { opacity: .4; cursor: not-allowed; }
 .lb-regime-btn.is-disabled:hover { border-color: var(--border); color: var(--text-muted); }
+.lb-scale-label {
+  font: 700 .74rem/1 'Google Sans', sans-serif; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--text-muted); align-self: center; margin-right: .25rem;
+}
+#lb-scale.lb-regime { align-items: center; margin-bottom: .8rem; }
  

@@ -1,0 +1,4911 @@
+{
+  "seen": {
+    "15": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.295,
+          "SubSR": 0.7494
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.24,
+            "SubSR": 0.7439
+          },
+          "L1": {
+            "SR": 0.14,
+            "SubSR": 0.7157
+          },
+          "L2": {
+            "SR": 0.3,
+            "SubSR": 0.74
+          },
+          "L3": {
+            "SR": 0.5,
+            "SubSR": 0.7982
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.39,
+          "SubSR": 0.6961
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.54,
+            "SubSR": 0.793
+          },
+          "L1": {
+            "SR": 0.26,
+            "SubSR": 0.6976
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.4932
+          },
+          "L3": {
+            "SR": 0.58,
+            "SubSR": 0.8006
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.625,
+          "SubSR": 0.8274
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.86,
+            "SubSR": 0.943
+          },
+          "L1": {
+            "SR": 0.48,
+            "SubSR": 0.7455
+          },
+          "L2": {
+            "SR": 0.56,
+            "SubSR": 0.7881
+          },
+          "L3": {
+            "SR": 0.6,
+            "SubSR": 0.8333
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.37,
+          "SubSR": 0.6398
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.38,
+            "SubSR": 0.6773
+          },
+          "L1": {
+            "SR": 0.14,
+            "SubSR": 0.4223
+          },
+          "L2": {
+            "SR": 0.28,
+            "SubSR": 0.6015
+          },
+          "L3": {
+            "SR": 0.68,
+            "SubSR": 0.8579
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.78,
+          "SubSR": 0.9245
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.86,
+            "SubSR": 0.9687
+          },
+          "L1": {
+            "SR": 0.8,
+            "SubSR": 0.9271
+          },
+          "L2": {
+            "SR": 0.68,
+            "SubSR": 0.8791
+          },
+          "L3": {
+            "SR": 0.78,
+            "SubSR": 0.9231
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.805,
+          "SubSR": 0.9508
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.78,
+            "SubSR": 0.9401
+          },
+          "L1": {
+            "SR": 0.7,
+            "SubSR": 0.9166
+          },
+          "L2": {
+            "SR": 0.8,
+            "SubSR": 0.9794
+          },
+          "L3": {
+            "SR": 0.94,
+            "SubSR": 0.967
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.82,
+          "SubSR": 0.9421
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.82,
+            "SubSR": 0.928
+          },
+          "L1": {
+            "SR": 0.84,
+            "SubSR": 0.975
+          },
+          "L2": {
+            "SR": 0.84,
+            "SubSR": 0.9575
+          },
+          "L3": {
+            "SR": 0.78,
+            "SubSR": 0.9082
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.805,
+          "SubSR": 0.9443
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9666
+          },
+          "L1": {
+            "SR": 0.82,
+            "SubSR": 0.9713
+          },
+          "L2": {
+            "SR": 0.64,
+            "SubSR": 0.9079
+          },
+          "L3": {
+            "SR": 0.84,
+            "SubSR": 0.9316
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.65,
+          "SubSR": 0.8317
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.7,
+            "SubSR": 0.8879
+          },
+          "L1": {
+            "SR": 0.66,
+            "SubSR": 0.8213
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.7517
+          },
+          "L3": {
+            "SR": 0.74,
+            "SubSR": 0.8656
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.605,
+          "SubSR": 0.8373
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.72,
+            "SubSR": 0.9299
+          },
+          "L1": {
+            "SR": 0.5,
+            "SubSR": 0.7384
+          },
+          "L2": {
+            "SR": 0.54,
+            "SubSR": 0.8274
+          },
+          "L3": {
+            "SR": 0.66,
+            "SubSR": 0.8536
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.235,
+          "SubSR": 0.6101
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.24,
+            "SubSR": 0.694
+          },
+          "L1": {
+            "SR": 0.22,
+            "SubSR": 0.6524
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.4371
+          },
+          "L3": {
+            "SR": 0.3,
+            "SubSR": 0.6567
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.45,
+          "SubSR": 0.6719
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.38,
+            "SubSR": 0.5635
+          },
+          "L1": {
+            "SR": 0.72,
+            "SubSR": 0.8487
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.5735
+          },
+          "L3": {
+            "SR": 0.5,
+            "SubSR": 0.702
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.585,
+          "SubSR": 0.7898
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.62,
+            "SubSR": 0.7826
+          },
+          "L1": {
+            "SR": 0.66,
+            "SubSR": 0.8117
+          },
+          "L2": {
+            "SR": 0.42,
+            "SubSR": 0.7777
+          },
+          "L3": {
+            "SR": 0.64,
+            "SubSR": 0.7874
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.44,
+          "SubSR": 0.6035
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.5,
+            "SubSR": 0.6161
+          },
+          "L1": {
+            "SR": 0.6,
+            "SubSR": 0.6979
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.46
+          },
+          "L3": {
+            "SR": 0.46,
+            "SubSR": 0.6399
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.795,
+          "SubSR": 0.9111
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.88,
+            "SubSR": 0.9438
+          },
+          "L1": {
+            "SR": 0.86,
+            "SubSR": 0.9695
+          },
+          "L2": {
+            "SR": 0.7,
+            "SubSR": 0.8615
+          },
+          "L3": {
+            "SR": 0.74,
+            "SubSR": 0.8698
+          }
+        }
+      }
+    },
+    "30": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.48,
+          "SubSR": 0.7731
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.52,
+            "SubSR": 0.8527
+          },
+          "L1": {
+            "SR": 0.54,
+            "SubSR": 0.8117
+          },
+          "L2": {
+            "SR": 0.38,
+            "SubSR": 0.6822
+          },
+          "L3": {
+            "SR": 0.48,
+            "SubSR": 0.7459
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.255,
+          "SubSR": 0.5734
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.3,
+            "SubSR": 0.6521
+          },
+          "L1": {
+            "SR": 0.16,
+            "SubSR": 0.5123
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.3694
+          },
+          "L3": {
+            "SR": 0.56,
+            "SubSR": 0.7598
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.74,
+          "SubSR": 0.9032
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.82,
+            "SubSR": 0.9166
+          },
+          "L1": {
+            "SR": 0.74,
+            "SubSR": 0.8881
+          },
+          "L2": {
+            "SR": 0.68,
+            "SubSR": 0.9208
+          },
+          "L3": {
+            "SR": 0.72,
+            "SubSR": 0.8873
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.505,
+          "SubSR": 0.7976
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.52,
+            "SubSR": 0.817
+          },
+          "L1": {
+            "SR": 0.38,
+            "SubSR": 0.713
+          },
+          "L2": {
+            "SR": 0.3,
+            "SubSR": 0.718
+          },
+          "L3": {
+            "SR": 0.82,
+            "SubSR": 0.9426
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.695,
+          "SubSR": 0.8599
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.7,
+            "SubSR": 0.8505
+          },
+          "L1": {
+            "SR": 0.68,
+            "SubSR": 0.828
+          },
+          "L2": {
+            "SR": 0.64,
+            "SubSR": 0.8192
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.9417
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.815,
+          "SubSR": 0.9234
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.88,
+            "SubSR": 0.945
+          },
+          "L1": {
+            "SR": 0.84,
+            "SubSR": 0.9258
+          },
+          "L2": {
+            "SR": 0.66,
+            "SubSR": 0.8964
+          },
+          "L3": {
+            "SR": 0.88,
+            "SubSR": 0.9266
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.765,
+          "SubSR": 0.9097
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.78,
+            "SubSR": 0.9318
+          },
+          "L1": {
+            "SR": 0.76,
+            "SubSR": 0.933
+          },
+          "L2": {
+            "SR": 0.64,
+            "SubSR": 0.8448
+          },
+          "L3": {
+            "SR": 0.88,
+            "SubSR": 0.9293
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.69,
+          "SubSR": 0.8554
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.76,
+            "SubSR": 0.874
+          },
+          "L1": {
+            "SR": 0.74,
+            "SubSR": 0.8901
+          },
+          "L2": {
+            "SR": 0.44,
+            "SubSR": 0.7586
+          },
+          "L3": {
+            "SR": 0.82,
+            "SubSR": 0.8988
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.68,
+          "SubSR": 0.8493
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.78,
+            "SubSR": 0.8727
+          },
+          "L1": {
+            "SR": 0.68,
+            "SubSR": 0.8555
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.8471
+          },
+          "L3": {
+            "SR": 0.68,
+            "SubSR": 0.8219
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.585,
+          "SubSR": 0.8507
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.6,
+            "SubSR": 0.8968
+          },
+          "L1": {
+            "SR": 0.44,
+            "SubSR": 0.7596
+          },
+          "L2": {
+            "SR": 0.54,
+            "SubSR": 0.8348
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.9115
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.17,
+          "SubSR": 0.5008
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.06,
+            "SubSR": 0.5175
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.5314
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.41
+          },
+          "L3": {
+            "SR": 0.24,
+            "SubSR": 0.5442
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.52,
+          "SubSR": 0.8156
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.5,
+            "SubSR": 0.8451
+          },
+          "L1": {
+            "SR": 0.7,
+            "SubSR": 0.8935
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.7747
+          },
+          "L3": {
+            "SR": 0.4,
+            "SubSR": 0.7493
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.56,
+          "SubSR": 0.7859
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.58,
+            "SubSR": 0.7789
+          },
+          "L1": {
+            "SR": 0.66,
+            "SubSR": 0.778
+          },
+          "L2": {
+            "SR": 0.44,
+            "SubSR": 0.8219
+          },
+          "L3": {
+            "SR": 0.56,
+            "SubSR": 0.7647
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.245,
+          "SubSR": 0.5378
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.24,
+            "SubSR": 0.5774
+          },
+          "L1": {
+            "SR": 0.26,
+            "SubSR": 0.5555
+          },
+          "L2": {
+            "SR": 0.22,
+            "SubSR": 0.4096
+          },
+          "L3": {
+            "SR": 0.26,
+            "SubSR": 0.6086
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.765,
+          "SubSR": 0.9053
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.86,
+            "SubSR": 0.9287
+          },
+          "L1": {
+            "SR": 0.86,
+            "SubSR": 0.9034
+          },
+          "L2": {
+            "SR": 0.82,
+            "SubSR": 0.9211
+          },
+          "L3": {
+            "SR": 0.52,
+            "SubSR": 0.868
+          }
+        }
+      }
+    },
+    "45": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.745,
+          "SubSR": 0.9157
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.84,
+            "SubSR": 0.9401
+          },
+          "L1": {
+            "SR": 0.8,
+            "SubSR": 0.9471
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.8602
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.9153
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.22,
+          "SubSR": 0.5219
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.26,
+            "SubSR": 0.6364
+          },
+          "L1": {
+            "SR": 0.24,
+            "SubSR": 0.5412
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.2928
+          },
+          "L3": {
+            "SR": 0.34,
+            "SubSR": 0.6172
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.82,
+          "SubSR": 0.9338
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.86,
+            "SubSR": 0.9569
+          },
+          "L1": {
+            "SR": 0.8,
+            "SubSR": 0.9129
+          },
+          "L2": {
+            "SR": 0.86,
+            "SubSR": 0.9626
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.9027
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.41,
+          "SubSR": 0.7336
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.5,
+            "SubSR": 0.7646
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.5484
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.7739
+          },
+          "L3": {
+            "SR": 0.62,
+            "SubSR": 0.8475
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.765,
+          "SubSR": 0.8902
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.8,
+            "SubSR": 0.9215
+          },
+          "L1": {
+            "SR": 0.68,
+            "SubSR": 0.8332
+          },
+          "L2": {
+            "SR": 0.82,
+            "SubSR": 0.9117
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.8944
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.805,
+          "SubSR": 0.9179
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.94,
+            "SubSR": 0.9833
+          },
+          "L1": {
+            "SR": 0.76,
+            "SubSR": 0.931
+          },
+          "L2": {
+            "SR": 0.7,
+            "SubSR": 0.8874
+          },
+          "L3": {
+            "SR": 0.82,
+            "SubSR": 0.8698
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.775,
+          "SubSR": 0.9297
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9872
+          },
+          "L1": {
+            "SR": 0.76,
+            "SubSR": 0.9174
+          },
+          "L2": {
+            "SR": 0.62,
+            "SubSR": 0.8928
+          },
+          "L3": {
+            "SR": 0.8,
+            "SubSR": 0.9215
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.67,
+          "SubSR": 0.8515
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.72,
+            "SubSR": 0.8675
+          },
+          "L1": {
+            "SR": 0.64,
+            "SubSR": 0.8673
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.8186
+          },
+          "L3": {
+            "SR": 0.74,
+            "SubSR": 0.8528
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.685,
+          "SubSR": 0.8421
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.68,
+            "SubSR": 0.8278
+          },
+          "L1": {
+            "SR": 0.64,
+            "SubSR": 0.759
+          },
+          "L2": {
+            "SR": 0.7,
+            "SubSR": 0.897
+          },
+          "L3": {
+            "SR": 0.72,
+            "SubSR": 0.8844
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.63,
+          "SubSR": 0.8251
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.7,
+            "SubSR": 0.8678
+          },
+          "L1": {
+            "SR": 0.66,
+            "SubSR": 0.8107
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.7754
+          },
+          "L3": {
+            "SR": 0.66,
+            "SubSR": 0.8466
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.025,
+          "SubSR": 0.2082
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.04,
+            "SubSR": 0.2478
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.184
+          },
+          "L2": {
+            "SR": 0.06,
+            "SubSR": 0.1336
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.2674
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.585,
+          "SubSR": 0.7835
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.66,
+            "SubSR": 0.8318
+          },
+          "L1": {
+            "SR": 0.68,
+            "SubSR": 0.7754
+          },
+          "L2": {
+            "SR": 0.4,
+            "SubSR": 0.7542
+          },
+          "L3": {
+            "SR": 0.6,
+            "SubSR": 0.7726
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.58,
+          "SubSR": 0.7633
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.68,
+            "SubSR": 0.8092
+          },
+          "L1": {
+            "SR": 0.62,
+            "SubSR": 0.7137
+          },
+          "L2": {
+            "SR": 0.42,
+            "SubSR": 0.7614
+          },
+          "L3": {
+            "SR": 0.6,
+            "SubSR": 0.7688
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.205,
+          "SubSR": 0.3899
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.28,
+            "SubSR": 0.4866
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3563
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.2675
+          },
+          "L3": {
+            "SR": 0.24,
+            "SubSR": 0.4491
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.815,
+          "SubSR": 0.9234
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.86,
+            "SubSR": 0.9265
+          },
+          "L1": {
+            "SR": 0.82,
+            "SubSR": 0.8913
+          },
+          "L2": {
+            "SR": 0.8,
+            "SubSR": 0.9199
+          },
+          "L3": {
+            "SR": 0.78,
+            "SubSR": 0.9559
+          }
+        }
+      }
+    }
+  },
+  "unseen": {
+    "15": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.015,
+          "SubSR": 0.1268
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.06,
+            "SubSR": 0.1979
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1823
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0167
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1103
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.2276
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.1,
+            "SubSR": 0.3086
+          },
+          "L1": {
+            "SR": 0.06,
+            "SubSR": 0.246
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.2276
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1279
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.12,
+          "SubSR": 0.2448
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.22,
+            "SubSR": 0.3847
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.3353
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0837
+          },
+          "L3": {
+            "SR": 0.04,
+            "SubSR": 0.1755
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.125,
+          "SubSR": 0.2385
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.2,
+            "SubSR": 0.363
+          },
+          "L1": {
+            "SR": 0.16,
+            "SubSR": 0.2824
+          },
+          "L2": {
+            "SR": 0.14,
+            "SubSR": 0.1712
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1372
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.085,
+          "SubSR": 0.1911
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.2,
+            "SubSR": 0.336
+          },
+          "L1": {
+            "SR": 0.06,
+            "SubSR": 0.2251
+          },
+          "L2": {
+            "SR": 0.06,
+            "SubSR": 0.076
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.1275
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.1489
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1198
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.2939
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0453
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1367
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.05,
+          "SubSR": 0.1437
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1229
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.3139
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0212
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1169
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.13
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1293
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.2732
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0166
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1009
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.1,
+          "SubSR": 0.2374
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.24,
+            "SubSR": 0.394
+          },
+          "L1": {
+            "SR": 0.16,
+            "SubSR": 0.3375
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0482
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1699
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.065,
+          "SubSR": 0.2133
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1721
+          },
+          "L1": {
+            "SR": 0.16,
+            "SubSR": 0.3285
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1383
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.2143
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.005,
+          "SubSR": 0.1358
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.182
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1425
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0339
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.1851
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.095,
+          "SubSR": 0.2458
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.04,
+            "SubSR": 0.221
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.3515
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0624
+          },
+          "L3": {
+            "SR": 0.12,
+            "SubSR": 0.3481
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.2046
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.2187
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3006
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.1372
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.1617
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.09,
+          "SubSR": 0.2193
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.06,
+            "SubSR": 0.2351
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3101
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0502
+          },
+          "L3": {
+            "SR": 0.12,
+            "SubSR": 0.2818
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.145,
+          "SubSR": 0.2897
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.14,
+            "SubSR": 0.3422
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.36
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.229
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.2277
+          }
+        }
+      }
+    },
+    "30": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.015,
+          "SubSR": 0.1487
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.2153
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.2008
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.0503
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1283
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.1893
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.08,
+            "SubSR": 0.2511
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1661
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1878
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.152
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.055,
+          "SubSR": 0.1913
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.1818
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3555
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0489
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1789
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.1633
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.1868
+          },
+          "L1": {
+            "SR": 0.04,
+            "SubSR": 0.158
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.1547
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1536
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.09,
+          "SubSR": 0.1698
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.2949
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.2856
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0091
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.0894
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.01,
+          "SubSR": 0.1068
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1485
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.0778
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.063
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.138
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.005,
+          "SubSR": 0.1005
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1333
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.0963
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0375
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.1349
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.065,
+          "SubSR": 0.1484
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1196
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.253
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.0914
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1298
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.1823
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.1,
+            "SubSR": 0.264
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1207
+          },
+          "L2": {
+            "SR": 0.14,
+            "SubSR": 0.1947
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1499
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.2055
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.1,
+            "SubSR": 0.2697
+          },
+          "L1": {
+            "SR": 0.08,
+            "SubSR": 0.2331
+          },
+          "L2": {
+            "SR": 0.06,
+            "SubSR": 0.1005
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.2187
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.035,
+          "SubSR": 0.1494
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1713
+          },
+          "L1": {
+            "SR": 0.14,
+            "SubSR": 0.2473
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0296
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1494
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.11,
+          "SubSR": 0.2723
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.2325
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.4106
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.2389
+          },
+          "L3": {
+            "SR": 0.04,
+            "SubSR": 0.2072
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.075,
+          "SubSR": 0.2227
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.14,
+            "SubSR": 0.3467
+          },
+          "L1": {
+            "SR": 0.02,
+            "SubSR": 0.1764
+          },
+          "L2": {
+            "SR": 0.14,
+            "SubSR": 0.1769
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1909
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.2181
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.12,
+            "SubSR": 0.3178
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1939
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.1701
+          },
+          "L3": {
+            "SR": 0.04,
+            "SubSR": 0.1907
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.09,
+          "SubSR": 0.247
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.06,
+            "SubSR": 0.313
+          },
+          "L1": {
+            "SR": 0.26,
+            "SubSR": 0.4261
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.0853
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1634
+          }
+        }
+      }
+    },
+    "45": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.055,
+          "SubSR": 0.2275
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.2502
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.2464
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.2505
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.163
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.1936
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.04,
+            "SubSR": 0.2351
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1836
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.2335
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1224
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.1,
+          "SubSR": 0.2248
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.2013
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.3467
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0321
+          },
+          "L3": {
+            "SR": 0.18,
+            "SubSR": 0.3189
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.1612
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1659
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1402
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.2129
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1256
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.045,
+          "SubSR": 0.1591
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.3452
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1467
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0218
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1229
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.01,
+          "SubSR": 0.1243
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.193
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1054
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.0712
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1275
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.02,
+          "SubSR": 0.1173
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.08,
+            "SubSR": 0.2245
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.0951
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0255
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.124
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.025,
+          "SubSR": 0.1456
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.04,
+            "SubSR": 0.2292
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1184
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0282
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.2064
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.055,
+          "SubSR": 0.1994
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.04,
+            "SubSR": 0.2441
+          },
+          "L1": {
+            "SR": 0.1,
+            "SubSR": 0.2841
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.1283
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1409
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.03,
+          "SubSR": 0.1666
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1765
+          },
+          "L1": {
+            "SR": 0.06,
+            "SubSR": 0.2188
+          },
+          "L2": {
+            "SR": 0.06,
+            "SubSR": 0.1141
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1571
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.03,
+          "SubSR": 0.1561
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.1859
+          },
+          "L1": {
+            "SR": 0.0,
+            "SubSR": 0.1209
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1891
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1284
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.175,
+          "SubSR": 0.2864
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.2,
+            "SubSR": 0.3639
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3281
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0399
+          },
+          "L3": {
+            "SR": 0.32,
+            "SubSR": 0.4136
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.105,
+          "SubSR": 0.2627
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.3614
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.3526
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.0491
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.2877
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.075,
+          "SubSR": 0.2039
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1902
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.3613
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.1087
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.1554
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.05,
+          "SubSR": 0.2261
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.1,
+            "SubSR": 0.3956
+          },
+          "L1": {
+            "SR": 0.06,
+            "SubSR": 0.2343
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0576
+          },
+          "L3": {
+            "SR": 0.02,
+            "SubSR": 0.2167
+          }
+        }
+      }
+    }
+  },
+  "unseen_finetune": {
+    "15": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.575,
+          "SubSR": 0.7476
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.68,
+            "SubSR": 0.8249
+          },
+          "L1": {
+            "SR": 0.6,
+            "SubSR": 0.846
+          },
+          "L2": {
+            "SR": 0.38,
+            "SubSR": 0.5086
+          },
+          "L3": {
+            "SR": 0.64,
+            "SubSR": 0.8108
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.19,
+          "SubSR": 0.4089
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.26,
+            "SubSR": 0.4996
+          },
+          "L1": {
+            "SR": 0.28,
+            "SubSR": 0.5563
+          },
+          "L2": {
+            "SR": 0.06,
+            "SubSR": 0.1196
+          },
+          "L3": {
+            "SR": 0.16,
+            "SubSR": 0.4602
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.825,
+          "SubSR": 0.8945
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.9,
+            "SubSR": 0.9219
+          },
+          "L1": {
+            "SR": 0.92,
+            "SubSR": 0.9723
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.7333
+          },
+          "L3": {
+            "SR": 0.9,
+            "SubSR": 0.9503
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.19,
+          "SubSR": 0.4348
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.24,
+            "SubSR": 0.5472
+          },
+          "L1": {
+            "SR": 0.1,
+            "SubSR": 0.4181
+          },
+          "L2": {
+            "SR": 0.16,
+            "SubSR": 0.2492
+          },
+          "L3": {
+            "SR": 0.26,
+            "SubSR": 0.5247
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.65,
+          "SubSR": 0.801
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.8,
+            "SubSR": 0.9265
+          },
+          "L1": {
+            "SR": 0.58,
+            "SubSR": 0.8047
+          },
+          "L2": {
+            "SR": 0.42,
+            "SubSR": 0.5632
+          },
+          "L3": {
+            "SR": 0.8,
+            "SubSR": 0.9096
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.82,
+          "SubSR": 0.8636
+        },
+        "by_level": {
+          "L0": {
+            "SR": 1.0,
+            "SubSR": 1.0
+          },
+          "L1": {
+            "SR": 0.86,
+            "SubSR": 0.9015
+          },
+          "L2": {
+            "SR": 0.54,
+            "SubSR": 0.6141
+          },
+          "L3": {
+            "SR": 0.88,
+            "SubSR": 0.9387
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.74,
+          "SubSR": 0.811
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9701
+          },
+          "L1": {
+            "SR": 0.82,
+            "SubSR": 0.8671
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.6111
+          },
+          "L3": {
+            "SR": 0.72,
+            "SubSR": 0.7956
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.8,
+          "SubSR": 0.864
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.9,
+            "SubSR": 0.9686
+          },
+          "L1": {
+            "SR": 0.82,
+            "SubSR": 0.8657
+          },
+          "L2": {
+            "SR": 0.56,
+            "SubSR": 0.6672
+          },
+          "L3": {
+            "SR": 0.92,
+            "SubSR": 0.9547
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.435,
+          "SubSR": 0.6506
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.48,
+            "SubSR": 0.75
+          },
+          "L1": {
+            "SR": 0.5,
+            "SubSR": 0.7322
+          },
+          "L2": {
+            "SR": 0.46,
+            "SubSR": 0.5444
+          },
+          "L3": {
+            "SR": 0.3,
+            "SubSR": 0.5758
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.43,
+          "SubSR": 0.6401
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.34,
+            "SubSR": 0.6283
+          },
+          "L1": {
+            "SR": 0.34,
+            "SubSR": 0.6592
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.571
+          },
+          "L3": {
+            "SR": 0.56,
+            "SubSR": 0.702
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.275,
+          "SubSR": 0.4937
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.28,
+            "SubSR": 0.5629
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6577
+          },
+          "L2": {
+            "SR": 0.26,
+            "SubSR": 0.3427
+          },
+          "L3": {
+            "SR": 0.16,
+            "SubSR": 0.4115
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.09,
+          "SubSR": 0.2602
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.2,
+            "SubSR": 0.4216
+          },
+          "L1": {
+            "SR": 0.14,
+            "SubSR": 0.3654
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0415
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.2124
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.06,
+          "SubSR": 0.2421
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.2262
+          },
+          "L1": {
+            "SR": 0.06,
+            "SubSR": 0.3118
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.204
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.2265
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.055,
+          "SubSR": 0.1986
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.0,
+            "SubSR": 0.1965
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.378
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0605
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.1593
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.635,
+          "SubSR": 0.7809
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.78,
+            "SubSR": 0.9096
+          },
+          "L1": {
+            "SR": 0.58,
+            "SubSR": 0.7553
+          },
+          "L2": {
+            "SR": 0.52,
+            "SubSR": 0.616
+          },
+          "L3": {
+            "SR": 0.66,
+            "SubSR": 0.8426
+          }
+        }
+      }
+    },
+    "30": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.705,
+          "SubSR": 0.8195
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.74,
+            "SubSR": 0.8699
+          },
+          "L1": {
+            "SR": 0.8,
+            "SubSR": 0.9409
+          },
+          "L2": {
+            "SR": 0.52,
+            "SubSR": 0.5852
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.8821
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.175,
+          "SubSR": 0.426
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.2,
+            "SubSR": 0.5212
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.6118
+          },
+          "L2": {
+            "SR": 0.02,
+            "SubSR": 0.0795
+          },
+          "L3": {
+            "SR": 0.16,
+            "SubSR": 0.4917
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.85,
+          "SubSR": 0.907
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.9,
+            "SubSR": 0.91
+          },
+          "L1": {
+            "SR": 0.9,
+            "SubSR": 0.9637
+          },
+          "L2": {
+            "SR": 0.62,
+            "SubSR": 0.7542
+          },
+          "L3": {
+            "SR": 0.98,
+            "SubSR": 1.0
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.2,
+          "SubSR": 0.4314
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.16,
+            "SubSR": 0.5154
+          },
+          "L1": {
+            "SR": 0.36,
+            "SubSR": 0.6096
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.2194
+          },
+          "L3": {
+            "SR": 0.1,
+            "SubSR": 0.3813
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.555,
+          "SubSR": 0.749
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.62,
+            "SubSR": 0.8197
+          },
+          "L1": {
+            "SR": 0.56,
+            "SubSR": 0.8007
+          },
+          "L2": {
+            "SR": 0.36,
+            "SubSR": 0.4963
+          },
+          "L3": {
+            "SR": 0.68,
+            "SubSR": 0.8794
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.855,
+          "SubSR": 0.8874
+        },
+        "by_level": {
+          "L0": {
+            "SR": 1.0,
+            "SubSR": 1.0
+          },
+          "L1": {
+            "SR": 0.88,
+            "SubSR": 0.9086
+          },
+          "L2": {
+            "SR": 0.64,
+            "SubSR": 0.7137
+          },
+          "L3": {
+            "SR": 0.9,
+            "SubSR": 0.9274
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.83,
+          "SubSR": 0.8772
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9715
+          },
+          "L1": {
+            "SR": 0.9,
+            "SubSR": 0.9178
+          },
+          "L2": {
+            "SR": 0.6,
+            "SubSR": 0.6847
+          },
+          "L3": {
+            "SR": 0.9,
+            "SubSR": 0.935
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.83,
+          "SubSR": 0.888
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.9878
+          },
+          "L1": {
+            "SR": 0.88,
+            "SubSR": 0.9121
+          },
+          "L2": {
+            "SR": 0.6,
+            "SubSR": 0.7154
+          },
+          "L3": {
+            "SR": 0.88,
+            "SubSR": 0.9368
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.59,
+          "SubSR": 0.7715
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.6,
+            "SubSR": 0.8091
+          },
+          "L1": {
+            "SR": 0.62,
+            "SubSR": 0.841
+          },
+          "L2": {
+            "SR": 0.54,
+            "SubSR": 0.6288
+          },
+          "L3": {
+            "SR": 0.6,
+            "SubSR": 0.8073
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.435,
+          "SubSR": 0.671
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.52,
+            "SubSR": 0.7454
+          },
+          "L1": {
+            "SR": 0.36,
+            "SubSR": 0.734
+          },
+          "L2": {
+            "SR": 0.36,
+            "SubSR": 0.4663
+          },
+          "L3": {
+            "SR": 0.5,
+            "SubSR": 0.7381
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.395,
+          "SubSR": 0.5845
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.52,
+            "SubSR": 0.7869
+          },
+          "L1": {
+            "SR": 0.6,
+            "SubSR": 0.8132
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1702
+          },
+          "L3": {
+            "SR": 0.36,
+            "SubSR": 0.5677
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.295,
+          "SubSR": 0.5173
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.32,
+            "SubSR": 0.6216
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.6603
+          },
+          "L2": {
+            "SR": 0.14,
+            "SubSR": 0.1782
+          },
+          "L3": {
+            "SR": 0.4,
+            "SubSR": 0.6091
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.195,
+          "SubSR": 0.3582
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.16,
+            "SubSR": 0.3793
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.4542
+          },
+          "L2": {
+            "SR": 0.22,
+            "SubSR": 0.2488
+          },
+          "L3": {
+            "SR": 0.2,
+            "SubSR": 0.3507
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.18,
+          "SubSR": 0.3372
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.32,
+            "SubSR": 0.5406
+          },
+          "L1": {
+            "SR": 0.28,
+            "SubSR": 0.4115
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.1928
+          },
+          "L3": {
+            "SR": 0.0,
+            "SubSR": 0.2039
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.79,
+          "SubSR": 0.8556
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.9897
+          },
+          "L1": {
+            "SR": 0.9,
+            "SubSR": 0.9468
+          },
+          "L2": {
+            "SR": 0.44,
+            "SubSR": 0.5599
+          },
+          "L3": {
+            "SR": 0.86,
+            "SubSR": 0.9257
+          }
+        }
+      }
+    },
+    "45": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.735,
+          "SubSR": 0.8171
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.76,
+            "SubSR": 0.868
+          },
+          "L1": {
+            "SR": 0.86,
+            "SubSR": 0.9566
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.5291
+          },
+          "L3": {
+            "SR": 0.84,
+            "SubSR": 0.9146
+          }
+        }
+      },
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.225,
+          "SubSR": 0.4776
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.22,
+            "SubSR": 0.6118
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.5901
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.096
+          },
+          "L3": {
+            "SR": 0.32,
+            "SubSR": 0.6126
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.87,
+          "SubSR": 0.9145
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.94,
+            "SubSR": 0.9579
+          },
+          "L1": {
+            "SR": 0.9,
+            "SubSR": 0.9655
+          },
+          "L2": {
+            "SR": 0.64,
+            "SubSR": 0.7347
+          },
+          "L3": {
+            "SR": 1.0,
+            "SubSR": 1.0
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.245,
+          "SubSR": 0.4359
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.26,
+            "SubSR": 0.5682
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.4099
+          },
+          "L2": {
+            "SR": 0.3,
+            "SubSR": 0.3452
+          },
+          "L3": {
+            "SR": 0.24,
+            "SubSR": 0.4202
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.56,
+          "SubSR": 0.7399
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.6,
+            "SubSR": 0.8254
+          },
+          "L1": {
+            "SR": 0.54,
+            "SubSR": 0.748
+          },
+          "L2": {
+            "SR": 0.36,
+            "SubSR": 0.4943
+          },
+          "L3": {
+            "SR": 0.74,
+            "SubSR": 0.8921
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.855,
+          "SubSR": 0.9016
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.9871
+          },
+          "L1": {
+            "SR": 0.92,
+            "SubSR": 0.9387
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.6989
+          },
+          "L3": {
+            "SR": 0.96,
+            "SubSR": 0.9818
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.825,
+          "SubSR": 0.8808
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.989
+          },
+          "L1": {
+            "SR": 0.9,
+            "SubSR": 0.9198
+          },
+          "L2": {
+            "SR": 0.6,
+            "SubSR": 0.705
+          },
+          "L3": {
+            "SR": 0.84,
+            "SubSR": 0.9093
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.82,
+          "SubSR": 0.871
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.94,
+            "SubSR": 0.981
+          },
+          "L1": {
+            "SR": 0.84,
+            "SubSR": 0.8821
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.6941
+          },
+          "L3": {
+            "SR": 0.92,
+            "SubSR": 0.9269
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.6,
+          "SubSR": 0.7539
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.64,
+            "SubSR": 0.7883
+          },
+          "L1": {
+            "SR": 0.64,
+            "SubSR": 0.8221
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.5913
+          },
+          "L3": {
+            "SR": 0.62,
+            "SubSR": 0.8137
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.59,
+          "SubSR": 0.7614
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.7,
+            "SubSR": 0.8879
+          },
+          "L1": {
+            "SR": 0.62,
+            "SubSR": 0.8403
+          },
+          "L2": {
+            "SR": 0.46,
+            "SubSR": 0.5442
+          },
+          "L3": {
+            "SR": 0.58,
+            "SubSR": 0.7732
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.41,
+          "SubSR": 0.6535
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.5,
+            "SubSR": 0.7877
+          },
+          "L1": {
+            "SR": 0.34,
+            "SubSR": 0.6637
+          },
+          "L2": {
+            "SR": 0.36,
+            "SubSR": 0.4658
+          },
+          "L3": {
+            "SR": 0.44,
+            "SubSR": 0.6968
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.3,
+          "SubSR": 0.5058
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.46,
+            "SubSR": 0.6668
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.5088
+          },
+          "L2": {
+            "SR": 0.38,
+            "SubSR": 0.4054
+          },
+          "L3": {
+            "SR": 0.16,
+            "SubSR": 0.4424
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.26,
+          "SubSR": 0.4306
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.28,
+            "SubSR": 0.4491
+          },
+          "L1": {
+            "SR": 0.2,
+            "SubSR": 0.4383
+          },
+          "L2": {
+            "SR": 0.28,
+            "SubSR": 0.3104
+          },
+          "L3": {
+            "SR": 0.28,
+            "SubSR": 0.5246
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.21,
+          "SubSR": 0.4393
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.4762
+          },
+          "L1": {
+            "SR": 0.34,
+            "SubSR": 0.6482
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.2877
+          },
+          "L3": {
+            "SR": 0.14,
+            "SubSR": 0.3451
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.755,
+          "SubSR": 0.8315
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.88,
+            "SubSR": 0.895
+          },
+          "L1": {
+            "SR": 0.92,
+            "SubSR": 0.9715
+          },
+          "L2": {
+            "SR": 0.44,
+            "SubSR": 0.5626
+          },
+          "L3": {
+            "SR": 0.78,
+            "SubSR": 0.8968
+          }
+        }
+      }
+    }
+  },
+  "unseen_scratch": {
+    "15": {
+      "gr00t": {
+        "policy": "gr00t",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.215,
+          "SubSR": 0.4856
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.26,
+            "SubSR": 0.6157
+          },
+          "L1": {
+            "SR": 0.3,
+            "SubSR": 0.627
+          },
+          "L2": {
+            "SR": 0.0,
+            "SubSR": 0.082
+          },
+          "L3": {
+            "SR": 0.3,
+            "SubSR": 0.6178
+          }
+        }
+      },
+      "pi": {
+        "policy": "pi",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.795,
+          "SubSR": 0.8631
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9491
+          },
+          "L1": {
+            "SR": 0.88,
+            "SubSR": 0.9556
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.6347
+          },
+          "L3": {
+            "SR": 0.88,
+            "SubSR": 0.9129
+          }
+        }
+      },
+      "rdt": {
+        "policy": "rdt",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.35,
+          "SubSR": 0.5462
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.28,
+            "SubSR": 0.5926
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6389
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.2575
+          },
+          "L3": {
+            "SR": 0.52,
+            "SubSR": 0.6957
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.31,
+          "SubSR": 0.5113
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.38,
+            "SubSR": 0.6337
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6388
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.1265
+          },
+          "L3": {
+            "SR": 0.38,
+            "SubSR": 0.6462
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.82,
+          "SubSR": 0.8838
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.9868
+          },
+          "L1": {
+            "SR": 0.78,
+            "SubSR": 0.8548
+          },
+          "L2": {
+            "SR": 0.62,
+            "SubSR": 0.7235
+          },
+          "L3": {
+            "SR": 0.92,
+            "SubSR": 0.9699
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.775,
+          "SubSR": 0.8377
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.98,
+            "SubSR": 0.9938
+          },
+          "L1": {
+            "SR": 0.76,
+            "SubSR": 0.8221
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.6787
+          },
+          "L3": {
+            "SR": 0.78,
+            "SubSR": 0.856
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.72,
+          "SubSR": 0.8023
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.94,
+            "SubSR": 0.9542
+          },
+          "L1": {
+            "SR": 0.7,
+            "SubSR": 0.8226
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.5711
+          },
+          "L3": {
+            "SR": 0.76,
+            "SubSR": 0.8612
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.185,
+          "SubSR": 0.4192
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.513
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6805
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1491
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.3341
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.22,
+          "SubSR": 0.4346
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.22,
+            "SubSR": 0.4974
+          },
+          "L1": {
+            "SR": 0.26,
+            "SubSR": 0.5173
+          },
+          "L2": {
+            "SR": 0.16,
+            "SubSR": 0.2152
+          },
+          "L3": {
+            "SR": 0.24,
+            "SubSR": 0.5086
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.135,
+          "SubSR": 0.3136
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.08,
+            "SubSR": 0.3288
+          },
+          "L1": {
+            "SR": 0.16,
+            "SubSR": 0.3624
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.2324
+          },
+          "L3": {
+            "SR": 0.1,
+            "SubSR": 0.3309
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.44,
+          "SubSR": 0.5845
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.44,
+            "SubSR": 0.7037
+          },
+          "L1": {
+            "SR": 0.38,
+            "SubSR": 0.5414
+          },
+          "L2": {
+            "SR": 0.42,
+            "SubSR": 0.439
+          },
+          "L3": {
+            "SR": 0.52,
+            "SubSR": 0.6541
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.44,
+          "SubSR": 0.5954
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.38,
+            "SubSR": 0.6188
+          },
+          "L1": {
+            "SR": 0.42,
+            "SubSR": 0.6069
+          },
+          "L2": {
+            "SR": 0.36,
+            "SubSR": 0.4231
+          },
+          "L3": {
+            "SR": 0.6,
+            "SubSR": 0.7328
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.23,
+          "SubSR": 0.4402
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.14,
+            "SubSR": 0.4293
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6611
+          },
+          "L2": {
+            "SR": 0.32,
+            "SubSR": 0.345
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.3256
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.42,
+          "SubSR": 0.6042
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.48,
+            "SubSR": 0.7469
+          },
+          "L1": {
+            "SR": 0.54,
+            "SubSR": 0.7519
+          },
+          "L2": {
+            "SR": 0.22,
+            "SubSR": 0.283
+          },
+          "L3": {
+            "SR": 0.44,
+            "SubSR": 0.6352
+          }
+        }
+      }
+    },
+    "45": {
+      "openvla / base": {
+        "policy": "openvla",
+        "backbone": "base",
+        "overall": {
+          "SR": 0.14,
+          "SubSR": 0.3351
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.02,
+            "SubSR": 0.3169
+          },
+          "L1": {
+            "SR": 0.24,
+            "SubSR": 0.4679
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.063
+          },
+          "L3": {
+            "SR": 0.26,
+            "SubSR": 0.4924
+          }
+        }
+      },
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.34,
+          "SubSR": 0.5331
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.32,
+            "SubSR": 0.5502
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.6432
+          },
+          "L2": {
+            "SR": 0.2,
+            "SubSR": 0.269
+          },
+          "L3": {
+            "SR": 0.44,
+            "SubSR": 0.6702
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.8,
+          "SubSR": 0.8577
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.98,
+            "SubSR": 0.992
+          },
+          "L1": {
+            "SR": 0.82,
+            "SubSR": 0.8697
+          },
+          "L2": {
+            "SR": 0.6,
+            "SubSR": 0.6911
+          },
+          "L3": {
+            "SR": 0.8,
+            "SubSR": 0.878
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.68,
+          "SubSR": 0.7964
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.9,
+            "SubSR": 0.9559
+          },
+          "L1": {
+            "SR": 0.6,
+            "SubSR": 0.7886
+          },
+          "L2": {
+            "SR": 0.5,
+            "SubSR": 0.6248
+          },
+          "L3": {
+            "SR": 0.72,
+            "SubSR": 0.8161
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.71,
+          "SubSR": 0.8267
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.92,
+            "SubSR": 0.9683
+          },
+          "L1": {
+            "SR": 0.52,
+            "SubSR": 0.7555
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.6779
+          },
+          "L3": {
+            "SR": 0.82,
+            "SubSR": 0.9051
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.23,
+          "SubSR": 0.4493
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.36,
+            "SubSR": 0.6391
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.638
+          },
+          "L2": {
+            "SR": 0.08,
+            "SubSR": 0.1252
+          },
+          "L3": {
+            "SR": 0.16,
+            "SubSR": 0.3948
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.21,
+          "SubSR": 0.4301
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.3,
+            "SubSR": 0.5712
+          },
+          "L1": {
+            "SR": 0.24,
+            "SubSR": 0.5337
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.1778
+          },
+          "L3": {
+            "SR": 0.18,
+            "SubSR": 0.4375
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.2,
+          "SubSR": 0.4282
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.18,
+            "SubSR": 0.4612
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.576
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.2442
+          },
+          "L3": {
+            "SR": 0.12,
+            "SubSR": 0.4314
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.39,
+          "SubSR": 0.5712
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.36,
+            "SubSR": 0.6445
+          },
+          "L1": {
+            "SR": 0.26,
+            "SubSR": 0.5078
+          },
+          "L2": {
+            "SR": 0.46,
+            "SubSR": 0.4927
+          },
+          "L3": {
+            "SR": 0.48,
+            "SubSR": 0.6399
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.395,
+          "SubSR": 0.5781
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.42,
+            "SubSR": 0.6814
+          },
+          "L1": {
+            "SR": 0.56,
+            "SubSR": 0.718
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.5213
+          },
+          "L3": {
+            "SR": 0.12,
+            "SubSR": 0.3916
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.315,
+          "SubSR": 0.5285
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.4,
+            "SubSR": 0.6577
+          },
+          "L1": {
+            "SR": 0.48,
+            "SubSR": 0.753
+          },
+          "L2": {
+            "SR": 0.1,
+            "SubSR": 0.1641
+          },
+          "L3": {
+            "SR": 0.28,
+            "SubSR": 0.5393
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.43,
+          "SubSR": 0.5961
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.54,
+            "SubSR": 0.7433
+          },
+          "L1": {
+            "SR": 0.48,
+            "SubSR": 0.7027
+          },
+          "L2": {
+            "SR": 0.24,
+            "SubSR": 0.3181
+          },
+          "L3": {
+            "SR": 0.46,
+            "SubSR": 0.6201
+          }
+        }
+      }
+    },
+    "30": {
+      "uniskill": {
+        "policy": "uniskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.36,
+          "SubSR": 0.5445
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.44,
+            "SubSR": 0.7114
+          },
+          "L1": {
+            "SR": 0.44,
+            "SubSR": 0.6618
+          },
+          "L2": {
+            "SR": 0.14,
+            "SubSR": 0.1786
+          },
+          "L3": {
+            "SR": 0.42,
+            "SubSR": 0.6263
+          }
+        }
+      },
+      "act / dinov2_vitl14": {
+        "policy": "act",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.79,
+          "SubSR": 0.8586
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.96,
+            "SubSR": 0.988
+          },
+          "L1": {
+            "SR": 0.78,
+            "SubSR": 0.8377
+          },
+          "L2": {
+            "SR": 0.56,
+            "SubSR": 0.6862
+          },
+          "L3": {
+            "SR": 0.86,
+            "SubSR": 0.9225
+          }
+        }
+      },
+      "act / siglip2_so400m": {
+        "policy": "act",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.765,
+          "SubSR": 0.8561
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.9,
+            "SubSR": 0.9684
+          },
+          "L1": {
+            "SR": 0.78,
+            "SubSR": 0.8484
+          },
+          "L2": {
+            "SR": 0.58,
+            "SubSR": 0.699
+          },
+          "L3": {
+            "SR": 0.8,
+            "SubSR": 0.9085
+          }
+        }
+      },
+      "act / videomae_large": {
+        "policy": "act",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.775,
+          "SubSR": 0.8611
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.88,
+            "SubSR": 0.9608
+          },
+          "L1": {
+            "SR": 0.76,
+            "SubSR": 0.8131
+          },
+          "L2": {
+            "SR": 0.52,
+            "SubSR": 0.69
+          },
+          "L3": {
+            "SR": 0.94,
+            "SubSR": 0.9804
+          }
+        }
+      },
+      "dp / dinov2_vitl14": {
+        "policy": "dp",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.215,
+          "SubSR": 0.4435
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.22,
+            "SubSR": 0.521
+          },
+          "L1": {
+            "SR": 0.32,
+            "SubSR": 0.6162
+          },
+          "L2": {
+            "SR": 0.04,
+            "SubSR": 0.1162
+          },
+          "L3": {
+            "SR": 0.28,
+            "SubSR": 0.5206
+          }
+        }
+      },
+      "dp / siglip2_so400m": {
+        "policy": "dp",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.18,
+          "SubSR": 0.419
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.22,
+            "SubSR": 0.5233
+          },
+          "L1": {
+            "SR": 0.22,
+            "SubSR": 0.528
+          },
+          "L2": {
+            "SR": 0.18,
+            "SubSR": 0.2388
+          },
+          "L3": {
+            "SR": 0.1,
+            "SubSR": 0.3859
+          }
+        }
+      },
+      "dp / videomae_large": {
+        "policy": "dp",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.13,
+          "SubSR": 0.3127
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.06,
+            "SubSR": 0.3048
+          },
+          "L1": {
+            "SR": 0.18,
+            "SubSR": 0.4177
+          },
+          "L2": {
+            "SR": 0.22,
+            "SubSR": 0.2474
+          },
+          "L3": {
+            "SR": 0.06,
+            "SubSR": 0.281
+          }
+        }
+      },
+      "vqbet / dinov2_vitl14": {
+        "policy": "vqbet",
+        "backbone": "dinov2_vitl14",
+        "overall": {
+          "SR": 0.48,
+          "SubSR": 0.6511
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.42,
+            "SubSR": 0.6609
+          },
+          "L1": {
+            "SR": 0.58,
+            "SubSR": 0.7755
+          },
+          "L2": {
+            "SR": 0.4,
+            "SubSR": 0.4714
+          },
+          "L3": {
+            "SR": 0.52,
+            "SubSR": 0.6965
+          }
+        }
+      },
+      "vqbet / siglip2_so400m": {
+        "policy": "vqbet",
+        "backbone": "siglip2_so400m",
+        "overall": {
+          "SR": 0.43,
+          "SubSR": 0.609
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.4,
+            "SubSR": 0.6586
+          },
+          "L1": {
+            "SR": 0.44,
+            "SubSR": 0.6951
+          },
+          "L2": {
+            "SR": 0.48,
+            "SubSR": 0.4866
+          },
+          "L3": {
+            "SR": 0.4,
+            "SubSR": 0.5959
+          }
+        }
+      },
+      "vqbet / videomae_large": {
+        "policy": "vqbet",
+        "backbone": "videomae_large",
+        "overall": {
+          "SR": 0.275,
+          "SubSR": 0.4787
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.36,
+            "SubSR": 0.5987
+          },
+          "L1": {
+            "SR": 0.4,
+            "SubSR": 0.7373
+          },
+          "L2": {
+            "SR": 0.12,
+            "SubSR": 0.184
+          },
+          "L3": {
+            "SR": 0.22,
+            "SubSR": 0.395
+          }
+        }
+      },
+      "xskill": {
+        "policy": "xskill",
+        "backbone": "unknown",
+        "overall": {
+          "SR": 0.41,
+          "SubSR": 0.564
+        },
+        "by_level": {
+          "L0": {
+            "SR": 0.42,
+            "SubSR": 0.6263
+          },
+          "L1": {
+            "SR": 0.56,
+            "SubSR": 0.7621
+          },
+          "L2": {
+            "SR": 0.24,
+            "SubSR": 0.2904
+          },
+          "L3": {
+            "SR": 0.42,
+            "SubSR": 0.5773
+          }
+        }
+      }
+    }
+  },
+  "unseen_scratch_flat": {
+    "gr00t": {
+      "policy": "gr00t",
+      "backbone": "unknown",
+      "overall": {
+        "SR": 0.215,
+        "SubSR": 0.4856
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.26,
+          "SubSR": 0.6157
+        },
+        "L1": {
+          "SR": 0.3,
+          "SubSR": 0.627
+        },
+        "L2": {
+          "SR": 0.0,
+          "SubSR": 0.082
+        },
+        "L3": {
+          "SR": 0.3,
+          "SubSR": 0.6178
+        }
+      }
+    },
+    "openvla / base": {
+      "policy": "openvla",
+      "backbone": "base",
+      "overall": {
+        "SR": 0.14,
+        "SubSR": 0.3351
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.02,
+          "SubSR": 0.3169
+        },
+        "L1": {
+          "SR": 0.24,
+          "SubSR": 0.4679
+        },
+        "L2": {
+          "SR": 0.04,
+          "SubSR": 0.063
+        },
+        "L3": {
+          "SR": 0.26,
+          "SubSR": 0.4924
+        }
+      }
+    },
+    "pi": {
+      "policy": "pi",
+      "backbone": "unknown",
+      "overall": {
+        "SR": 0.795,
+        "SubSR": 0.8631
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.92,
+          "SubSR": 0.9491
+        },
+        "L1": {
+          "SR": 0.88,
+          "SubSR": 0.9556
+        },
+        "L2": {
+          "SR": 0.5,
+          "SubSR": 0.6347
+        },
+        "L3": {
+          "SR": 0.88,
+          "SubSR": 0.9129
+        }
+      }
+    },
+    "rdt": {
+      "policy": "rdt",
+      "backbone": "unknown",
+      "overall": {
+        "SR": 0.35,
+        "SubSR": 0.5462
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.28,
+          "SubSR": 0.5926
+        },
+        "L1": {
+          "SR": 0.4,
+          "SubSR": 0.6389
+        },
+        "L2": {
+          "SR": 0.2,
+          "SubSR": 0.2575
+        },
+        "L3": {
+          "SR": 0.52,
+          "SubSR": 0.6957
+        }
+      }
+    },
+    "uniskill": {
+      "policy": "uniskill",
+      "backbone": "unknown",
+      "overall": {
+        "SR": 0.265,
+        "SubSR": 0.4595
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.3,
+          "SubSR": 0.5502
+        },
+        "L1": {
+          "SR": 0.34,
+          "SubSR": 0.5924
+        },
+        "L2": {
+          "SR": 0.06,
+          "SubSR": 0.0981
+        },
+        "L3": {
+          "SR": 0.36,
+          "SubSR": 0.5975
+        }
+      }
+    },
+    "act / dinov2_vitl14": {
+      "policy": "act",
+      "backbone": "dinov2_vitl14",
+      "overall": {
+        "SR": 0.755,
+        "SubSR": 0.8348
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.94,
+          "SubSR": 0.9787
+        },
+        "L1": {
+          "SR": 0.76,
+          "SubSR": 0.8262
+        },
+        "L2": {
+          "SR": 0.54,
+          "SubSR": 0.6565
+        },
+        "L3": {
+          "SR": 0.78,
+          "SubSR": 0.878
+        }
+      }
+    },
+    "act / siglip2_so400m": {
+      "policy": "act",
+      "backbone": "siglip2_so400m",
+      "overall": {
+        "SR": 0.65,
+        "SubSR": 0.7801
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.86,
+          "SubSR": 0.9413
+        },
+        "L1": {
+          "SR": 0.58,
+          "SubSR": 0.7585
+        },
+        "L2": {
+          "SR": 0.5,
+          "SubSR": 0.6145
+        },
+        "L3": {
+          "SR": 0.66,
+          "SubSR": 0.8062
+        }
+      }
+    },
+    "act / videomae_large": {
+      "policy": "act",
+      "backbone": "videomae_large",
+      "overall": {
+        "SR": 0.63,
+        "SubSR": 0.755
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.82,
+          "SubSR": 0.9076
+        },
+        "L1": {
+          "SR": 0.5,
+          "SubSR": 0.6887
+        },
+        "L2": {
+          "SR": 0.48,
+          "SubSR": 0.5709
+        },
+        "L3": {
+          "SR": 0.72,
+          "SubSR": 0.853
+        }
+      }
+    },
+    "dp / dinov2_vitl14": {
+      "policy": "dp",
+      "backbone": "dinov2_vitl14",
+      "overall": {
+        "SR": 0.13,
+        "SubSR": 0.3592
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.16,
+          "SubSR": 0.4665
+        },
+        "L1": {
+          "SR": 0.3,
+          "SubSR": 0.5972
+        },
+        "L2": {
+          "SR": 0.0,
+          "SubSR": 0.0449
+        },
+        "L3": {
+          "SR": 0.06,
+          "SubSR": 0.3281
+        }
+      }
+    },
+    "dp / siglip2_so400m": {
+      "policy": "dp",
+      "backbone": "siglip2_so400m",
+      "overall": {
+        "SR": 0.11,
+        "SubSR": 0.3471
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.14,
+          "SubSR": 0.4477
+        },
+        "L1": {
+          "SR": 0.16,
+          "SubSR": 0.4301
+        },
+        "L2": {
+          "SR": 0.08,
+          "SubSR": 0.1375
+        },
+        "L3": {
+          "SR": 0.06,
+          "SubSR": 0.3731
+        }
+      }
+    },
+    "dp / videomae_large": {
+      "policy": "dp",
+      "backbone": "videomae_large",
+      "overall": {
+        "SR": 0.09,
+        "SubSR": 0.266
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.02,
+          "SubSR": 0.2484
+        },
+        "L1": {
+          "SR": 0.14,
+          "SubSR": 0.3605
+        },
+        "L2": {
+          "SR": 0.16,
+          "SubSR": 0.1924
+        },
+        "L3": {
+          "SR": 0.04,
+          "SubSR": 0.2625
+        }
+      }
+    },
+    "vqbet / dinov2_vitl14": {
+      "policy": "vqbet",
+      "backbone": "dinov2_vitl14",
+      "overall": {
+        "SR": 0.35,
+        "SubSR": 0.5252
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.36,
+          "SubSR": 0.6323
+        },
+        "L1": {
+          "SR": 0.26,
+          "SubSR": 0.4776
+        },
+        "L2": {
+          "SR": 0.38,
+          "SubSR": 0.3994
+        },
+        "L3": {
+          "SR": 0.4,
+          "SubSR": 0.5916
+        }
+      }
+    },
+    "vqbet / siglip2_so400m": {
+      "policy": "vqbet",
+      "backbone": "siglip2_so400m",
+      "overall": {
+        "SR": 0.255,
+        "SubSR": 0.4569
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.36,
+          "SubSR": 0.6127
+        },
+        "L1": {
+          "SR": 0.24,
+          "SubSR": 0.4916
+        },
+        "L2": {
+          "SR": 0.36,
+          "SubSR": 0.3747
+        },
+        "L3": {
+          "SR": 0.06,
+          "SubSR": 0.3485
+        }
+      }
+    },
+    "vqbet / videomae_large": {
+      "policy": "vqbet",
+      "backbone": "videomae_large",
+      "overall": {
+        "SR": 0.135,
+        "SubSR": 0.3638
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.1,
+          "SubSR": 0.4205
+        },
+        "L1": {
+          "SR": 0.3,
+          "SubSR": 0.6091
+        },
+        "L2": {
+          "SR": 0.1,
+          "SubSR": 0.1357
+        },
+        "L3": {
+          "SR": 0.04,
+          "SubSR": 0.29
+        }
+      }
+    },
+    "xskill": {
+      "policy": "xskill",
+      "backbone": "unknown",
+      "overall": {
+        "SR": 0.35,
+        "SubSR": 0.5144
+      },
+      "by_level": {
+        "L0": {
+          "SR": 0.34,
+          "SubSR": 0.5757
+        },
+        "L1": {
+          "SR": 0.48,
+          "SubSR": 0.6914
+        },
+        "L2": {
+          "SR": 0.2,
+          "SubSR": 0.2484
+        },
+        "L3": {
+          "SR": 0.38,
+          "SubSR": 0.5423
+        }
+      }
+    }
+  },
+  "_meta": {
+    "results_root": "C:\\Users\\zxz\\Desktop\\final_results",
+    "source_dirs": [
+      "gr00t_results",
+      "openvla_results",
+      "pi05_results",
+      "rdt_results",
+      "uniskill_results",
+      "va_results",
+      "xskill_results"
+    ],
+    "total_csv_rows": 3440
+  }
+}
