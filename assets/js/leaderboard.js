@@ -162,7 +162,7 @@
       // human quality score exists for this regime, so Quality falls
       // back to the SR series here rather than showing empty cells.
       var byFam = IG.figC5.simSeenByFamily;
-      var rows = [{ name: "All 15 variants", fam: null, src: src, tone: "var(--fig-grey)",
+       var rows = [{ name: "All 16 variants", fam: null, src: src, tone: "var(--fig-grey)",
                     L0: IG.figC5.simSeenAll[0], L1: IG.figC5.simSeenAll[1],
                     L2: IG.figC5.simSeenAll[2], L3: IG.figC5.simSeenAll[3] }];
       ["VLA", "Skill", "VideoVA"].forEach(function (f) {
@@ -217,11 +217,28 @@
     var D = window.SIM_DETAIL;
     if (!D) return { rows: [], cols: [{ key: "name", label: "Task", type: "name", sortable: false }], note: "Per-task data not loaded (sim-detail-data.js)." };
 
+    var Z = window.ZERO_WAM_DETAIL;
+    if (Z && !D.models.some(function (m) { return m.key === Z.model.key; })) {
+      D.models = [Z.model].concat(D.models);
+    }
+
     var mi = state.metric === "sub" ? 1 : 0;           // 0 = SR, 1 = SubSR
     var reg = state.regime;                            // seen | zs | scr | pft
     var isScr = reg === "scr";
     /* seen/zs/pft → per-scale blocks keyed by scale; scr → flat block */
     var block = isScr ? (D.scr || {}) : ((D[reg] || {})[state.scale] || (D[reg] || {}).mean || {});
+
+    if (Z) {
+      var zGroup = isScr ? Z.scratch : (state.scale === "mean" ? Z.mean[reg] : Z.scales[reg][state.scale]);
+      var zTasks = state.regime === "seen" ? Z.seenTasks : Z.unseenTasks;
+      zTasks.forEach(function (taskKey, taskIndex) {
+        block[taskKey] = block[taskKey] || {};
+        for (var levelIndex = 0; levelIndex < 4; levelIndex++) {
+          block[taskKey]["L" + levelIndex] = block[taskKey]["L" + levelIndex] || {};
+          block[taskKey]["L" + levelIndex].zero_wam = zGroup[taskIndex][levelIndex];
+        }
+      });
+    }
 
     /* Model columns, grouped by paradigm for the two-row header.
        Family chips (state.famOff) hide whole paradigm groups. */
@@ -287,7 +304,8 @@
     var scaleNote = isScr ? " From-scratch has no pretraining scale — one flat result."
       : (state.scale === "mean"
           ? " Cells average over the {15,30,45} pretraining scales."
-          : " Showing the " + state.scale + "-task pretraining scale only.");
+          : (Z ? " Showing the " + state.scale + "-task pretraining scale for the published baselines; Zero-WAM remains at its merged mean."
+              : " Showing the " + state.scale + "-task pretraining scale only."));
 
     return { rows: rows.concat([avg]), cols: cols, groups: groups,
              note: NOTE + lvlNote + scaleNote + " " + metNote,
@@ -416,7 +434,7 @@
   }
 
   function defaultNote() {
-    if (state.board === "sim") return "15 trained variants across 3 paradigms, automated metric. The ranking by Seen SR and by P+FT SR are not the same list — try sorting by each.";
+     if (state.board === "sim") return "16 trained variants across 3 paradigms, automated metric. The ranking by Seen SR and by P+FT SR are not the same list — try sorting by each.";
     if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison. All four regimes (Seen, Zero-shot, From-scratch, Pretrain+fine-tune) are shown side by side.";
     return "";
   }

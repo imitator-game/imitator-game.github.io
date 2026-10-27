@@ -49,6 +49,7 @@
   --l1: #0071e3; --l1-bg: #e8f1fd;
   --l2: #ff9500; --l2-bg: #fff1de;
   --l3: #ff3b30; --l3-bg: #ffe5e3;
+  --fig-icl: #af52de;
 }
 
 [data-theme="dark"] {
@@ -72,6 +73,7 @@
   --warning: #f0b45b;  --warning-bg: rgba(240,180,91,0.18);
   --danger:  #df596a;  --danger-bg:  rgba(223,89,106,0.18);
   --info:    #58b7c6;  --info-bg:    rgba(49,154,172,0.18);
+  --fig-icl: #d084f2;
 
   --shadow:
     0 1px 2px rgba(0,0,0,0.18),

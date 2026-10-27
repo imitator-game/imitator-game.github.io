@@ -64,7 +64,7 @@
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
         <h1 class="lb-title" data-split="45" data-reveal>Who imitates best?</h1>
         <p class="lb-sub" data-reveal="up" data-reveal-delay="200">
-          Nine models, fifteen variants, scored in 40 evaluation tasks in two ways: an automated metric in simulation,
+          Nine models, sixteen variants, scored in 40 evaluation tasks in two ways: an automated metric in simulation,
           and blind human comparisons in the Arena for both simulation and real world.
         </p>
 
@@ -100,6 +100,7 @@
         <span class="lb-chip" data-fam="VLA" style="--chip:var(--fig-vla)">VLA</span>
         <span class="lb-chip" data-fam="Skill" style="--chip:var(--fig-skill)">Video-Skill</span>
         <span class="lb-chip" data-fam="VideoVA" style="--chip:var(--fig-videova)">Video-VA</span>
+        <span class="lb-chip" data-fam="ICL" style="--chip:var(--fig-icl)">ICL</span>
         <input id="lb-search" class="lb-search" type="search" placeholder="Find a model…" aria-label="Find a model">
       </div>
     </div>
@@ -143,7 +144,8 @@
       </div>
 
       <p class="lb-note" style="margin-top:1rem;">
-        This board — and every other model comparison on the site — is scored on a fixed protocol: <b>5 seen and
+        Zero-WAM is currently reported for the automated simulation board; real-world Arena results are not reported
+        for this submission. This board — and every other model comparison on the site — is scored on a fixed protocol: <b>5 seen and
         5 unseen tasks</b>, each at all four imitation levels, in both simulation and the real world. IG-10K's full
         task suite is larger; see <a href="#full-suite">the 50-task reference below</a> for how far that goes.
       </p>
@@ -240,6 +242,7 @@
 <script src="assets/js/manifest-data.js"></script>
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/sim-detail-data.js"></script>
+<script src="assets/js/zero-wam-detail.js"></script>
 <script src="assets/js/full-task-suite-data.js"></script>
 <script src="assets/js/full-task-suite.js"></script>
 <script src="assets/js/leaderboard.js"></script>

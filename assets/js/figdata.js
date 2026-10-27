@@ -38,7 +38,8 @@ window.IG = (function () {
   var FAMILY = {
     VLA:     { key: "VLA",     label: "Language-conditioned VLA", short: "VLA",         color: "var(--fig-vla)",     marker: "circle" },
     Skill:   { key: "Skill",   label: "Cross-embodiment skill",   short: "Video-Skill", color: "var(--fig-skill)",   marker: "square" },
-    VideoVA: { key: "VideoVA", label: "Video-conditioned VA",     short: "Video-VA",    color: "var(--fig-videova)", marker: "triangle" }
+    VideoVA: { key: "VideoVA", label: "Video-conditioned VA",     short: "Video-VA",    color: "var(--fig-videova)", marker: "triangle" },
+    ICL:     { key: "ICL",     label: "In-context learning",       short: "ICL",        color: "var(--fig-icl)",     marker: "diamond" }
   };
 
   /* ── Simulation: 15 trained variants ─────────────────────────
@@ -60,6 +61,7 @@ window.IG = (function () {
     { model: "UniSkill",        fam: "Skill",   enc: null,       seen: .75, seenSub: .89, zs: .07, zsSub: .17, scr: .27, scrSub: .46, pft: .59, pftSub: .76 },
     { model: "π₀.₅",            fam: "VLA",     enc: null,       seen: .73, seenSub: .89, zs: .09, zsSub: .22, scr: .80, scrSub: .86, pft: .85, pftSub: .91 },
     { model: "ACT/VideoMAE",    fam: "VideoVA", enc: "VideoMAE", seen: .72, seenSub: .88, zs: .04, zsSub: .14, scr: .63, scrSub: .76, pft: .82, pftSub: .87 },
+    { model: "Zero-WAM",         fam: "ICL",     enc: null,       seen: .71, seenSub: .92, zs: .1333, zsSub: .3116, scr: .68, scrSub: .8074, pft: .8283, pftSub: .8940 },
     { model: "DP/DINOv2",       fam: "VideoVA", enc: "DINOv2",   seen: .67, seenSub: .84, zs: .07, zsSub: .21, scr: .13, scrSub: .36, pft: .54, pftSub: .73 },
     { model: "DP/SigLIP2",      fam: "VideoVA", enc: "SigLIP2",  seen: .61, seenSub: .84, zs: .05, zsSub: .20, scr: .11, scrSub: .35, pft: .48, pftSub: .69 },
     { model: "VQ-BeT/SigLIP2",  fam: "VideoVA", enc: "SigLIP2",  seen: .57, seenSub: .78, zs: .08, zsSub: .23, scr: .26, scrSub: .46, pft: .17, pftSub: .34 },

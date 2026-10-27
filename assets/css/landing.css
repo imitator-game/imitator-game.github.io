@@ -111,6 +111,8 @@ body.landing-page .pst-header-nav { display: flex !important; }
   .venue-badge-conf,
   .venue-badge-oral { text-align: center; line-height: 1.35; }
 }
+.hero-resource-row { margin-top: .15rem; }
+.hero-resource-row a { text-decoration: none; }
 
 /* ── Section band system ─────────────────────────────────────── */
 /* Strips the default pst-main vertical padding; each band owns its spacing */
