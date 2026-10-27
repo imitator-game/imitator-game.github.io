@@ -12,7 +12,7 @@ ACT is the Action Chunking with Transformers policy originally proposed for bima
 
 ## Expected execution context
 
-Run from the repository root (see top-level [`README.md`](../../../README.md) for environment setup):
+Run from the repository root (see top-level [`README.md`](../../README.md) for environment setup):
 
 ```bash
 export PYTHONPATH=$PWD:$PYTHONPATH
@@ -92,10 +92,10 @@ python -m examples.baselines.act.eval_act_imitator \
 
 ## Experiment scripts
 
-The reported ACT experiments are reproduced by the launchers under [`../exp_scripts/`](../exp_scripts/):
+The reported ACT experiments are reproduced by the launchers in the [code repository's ACT experiment scripts](https://github.com/imitator-game/The-Imitator-Game/tree/main/examples/baselines/exp_scripts/act/):
 
-- [`exp_scripts/act/run_exp_act.sh`](../exp_scripts/act/run_exp_act.sh) — parallel 45/30/15-task frozen-backbone training on GPUs 0/1/2.
-- [`exp_scripts/act/run_eval_act.sh`](../exp_scripts/act/run_eval_act.sh) — parallel evaluation on the seen/unseen benchmark tasks. Point `RUN_DIR_{45,30,15}` at the training run directories.
+- [`run_exp_act.sh`](https://github.com/imitator-game/The-Imitator-Game/blob/main/examples/baselines/exp_scripts/act/run_exp_act.sh) — parallel 45/30/15-task frozen-backbone training on GPUs 0/1/2.
+- [`run_eval_act.sh`](https://github.com/imitator-game/The-Imitator-Game/blob/main/examples/baselines/exp_scripts/act/run_eval_act.sh) — parallel evaluation on the seen/unseen benchmark tasks. Point `RUN_DIR_{45,30,15}` at the training run directories.
 
 ## Notes
 
