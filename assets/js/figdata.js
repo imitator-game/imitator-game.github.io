@@ -39,7 +39,8 @@ window.IG = (function () {
     VLA:     { key: "VLA",     label: "Language-conditioned VLA", short: "VLA",         color: "var(--fig-vla)",     marker: "circle" },
     Skill:   { key: "Skill",   label: "Cross-embodiment skill",   short: "Video-Skill", color: "var(--fig-skill)",   marker: "square" },
     VideoVA: { key: "VideoVA", label: "Video-conditioned VA",     short: "Video-VA",    color: "var(--fig-videova)", marker: "triangle" },
-    ICL:     { key: "ICL",     label: "In-context learning",       short: "ICL",        color: "var(--fig-icl)",     marker: "diamond" }
+    ICL:     { key: "ICL",     label: "In-context learning",       short: "ICL",        color: "var(--fig-icl)",     marker: "diamond" },
+    Agentic: { key: "Agentic", label: "Agentic zero-shot",          short: "Agentic",    color: "var(--fig-agentic)", marker: "hexagon" }
   };
 
   /* ── Simulation: 15 trained variants ─────────────────────────

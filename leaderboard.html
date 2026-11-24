@@ -64,7 +64,7 @@
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
         <h1 class="lb-title" data-split="45" data-reveal>Who imitates best?</h1>
         <p class="lb-sub" data-reveal="up" data-reveal-delay="200">
-          Nine models, sixteen variants, scored in 40 evaluation tasks in two ways: an automated metric in simulation,
+          Agentic zero-shot models and sixteen policy variants, scored on 40 task-level pairs using automated metrics in simulation,
           and blind human comparisons in the Arena for both simulation and real world.
         </p>
 
@@ -101,6 +101,7 @@
         <span class="lb-chip" data-fam="Skill" style="--chip:var(--fig-skill)">Video-Skill</span>
         <span class="lb-chip" data-fam="VideoVA" style="--chip:var(--fig-videova)">Video-VA</span>
         <span class="lb-chip" data-fam="ICL" style="--chip:var(--fig-icl)">ICL</span>
+        <span class="lb-chip" data-fam="Agentic" style="--chip:var(--fig-agentic)">Agentic</span>
         <input id="lb-search" class="lb-search" type="search" placeholder="Find a model…" aria-label="Find a model">
       </div>
     </div>
@@ -136,16 +137,31 @@
 
       <p class="lb-note" id="lb-note"></p>
 
+      <section id="lb-agentic-section" class="lb-subtable-section" style="display:none;">
+        <div class="lb-subtable-heading">
+          <div>
+            <span class="lb-subtable-kicker lb-subtable-kicker-agentic">Agentic baselines</span>
+            <h2>Agentic · zero-shot</h2>
+          </div>
+        </div>
+        <div class="lb-table-shell"><table class="lb-table"><thead id="lb-agentic-head"></thead><tbody id="lb-agentic-body"></tbody></table></div>
+      </section>
+
+      <section id="lb-standard-section" class="lb-subtable-section">
+        <div id="lb-standard-heading" class="lb-subtable-heading" style="display:none;">
+          <div><span class="lb-subtable-kicker lb-subtable-kicker-policy">End-to-end Policy baselines</span><h2>Trained and fine-tuned models</h2></div>
+        </div>
       <div class="lb-table-shell">
         <table class="lb-table">
           <thead id="lb-head"></thead>
           <tbody id="lb-body"></tbody>
         </table>
       </div>
+      </section>
 
       <p class="lb-note" style="margin-top:1rem;">
-        Zero-WAM is currently reported for the automated simulation board; real-world Arena results are not reported
-        for this submission. This board — and every other model comparison on the site — is scored on a fixed protocol: <b>5 seen and
+        GPT-Astra and Zero-WAM currently report simulation results only. Agentic models are evaluated zero-shot on both task groups.
+        This board is scored on a fixed protocol: <b>5 seen and
         5 unseen tasks</b>, each at all four imitation levels, in both simulation and the real world. IG-10K's full
         task suite is larger; see <a href="#full-suite">the 50-task reference below</a> for how far that goes.
       </p>
@@ -243,6 +259,7 @@
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/sim-detail-data.js"></script>
 <script src="assets/js/zero-wam-detail.js"></script>
+<script src="assets/js/astra-data.js"></script>
 <script src="assets/js/full-task-suite-data.js"></script>
 <script src="assets/js/full-task-suite.js"></script>
 <script src="assets/js/leaderboard.js"></script>

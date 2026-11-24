@@ -304,8 +304,7 @@
     var scaleNote = isScr ? " From-scratch has no pretraining scale — one flat result."
       : (state.scale === "mean"
           ? " Cells average over the {15,30,45} pretraining scales."
-          : (Z ? " Showing the " + state.scale + "-task pretraining scale for the published baselines; Zero-WAM remains at its merged mean."
-              : " Showing the " + state.scale + "-task pretraining scale only."));
+          : " Showing the " + state.scale + "-task pretraining scale only.");
 
     return { rows: rows.concat([avg]), cols: cols, groups: groups,
              note: NOTE + lvlNote + scaleNote + " " + metNote,
@@ -367,13 +366,13 @@
     return "";
   }
 
-  function headerHTML(cols, groups) {
+  function headerHTML(cols, groups, models) {
     if (!groups || !groups.length) {
       return "<tr>" + '<th class="lbt-rank-h">#</th>' + cols.map(function (c) {
         var active = c.key === state.sortKey;
         var cls = "lbt-th" + (c.sortable === false ? "" : " lbt-th-btn") + (active ? " is-active" : "");
         var arrow = active ? (state.sortDir === -1 ? " ↓" : " ↑") : "";
-        return '<th class="' + cls + '" data-key="' + c.key + '" data-sortable="' + (c.sortable !== false) + '">' +
+        return '<th class="' + cls + '"' + (c.fam ? ' style="color:' + IG.famColor(c.fam) + '"' : '') + ' data-key="' + c.key + '" data-sortable="' + (c.sortable !== false) + '">' +
           esc(c.label) + arrow + "</th>";
       }).join("") + "</tr>";
     }
@@ -397,12 +396,62 @@
     var row2 = "";
     gData.forEach(function (grp) {
       grp.keys.forEach(function (k) {
-        var short = (window.SIM_DETAIL.models.filter(function (m) { return m.key === k; })[0] || {}).short || k;
+        var short = ((models || window.SIM_DETAIL.models).filter(function (m) { return m.key === k; })[0] || {}).short || k;
         row2 += '<th class="lbt-th lbt-model-h" style="color:' + grp.color + '" data-key="' + k + '" data-sortable="false">' +
           esc(short) + "</th>";
       });
     });
     return "<tr>" + row1 + "</tr><tr>" + row2 + "</tr>";
+  }
+
+  function agenticCell(v) {
+    return '<span class="lbt-num"><span class="lbt-bar"><span class="lbt-bar-fill" style="width:' + Math.max(2, Math.round(v * 100)) + '%;background:var(--fig-agentic)"></span></span>' + pct(v) + '</span>';
+  }
+
+  function renderAgentic(board) {
+    var section = document.getElementById("lb-agentic-section");
+    var standardSection = document.getElementById("lb-standard-section");
+    if (section) section.dataset.board = board;
+    if (standardSection) standardSection.dataset.board = board;
+    var standardHeading = document.getElementById("lb-standard-heading");
+    var head = document.getElementById("lb-agentic-head");
+    var body = document.getElementById("lb-agentic-body");
+    var A = window.ASTRA_DATA;
+    var visible = !!A && !state.famOff.Agentic && (board === "sim" || board === "task");
+    if (section) section.style.display = visible ? "" : "none";
+    if (standardHeading) standardHeading.style.display = visible ? "" : "none";
+    if (!visible || !head || !body) return;
+    if (board === "sim") {
+      head.innerHTML = '<tr><th class="lbt-rank-h">#</th><th class="lbt-th" style="color:var(--fig-agentic)">Model</th><th class="lbt-th" style="color:var(--fig-agentic)">Seen tasks · zero-shot SR</th><th class="lbt-th" style="color:var(--fig-agentic)">Unseen tasks · zero-shot SR</th></tr>';
+      body.innerHTML = A.models.filter(function (m) { return m.short.toLowerCase().indexOf(state.search.trim().toLowerCase()) !== -1; }).map(function (m, i) { return '<tr><td class="lbt-rank">' + (i + 1) + '</td><td><span class="lbt-name"><span class="lbt-dot" style="background:var(--fig-agentic)"></span>' + esc(m.short) + ' <span class="lbt-fam" style="color:var(--fig-agentic)">Agentic</span></span></td><td>' + agenticCell(m.seen) + '</td><td>' + agenticCell(m.unseen) + '</td></tr>'; }).join("");
+      return;
+    }
+    var cols = [{ key: "task", label: "Task", type: "taskname", sortable: false }];
+    A.models.forEach(function (m) {
+      cols.push({ key: m.key, label: m.short, fam: "Agentic", type: "pct", sortable: false });
+    });
+    head.innerHTML = headerHTML(cols);
+    var rows = window.SIM_DETAIL.tasks.map(function (task, i) {
+      var source = A.tasks.filter(function (t) { return t.key === task.key; })[0];
+      var row = { task: task.key, model: task.short, seen: task.seen, __idx: i };
+      A.models.forEach(function (m) {
+        var values = source && source.sr[m.key];
+        row[m.key] = !values || state.metric === "sub" ? null : (state.lvl === "all"
+          ? values.reduce(function (sum, v) { return sum + v; }, 0) / values.length
+          : values[Number(state.lvl.slice(1))]);
+      });
+      return row;
+    });
+    var average = { model: "Average", isAvg: true, __idx: 999 };
+    A.models.forEach(function (m) {
+      var values = rows.map(function (r) { return r[m.key]; }).filter(function (v) { return v != null; });
+      average[m.key] = values.length ? values.reduce(function (sum, v) { return sum + v; }, 0) / values.length : null;
+    });
+    body.innerHTML = applySort(applyFilters(rows.concat([average]))).map(function (row, i) {
+      return '<tr' + (row.isAvg ? ' class="lbt-avg-row"' : '') + '><td class="lbt-rank">' + (row.isAvg ? "—" : i + 1) + '</td>' + cols.map(function (col) {
+        return '<td>' + cellHTML(row, col) + '</td>';
+      }).join("") + '</tr>';
+    }).join("");
   }
 
   function render() {
@@ -413,6 +462,8 @@
     var tbody = document.getElementById("lb-body");
     var note = document.getElementById("lb-note");
     if (!thead || !tbody) return;
+
+    renderAgentic(state.board);
 
     thead.innerHTML = headerHTML(data.cols, data.groups);
 
@@ -434,7 +485,7 @@
   }
 
   function defaultNote() {
-     if (state.board === "sim") return "16 trained variants across 3 paradigms, automated metric. The ranking by Seen SR and by P+FT SR are not the same list — try sorting by each.";
+     if (state.board === "sim") return "16 policy variants across VLA, Video-Skill, Video-VA, and ICL. Agentic zero-shot results are listed separately above.";
     if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison. All four regimes (Seen, Zero-shot, From-scratch, Pretrain+fine-tune) are shown side by side.";
     return "";
   }
