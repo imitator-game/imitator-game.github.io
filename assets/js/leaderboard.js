@@ -422,8 +422,8 @@
     if (standardHeading) standardHeading.style.display = visible ? "" : "none";
     if (!visible || !head || !body) return;
     if (board === "sim") {
-      head.innerHTML = '<tr><th class="lbt-rank-h">#</th><th class="lbt-th" style="color:var(--fig-agentic)">Model</th><th class="lbt-th" style="color:var(--fig-agentic)">Seen tasks · zero-shot SR</th><th class="lbt-th" style="color:var(--fig-agentic)">Unseen tasks · zero-shot SR</th></tr>';
-      body.innerHTML = A.models.filter(function (m) { return m.short.toLowerCase().indexOf(state.search.trim().toLowerCase()) !== -1; }).map(function (m, i) { return '<tr><td class="lbt-rank">' + (i + 1) + '</td><td><span class="lbt-name"><span class="lbt-dot" style="background:var(--fig-agentic)"></span>' + esc(m.short) + ' <span class="lbt-fam" style="color:var(--fig-agentic)">Agentic</span></span></td><td>' + agenticCell(m.seen) + '</td><td>' + agenticCell(m.unseen) + '</td></tr>'; }).join("");
+      head.innerHTML = '<tr><th class="lbt-rank-h">#</th><th class="lbt-th" style="color:var(--fig-agentic)">Model</th><th class="lbt-th" style="color:var(--fig-agentic)">Seen tasks · zero-shot SR</th><th class="lbt-th" style="color:var(--fig-agentic)">Seen tasks · zero-shot Sub-SR</th><th class="lbt-th" style="color:var(--fig-agentic)">Unseen tasks · zero-shot SR</th><th class="lbt-th" style="color:var(--fig-agentic)">Unseen tasks · zero-shot Sub-SR</th></tr>';
+      body.innerHTML = A.models.filter(function (m) { return m.short.toLowerCase().indexOf(state.search.trim().toLowerCase()) !== -1; }).map(function (m, i) { return '<tr><td class="lbt-rank">' + (i + 1) + '</td><td><span class="lbt-name"><span class="lbt-dot" style="background:var(--fig-agentic)"></span>' + esc(m.short) + ' <span class="lbt-fam" style="color:var(--fig-agentic)">Agentic</span></span></td><td>' + agenticCell(m.seen) + '</td><td>' + agenticCell(m.seenSub) + '</td><td>' + agenticCell(m.unseen) + '</td><td>' + agenticCell(m.unseenSub) + '</td></tr>'; }).join("");
       return;
     }
     var cols = [{ key: "task", label: "Task", type: "taskname", sortable: false }];
@@ -435,8 +435,9 @@
       var source = A.tasks.filter(function (t) { return t.key === task.key; })[0];
       var row = { task: task.key, model: task.short, seen: task.seen, __idx: i };
       A.models.forEach(function (m) {
-        var values = source && source.sr[m.key];
-        row[m.key] = !values || state.metric === "sub" ? null : (state.lvl === "all"
+        var metricData = state.metric === "sub" ? (A.sub && A.sub[task.key]) : (source && source.sr);
+        var values = metricData && metricData[m.key];
+        row[m.key] = !values ? null : (state.lvl === "all"
           ? values.reduce(function (sum, v) { return sum + v; }, 0) / values.length
           : values[Number(state.lvl.slice(1))]);
       });
