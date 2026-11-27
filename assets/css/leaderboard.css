@@ -92,13 +92,13 @@
 .lb-table { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 640px; }
 .lb-table thead { background: var(--surface); position: sticky; top: 0; z-index: 2; }
 .lb-table th, .lb-table td { padding: .78rem 1rem; text-align: center; white-space: nowrap; }
-.lb-table th:first-child, .lb-table td:first-child,
-.lb-table th:nth-child(2), .lb-table td:nth-child(2) { text-align: left; }
+.lb-table th:first-child:not(.lbt-model-h):not(.lbt-group), .lb-table td:first-child,
+.lb-table th:nth-child(2):not(.lbt-model-h):not(.lbt-group), .lb-table td:nth-child(2) { text-align: left; }
 .lb-table tbody tr { border-top: 1px solid var(--border); transition: background var(--dur-fast) var(--ease-out); }
 .lb-table tbody tr:hover { background: var(--surface); }
 .lb-table tbody tr.lbt-avg-row:hover { background: var(--surface); }
 
-.lb-subtable-section[data-board="task"] .lb-table th:nth-child(2),
+.lb-subtable-section[data-board="task"] .lb-table th:nth-child(2):not(.lbt-model-h):not(.lbt-group),
 .lb-subtable-section[data-board="task"] .lb-table td:nth-child(2) {
   width: 260px;
   min-width: 260px;

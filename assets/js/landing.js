@@ -267,8 +267,8 @@
           '<span class="lbp-metric lbp-metric-muted">' + Math.round(r.zs * 100) + "%<small>zero-shot</small></span>" +
           '<span class="lbp-metric">' + r.seen.toFixed(2) + "<small>seen SR</small>" +
             '<span class="lbp-track"></span></span>' +
-          '<span class="lbp-metric">' + r.pft.toFixed(2) + "<small>P+FT SR</small></span>" +
-          '<span class="lbp-metric ' + (r.delta > 0 ? "lbp-delta-pos" : "lbp-delta-neg") + '">' + (r.delta > 0 ? "+" : "") + r.delta.toFixed(2) + "<small>Δ P+FT−Scr</small></span>" +
+          '<span class="lbp-metric">' + (r.pft == null ? "—" : r.pft.toFixed(2)) + "<small>P+FT SR</small></span>" +
+          '<span class="lbp-metric ' + (r.delta > 0 ? "lbp-delta-pos" : r.delta < 0 ? "lbp-delta-neg" : "") + '">' + (r.delta == null ? "—" : (r.delta > 0 ? "+" : "") + r.delta.toFixed(2)) + "<small>Δ P+FT−Scr</small></span>" +
         "</div>"
       );
     }).join("");

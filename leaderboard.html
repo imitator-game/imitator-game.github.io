@@ -64,13 +64,13 @@
         <div class="ig-eyebrow" data-reveal="up"><i class="fas fa-ranking-star"></i>Standings</div>
         <h1 class="lb-title" data-split="45" data-reveal>Who imitates best?</h1>
         <p class="lb-sub" data-reveal="up" data-reveal-delay="200">
-          Agentic zero-shot models and sixteen policy variants, scored on 40 task-level pairs using automated metrics in simulation,
+          Agentic zero-shot models and seventeen policy variants, scored on 40 task-level pairs using automated metrics in simulation,
           and blind human comparisons in the Arena for both simulation and real world.
         </p>
 
         <div class="lb-stats" data-stagger="80">
-          <div class="lb-stat"><span class="lb-stat-v tone-va" data-count-to="0.81" data-count-decimals="2">0.00</span>
-            <span class="lb-stat-l">Best simulation SR — ACT/DINOv2</span></div>
+          <div class="lb-stat"><span class="lb-stat-v tone-va" data-count-to="0.91" data-count-decimals="2">0.00</span>
+            <span class="lb-stat-l">Best simulation Seen SR — RoboDemo</span></div>
           <div class="lb-stat"><span class="lb-stat-v tone-skill" data-count-to="0.95" data-count-decimals="2">0.00</span>
             <span class="lb-stat-l">Best Arena win rate — XSkill, P+FT</span></div>
           <div class="lb-stat"><span class="lb-stat-v tone-vla" data-count-to="13" data-count-suffix="%">0%</span>
@@ -209,20 +209,27 @@
           at every level. As with the main board, object placement is perturbed by a small random amount in both the
           training and evaluation scenes, so success still requires robust imitation rather than fixed-layout replay.
         </p>
+        <p class="paper-section-body">
+          <a href="https://arxiv.org/abs/2611.32256" target="_blank" rel="noopener">RoboDemo</a> (ICL) is also evaluated
+          after training on all 50 tasks. Its full-suite SR is 84.6%; this setting is separate from the 15/30/45-task main board.
+          Unreported RoboDemo Sub-SR, scratch, and P+FT metrics are shown as unavailable, not zero.
+        </p>
 
         <div class="lb-table-shell ptr-shell" data-reveal="up" data-reveal-delay="240">
           <table class="ptr-table">
             <thead>
               <tr>
                 <th rowspan="2">Task</th>
+                <th colspan="4">RoboDemo</th>
                 <th colspan="4">DP</th>
                 <th colspan="4">ACT</th>
-                <th colspan="2">Mean</th>
+                <th colspan="3">Mean</th>
               </tr>
               <tr>
                 <th>L0</th><th>L1</th><th>L2</th><th>L3</th>
                 <th>L0</th><th>L1</th><th>L2</th><th>L3</th>
-                <th>DP</th><th>ACT</th>
+                <th>L0</th><th>L1</th><th>L2</th><th>L3</th>
+                <th>RoboDemo</th><th>DP</th><th>ACT</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -259,6 +266,7 @@
 <script src="assets/js/charts.js"></script>
 <script src="assets/js/sim-detail-data.js"></script>
 <script src="assets/js/zero-wam-detail.js"></script>
+<script src="assets/js/robodemo-data.js"></script>
 <script src="assets/js/astra-data.js"></script>
 <script src="assets/js/full-task-suite-data.js"></script>
 <script src="assets/js/full-task-suite.js"></script>

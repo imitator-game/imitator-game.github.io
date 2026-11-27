@@ -162,6 +162,7 @@
     // g.appendChild(text(x(.80), y(.86), "P+FT = Seen", "ig-t-note", { "text-anchor": "end" }));
 
     IG.sim.forEach(function (r, i) {
+      if (r.pft == null) return;
       var c = fam(r.fam);
       var m = marker(r.fam, x(r.seen), y(r.pft), 7.5, "fill:" + c + ";fill-opacity:.85;stroke:var(--on-bg);stroke-width:1.5");
       m.classList.add("ig-anim", "ig-dot");

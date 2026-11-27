@@ -56,6 +56,7 @@ window.IG = (function () {
      file's Scr/Scr-Sub match the paper's min-basis figures, not the
      naive mean. */
   var sim = [
+    { model: "RoboDemo", fam: "ICL", enc: null, seen: (.895 + .94 + .885) / 3, seenSub: null, zs: .04, zsSub: null, scr: null, scrSub: null, pft: null, pftSub: null },
     { model: "ACT/DINOv2",      fam: "VideoVA", enc: "DINOv2",   seen: .81, seenSub: .93, zs: .02, zsSub: .13, scr: .76, scrSub: .83, pft: .84, pftSub: .88 },
     { model: "XSkill",          fam: "Skill",   enc: null,       seen: .79, seenSub: .91, zs: .10, zsSub: .25, scr: .35, scrSub: .51, pft: .73, pftSub: .82 },
     { model: "ACT/SigLIP2",     fam: "VideoVA", enc: "SigLIP2",  seen: .79, seenSub: .93, zs: .03, zsSub: .12, scr: .65, scrSub: .78, pft: .80, pftSub: .86 },
@@ -73,7 +74,7 @@ window.IG = (function () {
     { model: "OpenVLA",         fam: "VLA",     enc: null,       seen: .29, seenSub: .60, zs: .06, zsSub: .20, scr: .14, scrSub: .34, pft: .20, pftSub: .44 },
     { model: "DP/VideoMAE",     fam: "VideoVA", enc: "VideoMAE", seen: .14, seenSub: .44, zs: .02, zsSub: .15, scr: .09, scrSub: .27, pft: .36, pftSub: .58 }
   ];
-  sim.forEach(function (r) { r.delta = +(r.pft - r.scr).toFixed(2); });
+  sim.forEach(function (r) { r.delta = r.pft == null || r.scr == null ? null : +(r.pft - r.scr).toFixed(2); });
 
   /* ── Real world: 4 representative models, human-judged ───────
      Every field — sr, q, AND wr — reproduces Table "Real-world Arena

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var data = window.FULL_TASK_SUITE;
   if (!data) {
     console.error('full-task-suite.js: window.FULL_TASK_SUITE not found — is full-task-suite-data.js loaded first?');
-    tbody.innerHTML = '<tr><td class="ptr-task" colspan="11">Failed to load task data.</td></tr>';
+    tbody.innerHTML = '<tr><td class="ptr-task" colspan="16">Failed to load task data.</td></tr>';
     return;
   }
 
@@ -33,11 +33,21 @@ document.addEventListener('DOMContentLoaded', function () {
     return vals.map(function (v) { return '<td>' + esc(v) + '</td>'; }).join('');
   }
 
+  var robo = window.ROBODEMO_DATA.full["50"];
+  function roboValues(task) {
+    return robo["TwoRobot" + task.name.replace(/\s/g, "")].map(function (v) { return v * 100; });
+  }
+  function mean(values) {
+    return values.reduce(function (sum, v) { return sum + v; }, 0) / values.length;
+  }
+
   var rowsHtml = data.tasks.map(function (t) {
     return '<tr>' +
       '<td class="ptr-task">' + esc(t.name) + '</td>' +
+      rowCells(roboValues(t)) +
       rowCells(t.dp) +
       rowCells(t.act) +
+      '<td class="ptr-mean">' + mean(roboValues(t)).toFixed(1) + '</td>' +
       '<td class="ptr-mean">' + esc(t.meanDP.toFixed(1)) + '</td>' +
       '<td class="ptr-mean">' + esc(t.meanACT.toFixed(1)) + '</td>' +
       '</tr>';
@@ -45,11 +55,16 @@ document.addEventListener('DOMContentLoaded', function () {
   tbody.innerHTML = rowsHtml;
 
   var avg = data.average;
+  var roboAverage = [0, 1, 2, 3].map(function (level) {
+    return mean(data.tasks.map(function (task) { return roboValues(task)[level]; }));
+  });
   tfoot.innerHTML =
     '<tr class="ptr-avg-row">' +
     '<td class="ptr-task">' + esc(avg.label) + '</td>' +
+    rowCells(roboAverage.map(function (v) { return v.toFixed(1); })) +
     rowCells(avg.dp) +
     rowCells(avg.act) +
+    '<td class="ptr-mean">' + mean(roboAverage).toFixed(1) + '</td>' +
     '<td class="ptr-mean">' + esc(avg.meanDP.toFixed(1)) + '</td>' +
     '<td class="ptr-mean">' + esc(avg.meanACT.toFixed(1)) + '</td>' +
     '</tr>';

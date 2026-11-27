@@ -486,7 +486,7 @@
   }
 
   function defaultNote() {
-     if (state.board === "sim") return "16 policy variants across VLA, Video-Skill, Video-VA, and ICL. Agentic zero-shot results are listed separately above.";
+     if (state.board === "sim") return "17 policy variants across VLA, Video-Skill, Video-VA, and ICL. Agentic zero-shot results are listed separately above.";
     if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison. All four regimes (Seen, Zero-shot, From-scratch, Pretrain+fine-tune) are shown side by side.";
     return "";
   }
