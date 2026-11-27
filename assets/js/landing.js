@@ -264,7 +264,7 @@
           '<span class="lbp-name">' + esc(r.model) +
             '<span class="lbp-fam" style="color:' + IG.famColor(r.fam) + ';border-color:' + IG.famColor(r.fam) + '">' + esc(IG.famShort(r.fam)) + "</span>" +
           "</span>" +
-          '<span class="lbp-metric lbp-metric-muted">' + Math.round(r.zs * 100) + "%<small>zero-shot</small></span>" +
+          '<span class="lbp-metric lbp-metric-muted">' + (r.zs == null ? "—" : Math.round(r.zs * 100) + "%") + "<small>zero-shot</small></span>" +
           '<span class="lbp-metric">' + r.seen.toFixed(2) + "<small>seen SR</small>" +
             '<span class="lbp-track"></span></span>' +
           '<span class="lbp-metric">' + (r.pft == null ? "—" : r.pft.toFixed(2)) + "<small>P+FT SR</small></span>" +

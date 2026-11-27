@@ -486,7 +486,7 @@
   }
 
   function defaultNote() {
-     if (state.board === "sim") return "17 policy variants across VLA, Video-Skill, Video-VA, and ICL. Agentic zero-shot results are listed separately above.";
+     if (state.board === "sim") return "18 policy variants across VLA, Video-Skill, Video-VA, and ICL. JEPA-ICL averages only the reported C15/C45 scales (not C15/C30/C45); per-scale values are listed below. Agentic zero-shot results are listed separately above.";
     if (state.board === "real") return "4 representative models, Arena-judged by blind human comparison. All four regimes (Seen, Zero-shot, From-scratch, Pretrain+fine-tune) are shown side by side.";
     return "";
   }

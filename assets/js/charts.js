@@ -78,7 +78,7 @@
     node.addEventListener("pointerleave", tipOff);
   }
 
-  function pct(v) { return Math.round(v * 100) + "%"; }
+  function pct(v) { return v == null ? "—" : Math.round(v * 100) + "%"; }
 
   /* Marker path for a family (matches ig_common.MARKER_FAMILY) */
   function marker(f, cx, cy, r, style) {

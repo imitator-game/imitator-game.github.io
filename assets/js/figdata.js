@@ -57,6 +57,7 @@ window.IG = (function () {
      naive mean. */
   var sim = [
     { model: "RoboDemo", fam: "ICL", enc: null, seen: (.895 + .94 + .885) / 3, seenSub: null, zs: .04, zsSub: null, scr: null, scrSub: null, pft: null, pftSub: null },
+    { model: "JEPA-ICL", fam: "ICL", enc: null, seen: (.8 + .81) / 2, seenSub: (.911 + .918) / 2, zs: null, zsSub: null, scr: null, scrSub: null, pft: (.79 + .855) / 2, pftSub: (.874 + .926) / 2 },
     { model: "ACT/DINOv2",      fam: "VideoVA", enc: "DINOv2",   seen: .81, seenSub: .93, zs: .02, zsSub: .13, scr: .76, scrSub: .83, pft: .84, pftSub: .88 },
     { model: "XSkill",          fam: "Skill",   enc: null,       seen: .79, seenSub: .91, zs: .10, zsSub: .25, scr: .35, scrSub: .51, pft: .73, pftSub: .82 },
     { model: "ACT/SigLIP2",     fam: "VideoVA", enc: "SigLIP2",  seen: .79, seenSub: .93, zs: .03, zsSub: .12, scr: .65, scrSub: .78, pft: .80, pftSub: .86 },
